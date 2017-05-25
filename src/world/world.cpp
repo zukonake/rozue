@@ -2,6 +2,7 @@
 #include <vector>
 //
 #include <global.hpp>
+#include <geometry/bresenham.hpp>
 #include <world/tile/tile.hpp>
 #include <world/map.hpp>
 #include <world/entity/entity.hpp>
@@ -34,7 +35,7 @@ Point World::getStartPosition() const
 	{
 		returnValue.x = rand() % global::mapSize.x;
 		returnValue.y = rand() % global::mapSize.y;
-	} while( mMap[ returnValue ].passable());
+	} while( !mMap[ returnValue ].passable());
 	return returnValue;
 }
 
@@ -46,13 +47,34 @@ Point World::getFreePosition() const
 		returnValue.x = rand() % global::mapSize.x;
 		returnValue.y = rand() % global::mapSize.y;
 		returnValue.z = rand() % global::mapSize.z;
-	} while( mMap[ returnValue ].passable());
+	} while( !mMap[ returnValue ].passable());
 	return returnValue;
 }
 
 Entity &World::getPlayer()
 {
 	return mEntities.at( 0 );
+}
+
+bool World::sees( Point const &from, Point const &to ) const
+{
+	if( !exists( to ) || !exists( from ))
+	{
+		return false;
+	}
+	std::vector< Point > line = bresenham::plotLine( from, to );
+	if( line.empty())
+	{
+		return false;
+	}
+	for( uint16_t i = 0; i < line.size() - 1; i++ )
+	{
+		if( !mMap[ line[ i ]].passable())
+		{
+			return false;
+		}
+	}
+	return true;
 }
 
 void World::simulate()

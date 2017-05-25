@@ -34,32 +34,32 @@ void Tile::draw( sf::RenderTarget &target, sf::RenderStates states ) const
 		{ 0,
 		  0 };
 	square[ 1 ].position =
-		{ global::spriteSize.x,
+		{ global::textureSpriteSize.x,
 		  0 };
 	square[ 2 ].position =
-		{ global::spriteSize.x,
-		  global::spriteSize.y };
+		{ global::textureSpriteSize.x,
+		  global::textureSpriteSize.y };
 	square[ 3 ].position =
 		{ 0,
-		  global::spriteSize.y };
+		  global::textureSpriteSize.y };
 
 	square[ 0 ].texCoords =
 		{ subtype->tilesetPosition.x + 0,
 		  subtype->tilesetPosition.y + 0 };
 	square[ 1 ].texCoords =
-		{ subtype->tilesetPosition.x + global::spriteSize.x,
+		{ subtype->tilesetPosition.x + global::textureSpriteSize.x,
 		  subtype->tilesetPosition.y + 0 };
 	square[ 2 ].texCoords =
-		{ subtype->tilesetPosition.x + global::spriteSize.x,
-		  subtype->tilesetPosition.y + global::spriteSize.y };
+		{ subtype->tilesetPosition.x + global::textureSpriteSize.x,
+		  subtype->tilesetPosition.y + global::textureSpriteSize.y };
 	square[ 3 ].texCoords =
 		{ subtype->tilesetPosition.x + 0,
-		  subtype->tilesetPosition.y + global::spriteSize.y };
+		  subtype->tilesetPosition.y + global::textureSpriteSize.y };
 
 	target.draw( square, states );
 }
 
 bool Tile::passable() const
 {
-	return subtype->solid;
+	return !subtype->solid;
 }

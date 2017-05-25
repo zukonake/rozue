@@ -4,13 +4,13 @@
 #include "game.hpp"
 
 Game::Game() :
-	mWorld( DungeonGenerator({ 3, 3 }, { 10, 10 }, 1.3f )),
+	mWorld( DungeonGenerator({ 4, 4 }, { 7, 7 }, 0.75f )),
 	mCamera( mWorld ),
 	mScreen( sf::VideoMode( 1024, 768 ),
 		"Rozue",
 		sf::Style::Titlebar )
 {
-	mTileset.loadFromFile( "tileset.png" );
+	mTileset.loadFromFile( "tileset16x16.png" );
 }
 
 void Game::start()
@@ -87,6 +87,14 @@ void Game::handleKey( sf::Keyboard::Key const &key )
 
 	case sf::Keyboard::F:
 		mCamera.lock();
+		break;
+
+	case sf::Keyboard::Q:
+		mCamera.changeScale( 0.25f );
+		break;
+
+	case sf::Keyboard::E:
+		mCamera.changeScale( -0.25f );
 		break;
 
 	default:

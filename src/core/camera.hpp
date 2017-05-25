@@ -23,11 +23,14 @@ class Camera : public virtual sf::Drawable, public Entity
 
 	void lock();
 	void unlock();
+	void setScale( float const &scale );
+	void changeScale( float const &scale );
 	private:
 	bool sees( Point const &what ) const;
 
 	World const &mWorld;
 	Point mPosition;
 	bool mLocked;
+	float mScale;
 	std::uint16_t const mFov = 6;
 };

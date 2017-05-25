@@ -28,32 +28,32 @@ struct Vector3
 	constexpr Vector3() = default;
 	constexpr Vector3( T const &x, T const &y, T const &z ) noexcept;
 	template< typename U >
-	explicit Vector3( U const &that ) noexcept;
+	constexpr explicit Vector3( U const &that ) noexcept;
 
 	~Vector3() = default;
 
 	template< typename U >
-	operator U() const noexcept;
+	constexpr operator U() const noexcept;
 
-	Vector3< T > operator*( Vector3< T > const &that ) const noexcept;
-	Vector3< T > operator/( Vector3< T > const &that ) const noexcept;
-	Vector3< T > operator%( Vector3< T > const &that ) const noexcept;
-	Vector3< T > operator+( Vector3< T > const &that ) const noexcept;
-	Vector3< T > operator-( Vector3< T > const &that ) const noexcept;
+	constexpr Vector3< T > operator*( Vector3< T > const &that ) const noexcept;
+	constexpr Vector3< T > operator/( Vector3< T > const &that ) const noexcept;
+	constexpr Vector3< T > operator%( Vector3< T > const &that ) const noexcept;
+	constexpr Vector3< T > operator+( Vector3< T > const &that ) const noexcept;
+	constexpr Vector3< T > operator-( Vector3< T > const &that ) const noexcept;
 
-	Vector3< T > &operator=( Vector3< T > const &that ) noexcept;
-	Vector3< T > &operator*=( Vector3< T > const &that ) noexcept;
-	Vector3< T > &operator/=( Vector3< T > const &that ) noexcept;
-	Vector3< T > &operator%=( Vector3< T > const &that ) noexcept;
-	Vector3< T > &operator+=( Vector3< T > const &that ) noexcept;
-	Vector3< T > &operator-=( Vector3< T > const &that ) noexcept;
+	constexpr Vector3< T > &operator=( Vector3< T > const &that ) noexcept;
+	constexpr Vector3< T > &operator*=( Vector3< T > const &that ) noexcept;
+	constexpr Vector3< T > &operator/=( Vector3< T > const &that ) noexcept;
+	constexpr Vector3< T > &operator%=( Vector3< T > const &that ) noexcept;
+	constexpr Vector3< T > &operator+=( Vector3< T > const &that ) noexcept;
+	constexpr Vector3< T > &operator-=( Vector3< T > const &that ) noexcept;
 
-	bool operator==( Vector3< T > const &that ) const noexcept;
-	bool operator!=( Vector3< T > const &that ) const noexcept;
-	bool operator<=( Vector3< T > const &that ) const noexcept;
-	bool operator>=( Vector3< T > const &that ) const noexcept;
-	bool operator<( Vector3< T > const &that ) const noexcept;
-	bool operator>( Vector3< T > const &that ) const noexcept;
+	constexpr bool operator==( Vector3< T > const &that ) const noexcept;
+	constexpr bool operator!=( Vector3< T > const &that ) const noexcept;
+	constexpr bool operator<=( Vector3< T > const &that ) const noexcept;
+	constexpr bool operator>=( Vector3< T > const &that ) const noexcept;
+	constexpr bool operator<( Vector3< T > const &that ) const noexcept;
+	constexpr bool operator>( Vector3< T > const &that ) const noexcept;
 
 	T x;
 	T y;
@@ -79,7 +79,7 @@ constexpr Vector3< T >::Vector3( T const &x, T const &y, T const &z ) noexcept :
 
 template< typename T >
 template< typename U >
-Vector3< T >::Vector3( U const &that ) noexcept :
+constexpr Vector3< T >::Vector3( U const &that ) noexcept :
 	x( that.x ),
 	y( that.y ),
 	z( that.z )
@@ -91,7 +91,7 @@ Vector3< T >::Vector3( U const &that ) noexcept :
 
 template< typename T >
 template< typename U >
-Vector3< T >::operator U() const noexcept
+constexpr Vector3< T >::operator U() const noexcept
 {
 	return U( x, y, z );
 }
@@ -99,31 +99,31 @@ Vector3< T >::operator U() const noexcept
 
 
 template< typename T >
-Vector3< T > Vector3< T >::operator*( Vector3< T > const &that ) const noexcept
+constexpr Vector3< T > Vector3< T >::operator*( Vector3< T > const &that ) const noexcept
 {
 	return Vector3( x * that.x, y * that.y, z * that.z );
 }
 
 template< typename T >
-Vector3< T > Vector3< T >::operator/( Vector3< T > const &that ) const noexcept
+constexpr Vector3< T > Vector3< T >::operator/( Vector3< T > const &that ) const noexcept
 {
 	return Vector3( x / that.x, y / that.y, z / that.z );
 }
 
 template< typename T >
-Vector3< T > Vector3< T >::operator%( Vector3< T > const &that ) const noexcept
+constexpr Vector3< T > Vector3< T >::operator%( Vector3< T > const &that ) const noexcept
 {
 	return Vector3( x % that.x, y % that.y, z % that.z );
 }
 
 template< typename T >
-Vector3< T > Vector3< T >::operator+( Vector3< T > const &that ) const noexcept
+constexpr Vector3< T > Vector3< T >::operator+( Vector3< T > const &that ) const noexcept
 {
 	return Vector3( x + that.x, y + that.y, z + that.z );
 }
 
 template< typename T >
-Vector3< T > Vector3< T >::operator-( Vector3< T > const &that ) const noexcept
+constexpr Vector3< T > Vector3< T >::operator-( Vector3< T > const &that ) const noexcept
 {
 	return Vector3( x - that.x, y - that.y, z - that.z );
 }
@@ -131,7 +131,7 @@ Vector3< T > Vector3< T >::operator-( Vector3< T > const &that ) const noexcept
 
 
 template< typename T >
-Vector3< T > &Vector3< T >::operator=( Vector3< T > const &that ) noexcept
+constexpr Vector3< T > &Vector3< T >::operator=( Vector3< T > const &that ) noexcept
 {
 	x = that.x;
 	y = that.y;
@@ -140,7 +140,7 @@ Vector3< T > &Vector3< T >::operator=( Vector3< T > const &that ) noexcept
 }
 
 template< typename T >
-Vector3< T > &Vector3< T >::operator*=( Vector3< T > const &that ) noexcept
+constexpr Vector3< T > &Vector3< T >::operator*=( Vector3< T > const &that ) noexcept
 {
 	x *= that.x;
 	y *= that.y;
@@ -149,7 +149,7 @@ Vector3< T > &Vector3< T >::operator*=( Vector3< T > const &that ) noexcept
 }
 
 template< typename T >
-Vector3< T > &Vector3< T >::operator/=( Vector3< T > const &that ) noexcept
+constexpr Vector3< T > &Vector3< T >::operator/=( Vector3< T > const &that ) noexcept
 {
 	x /= that.x;
 	y /= that.y;
@@ -158,7 +158,7 @@ Vector3< T > &Vector3< T >::operator/=( Vector3< T > const &that ) noexcept
 }
 
 template< typename T >
-Vector3< T > &Vector3< T >::operator%=( Vector3< T > const &that ) noexcept
+constexpr Vector3< T > &Vector3< T >::operator%=( Vector3< T > const &that ) noexcept
 {
 	x %= that.x;
 	y %= that.y;
@@ -167,7 +167,7 @@ Vector3< T > &Vector3< T >::operator%=( Vector3< T > const &that ) noexcept
 }
 
 template< typename T >
-Vector3< T > &Vector3< T >::operator+=( Vector3< T > const &that ) noexcept
+constexpr Vector3< T > &Vector3< T >::operator+=( Vector3< T > const &that ) noexcept
 {
 	x += that.x;
 	y += that.y;
@@ -176,7 +176,7 @@ Vector3< T > &Vector3< T >::operator+=( Vector3< T > const &that ) noexcept
 }
 
 template< typename T >
-Vector3< T > &Vector3< T >::operator-=( Vector3< T > const &that ) noexcept
+constexpr Vector3< T > &Vector3< T >::operator-=( Vector3< T > const &that ) noexcept
 {
 	x -= that.x;
 	y -= that.y;
@@ -187,37 +187,37 @@ Vector3< T > &Vector3< T >::operator-=( Vector3< T > const &that ) noexcept
 
 
 template< typename T >
-bool Vector3< T >::operator==( Vector3< T > const &that ) const noexcept
+constexpr bool Vector3< T >::operator==( Vector3< T > const &that ) const noexcept
 {
 	return x == that.x && y == that.y && z == that.z;
 }
 
 template< typename T >
-bool Vector3< T >::operator!=( Vector3< T > const &that ) const noexcept
+constexpr bool Vector3< T >::operator!=( Vector3< T > const &that ) const noexcept
 {
 	return x != that.x || y != that.y || z != that.z;
 }
 
 template< typename T >
-bool Vector3< T >::operator<=( Vector3< T > const &that ) const noexcept
+constexpr bool Vector3< T >::operator<=( Vector3< T > const &that ) const noexcept
 {
 	return *this < that || *this == that;
 }
 
 template< typename T >
-bool Vector3< T >::operator>=( Vector3< T > const &that ) const noexcept
+constexpr bool Vector3< T >::operator>=( Vector3< T > const &that ) const noexcept
 {
 	return *this > that || *this == that;
 }
 
 template< typename T >
-bool Vector3< T >::operator<( Vector3< T > const &that ) const noexcept
+constexpr bool Vector3< T >::operator<( Vector3< T > const &that ) const noexcept
 {
 	return x < that.x || ( x == that.x && y < that.y ) || ( x == that.x && y == that.y && z < that.z );
 }
 
 template< typename T >
-bool Vector3< T >::operator>( Vector3< T > const &that ) const noexcept
+constexpr bool Vector3< T >::operator>( Vector3< T > const &that ) const noexcept
 {
 	return x > that.x || ( x == that.x && y > that.y ) || ( x == that.x && y == that.y && z > that.z );;
 }

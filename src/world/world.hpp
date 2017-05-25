@@ -22,6 +22,7 @@ class World
 	Point getStartPosition() const;
 	Point getFreePosition() const;
 	Entity &getPlayer();
+	bool sees( Point const &from, Point const &to ) const;
 
 	void simulate();
 	void createEntity( EntitySubtype const &subtype );

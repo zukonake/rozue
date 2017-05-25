@@ -7,7 +7,9 @@
 namespace global
 {
 
-Size3 constexpr mapSize( 100, 100, 1 );
-Size2 constexpr spriteSize( 48, 48 );
+Size3 constexpr mapSize( 100, 100, 5 );
+Size2 constexpr textureSpriteSize( 16, 16 );
+Size2 constexpr screenSpriteSize( 48, 48 );
+coldline::geometry::Vector2f constexpr spriteScale( screenSpriteSize / textureSpriteSize );
 
 }

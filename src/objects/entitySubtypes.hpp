@@ -5,5 +5,5 @@
 
 EntitySubtype const human
 {
-	{ 2 * global::spriteSize.x, 0 * global::spriteSize.y }
+	{ 2 * global::textureSpriteSize.x, 0 * global::textureSpriteSize.y }
 };

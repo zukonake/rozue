@@ -63,25 +63,31 @@ DungeonGenerator::Dungeon DungeonGenerator::randomizeDungeon()
 
 void DungeonGenerator::generateDungeons( uint16_t const &number )
 {
+	uint32_t const maxTries = 50;
 	for( uint16_t iZ = 0; iZ < global::mapSize.z; iZ++ )
 	{
 		for( uint16_t i = 0; i < number; i++ )
 		{
 			Dungeon dungeon;
+			uint32_t tries = 0;
 			do
 			{
 				dungeon = randomizeDungeon();
-			} while( !good( dungeon, iZ ));
-			std::cout << "INFO: New dungeon: {"
-				  	  << dungeon.position.x
-				  	  << ", "
-				  	  << dungeon.position.y
-				  	  << "}, {"
-				  	  << dungeon.size.x
-				  	  << ", "
-				  	  << dungeon.size.y
-				  	  << "}\n";
-			mDungeons[ iZ ].push_back( dungeon );
+				tries++;
+			} while( !good( dungeon, iZ && tries < maxTries ));
+			if( tries < maxTries )
+			{
+				std::cout << "INFO: New dungeon: {"
+				  	  	  << dungeon.position.x
+				  	  	  << ", "
+				  	  	  << dungeon.position.y
+				  	  	  << "}, {"
+				  	  	  << dungeon.size.x
+				  	  	  << ", "
+				  	  	  << dungeon.size.y
+				  	  	  << "}\n";
+				mDungeons[ iZ ].push_back( dungeon );
+			}
 		}
 	}
 }
@@ -90,7 +96,7 @@ void DungeonGenerator::applyDungeons( Map &map, Tile const &fill )
 {
 	for( uint16_t iZ = 0; iZ < global::mapSize.z; iZ++ )
 	{
-		for( auto iDungeon : mDungeons[ iZ ] )
+		for( auto &iDungeon : mDungeons[ iZ ] )
 		{
 			for( uint16_t iY = iDungeon.position.y;
 			 	 iY < iDungeon.position.y + iDungeon.size.y;
@@ -109,26 +115,27 @@ void DungeonGenerator::applyDungeons( Map &map, Tile const &fill )
 
 void DungeonGenerator::generateCorridors()
 {
-	uint16_t const maxTries = 150;
-	uint16_t const maxDistance = 2;
+	uint32_t const maxTries = 500;
+	float const corridorDensity = 0.125f;
 	for( uint16_t iZ = 0; iZ < global::mapSize.z; iZ++ )
 	{
-		for( auto from : mDungeons[ iZ ] )
+		for( auto &from : mDungeons[ iZ ] )
 		{
 			uint8_t corridorNumber = ( rand() % 2 ) + 1;
 			for( uint8_t i = 0; i < corridorNumber; i++ )
 			{
 				Point2 fromOrigin = getOrigin( from );
 				Point2 toOrigin;
-				uint16_t tries = 0;
+				uint32_t tries = 0;
 				do
 				{
 					Dungeon to;
 					to = mDungeons[ iZ ][ rand() % mDungeons[ iZ ].size()];
 					tries++;
 					toOrigin = getOrigin( to );
-				} while( getDistance( fromOrigin, toOrigin ) >= maxDistance + ( tries / 5 ) &&
-						 tries < maxTries );
+				} while(( getDistance( fromOrigin, toOrigin ) >= ( tries * corridorDensity ) + 1 &&
+						 tries < maxTries )||
+						 toOrigin == fromOrigin );
 				if( tries < maxTries )
 				{
 					std::cout << "INFO: New corridor: {"
@@ -151,7 +158,7 @@ void DungeonGenerator::applyCorridors( Map &map, Tile const &fill )
 {
 	for( uint16_t iZ = 0; iZ < global::mapSize.z; iZ++ )
 	{
-		for( auto iCorridor : mCorridors[ iZ ] )
+		for( auto &iCorridor : mCorridors[ iZ ] )
 		{
 			if( iCorridor.from.y < iCorridor.to.y )
 			{
@@ -187,7 +194,7 @@ void DungeonGenerator::applyCorridors( Map &map, Tile const &fill )
 
 bool DungeonGenerator::good( Dungeon const &dungeon, uint16_t level )
 {
-	for( auto iDungeon : mDungeons[ level ] )
+	for( auto &iDungeon : mDungeons[ level ] )
 	{
 		if( touches( dungeon, iDungeon ))
 		{
