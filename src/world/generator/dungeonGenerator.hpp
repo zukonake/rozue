@@ -27,6 +27,7 @@ class DungeonGenerator : public Generator
 	void applyDungeons( Map &map, Tile const &fill );
 	bool good( Dungeon const &dungeon );
 
+	static bool touches( Dungeon const &one, Dungeon const &two );
 	static bool intersects( Dungeon const &one, Dungeon const &two );
 
 	std::vector< Dungeon > mDungeons;

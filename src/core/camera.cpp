@@ -42,8 +42,8 @@ void Camera::draw( sf::RenderTarget &target, sf::RenderStates states ) const
 				( uint16_t )iRelative.z
 			};
 			target.draw( mWorld[ Point( iMap.x, iMap.y, iMap.z ) ], states );
-			if( iMap.x == mPosition.x &&
-				iMap.y == mPosition.y )
+			if( iMap.x == Entity::getPosition().x &&
+				iMap.y == Entity::getPosition().y )
 			{
 				target.draw( static_cast< Entity >( *this ), states );
 			}

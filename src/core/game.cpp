@@ -4,7 +4,7 @@
 #include "game.hpp"
 
 Game::Game() :
-	mWorld( DungeonGenerator({ 3, 3 }, { 15, 15 }, 0.5f )),
+	mWorld( DungeonGenerator({ 3, 3 }, { 10, 10 }, 1.3f )),
 	mCamera( mWorld ),
 	mScreen( sf::VideoMode( 800, 600 ),
 		"Rozue",

@@ -38,7 +38,6 @@ World DungeonGenerator::generate()
 	std::cout << dungeonNumber << "\n";
 	generateDungeons( dungeonNumber );
 	applyDungeons( map, wall );
-	map[{ 5, 5, 0 }] = wall;
 	World world( map );
 	world.createPlayer( human );
 	return world;
@@ -54,34 +53,38 @@ DungeonGenerator::Dungeon DungeonGenerator::randomizeDungeon()
 	};
 	dungeon.position =
 	{
-		rand() % ( global::mapSize.x - dungeon.size.x ),
-		rand() % ( global::mapSize.y - dungeon.size.y ),
-		0//rand() % global::mapSize.z
+		( rand() % (( global::mapSize.x - 1 ) - dungeon.size.x ) + 1 ),
+		( rand() % (( global::mapSize.y - 1 ) - dungeon.size.y ) + 1 ),
+		rand() % global::mapSize.z
 	};
 	return dungeon;
 }
 
 void DungeonGenerator::generateDungeons( uint16_t const &number )
 {
-	for( uint16_t i = 0; i < number; i++ )
+	for( uint16_t iZ = 0; iZ < global::mapSize.z; iZ++ )
 	{
-		Dungeon dungeon;
-		do
+		for( uint16_t i = 0; i < number; i++ )
 		{
-			dungeon = randomizeDungeon();
-			std::cout << "New dungeon: "
-					  << dungeon.position.x
-					  << ", "
-					  << dungeon.position.y
-					  << ", "
-					  << dungeon.position.z
-					  << ": "
-					  << dungeon.size.x
-					  << ", "
-					  << dungeon.size.y
-					  << "\n";
-		} while( !good( dungeon ));
-		mDungeons.push_back( dungeon );
+			Dungeon dungeon;
+			do
+			{
+				dungeon = randomizeDungeon();
+				dungeon.position.z = iZ;
+			} while( !good( dungeon ));
+			std::cout << "INFO: New dungeon: {"
+				  	  << dungeon.position.x
+				  	  << ", "
+				  	  << dungeon.position.y
+				  	  << ", "
+				  	  << dungeon.position.z
+				  	  << "}, {"
+				  	  << dungeon.size.x
+				  	  << ", "
+				  	  << dungeon.size.y
+				  	  << "}\n";
+			mDungeons.push_back( dungeon );
+		}
 	}
 }
 
@@ -89,7 +92,6 @@ void DungeonGenerator::applyDungeons( Map &map, Tile const &fill )
 {
 	for( auto iDungeon : mDungeons )
 	{
-		std::cout << "Placing dungeon...\n";
 		uint16_t iZ = iDungeon.position.z;
 		for( uint16_t iY = iDungeon.position.y;
 			 iY < iDungeon.position.y + iDungeon.size.y;
@@ -109,7 +111,7 @@ bool DungeonGenerator::good( Dungeon const &dungeon )
 {
 	for( auto iDungeon : mDungeons )
 	{
-		if( intersects( dungeon, iDungeon ))
+		if( touches( dungeon, iDungeon ))
 		{
 			return false;
 		}
@@ -117,10 +119,31 @@ bool DungeonGenerator::good( Dungeon const &dungeon )
 	return true;
 }
 
+bool DungeonGenerator::touches( Dungeon const &one, Dungeon const &two )
+{
+	Dungeon oneBorder = one;
+	oneBorder.position.x--;
+	oneBorder.position.y--;
+	oneBorder.size.x += 2;
+	oneBorder.size.y += 2;
+
+	Dungeon twoBorder = two;
+	twoBorder.position.x--;
+	twoBorder.position.y--;
+	twoBorder.size.x += 2;
+	twoBorder.size.y += 2;
+
+	return intersects( oneBorder, twoBorder );
+}
+
 bool DungeonGenerator::intersects( Dungeon const &one, Dungeon const &two )
 {
-	uint16_t deltaX = std::abs(( int16_t )one.position.x - ( int16_t )two.position.x );
-	uint16_t deltaY = std::abs(( int16_t )one.position.y - ( int16_t )two.position.y );
-	return deltaX * 2 < ( one.size.x + one.size.y ) &&
-		   deltaY * 2 < ( one.size.y + one.size.y );
+	if( one.position.z != two.position.z )
+	{
+		return false;
+	}
+	return ( one.position.x < two.position.x + two.size.x &&
+			 one.position.y < two.position.y + two.size.y &&
+			 one.position.x + one.size.x > two.position.x &&
+			 one.position.y + one.size.y > two.position.y );
 }

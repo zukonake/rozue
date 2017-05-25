@@ -29,11 +29,11 @@ Tile const &World::operator[]( Point const &index ) const
 Point World::getStartPosition() const
 {
 	Point returnValue;
+	returnValue.z = 0;
 	do
 	{
 		returnValue.x = rand() % global::mapSize.x;
 		returnValue.y = rand() % global::mapSize.y;
-		returnValue.z = rand() % global::mapSize.z;
 	} while( mMap[ returnValue ].passable());
 	return returnValue;
 }
@@ -41,11 +41,11 @@ Point World::getStartPosition() const
 Point World::getFreePosition() const
 {
 	Point returnValue;
-	returnValue.z = 0;
 	do
 	{
 		returnValue.x = rand() % global::mapSize.x;
 		returnValue.y = rand() % global::mapSize.y;
+		returnValue.z = rand() % global::mapSize.z;
 	} while( mMap[ returnValue ].passable());
 	return returnValue;
 }
