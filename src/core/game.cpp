@@ -6,7 +6,7 @@
 Game::Game() :
 	mWorld( DungeonGenerator({ 3, 3 }, { 10, 10 }, 1.3f )),
 	mCamera( mWorld ),
-	mScreen( sf::VideoMode( 800, 600 ),
+	mScreen( sf::VideoMode( 1024, 768 ),
 		"Rozue",
 		sf::Style::Titlebar )
 {

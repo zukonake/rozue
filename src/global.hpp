@@ -7,7 +7,7 @@
 namespace global
 {
 
-Size3 constexpr mapSize( 100, 100, 10 );
+Size3 constexpr mapSize( 100, 100, 1 );
 Size2 constexpr spriteSize( 48, 48 );
 
 }

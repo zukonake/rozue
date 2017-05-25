@@ -27,7 +27,7 @@ World DungeonGenerator::generate()
 {
 	Tile wall( &stoneWall );
 	Tile floor( &stoneFloor );
-	Map map( floor );
+	Map map( wall );
 	uint64_t levelArea = global::mapSize.x * global::mapSize.y;
 	std::cout << levelArea << "\n";
 	uint64_t dungeonMaxArea = mMaxSize.x * mMaxSize.y;
@@ -37,7 +37,9 @@ World DungeonGenerator::generate()
 	uint16_t dungeonNumber = emptyArea / dungeonMaxArea;
 	std::cout << dungeonNumber << "\n";
 	generateDungeons( dungeonNumber );
-	applyDungeons( map, wall );
+	applyDungeons( map, floor );
+	generateCorridors();
+	applyCorridors( map, floor );
 	World world( map );
 	world.createPlayer( human );
 	return world;
@@ -54,8 +56,7 @@ DungeonGenerator::Dungeon DungeonGenerator::randomizeDungeon()
 	dungeon.position =
 	{
 		( rand() % (( global::mapSize.x - 1 ) - dungeon.size.x ) + 1 ),
-		( rand() % (( global::mapSize.y - 1 ) - dungeon.size.y ) + 1 ),
-		rand() % global::mapSize.z
+		( rand() % (( global::mapSize.y - 1 ) - dungeon.size.y ) + 1 )
 	};
 	return dungeon;
 }
@@ -70,46 +71,123 @@ void DungeonGenerator::generateDungeons( uint16_t const &number )
 			do
 			{
 				dungeon = randomizeDungeon();
-				dungeon.position.z = iZ;
-			} while( !good( dungeon ));
+			} while( !good( dungeon, iZ ));
 			std::cout << "INFO: New dungeon: {"
 				  	  << dungeon.position.x
 				  	  << ", "
 				  	  << dungeon.position.y
-				  	  << ", "
-				  	  << dungeon.position.z
 				  	  << "}, {"
 				  	  << dungeon.size.x
 				  	  << ", "
 				  	  << dungeon.size.y
 				  	  << "}\n";
-			mDungeons.push_back( dungeon );
+			mDungeons[ iZ ].push_back( dungeon );
 		}
 	}
 }
 
 void DungeonGenerator::applyDungeons( Map &map, Tile const &fill )
 {
-	for( auto iDungeon : mDungeons )
+	for( uint16_t iZ = 0; iZ < global::mapSize.z; iZ++ )
 	{
-		uint16_t iZ = iDungeon.position.z;
-		for( uint16_t iY = iDungeon.position.y;
-			 iY < iDungeon.position.y + iDungeon.size.y;
-			 iY++ )
+		for( auto iDungeon : mDungeons[ iZ ] )
 		{
-			for( uint16_t iX = iDungeon.position.x;
-				 iX < iDungeon.position.x + iDungeon.size.x;
-				 iX++ )
+			for( uint16_t iY = iDungeon.position.y;
+			 	 iY < iDungeon.position.y + iDungeon.size.y;
+			 	 iY++ )
 			{
-				map[{ iX, iY, iZ }] = fill;
+				for( uint16_t iX = iDungeon.position.x;
+				 	 iX < iDungeon.position.x + iDungeon.size.x;
+				 	 iX++ )
+				{
+					map[{ iX, iY, iZ }] = fill;
+				}
 			}
 		}
 	}
 }
 
-bool DungeonGenerator::good( Dungeon const &dungeon )
+void DungeonGenerator::generateCorridors()
 {
-	for( auto iDungeon : mDungeons )
+	uint16_t const maxTries = 150;
+	uint16_t const maxDistance = 2;
+	for( uint16_t iZ = 0; iZ < global::mapSize.z; iZ++ )
+	{
+		for( auto from : mDungeons[ iZ ] )
+		{
+			uint8_t corridorNumber = ( rand() % 2 ) + 1;
+			for( uint8_t i = 0; i < corridorNumber; i++ )
+			{
+				Point2 fromOrigin = getOrigin( from );
+				Point2 toOrigin;
+				uint16_t tries = 0;
+				do
+				{
+					Dungeon to;
+					to = mDungeons[ iZ ][ rand() % mDungeons[ iZ ].size()];
+					tries++;
+					toOrigin = getOrigin( to );
+				} while( getDistance( fromOrigin, toOrigin ) >= maxDistance + ( tries / 5 ) &&
+						 tries < maxTries );
+				if( tries < maxTries )
+				{
+					std::cout << "INFO: New corridor: {"
+					  	  	  << fromOrigin.x
+					  	  	  << ", "
+					  	  	  << fromOrigin.y
+					  	  	  << "}, {"
+					  	  	  << toOrigin.x
+					  	  	  << ", "
+					  	  	  << toOrigin.y
+					  	  	  << "}\n";
+					mCorridors[ iZ ].push_back({ fromOrigin, toOrigin });
+				}
+			}
+		}
+	}
+}
+
+void DungeonGenerator::applyCorridors( Map &map, Tile const &fill )
+{
+	for( uint16_t iZ = 0; iZ < global::mapSize.z; iZ++ )
+	{
+		for( auto iCorridor : mCorridors[ iZ ] )
+		{
+			if( iCorridor.from.y < iCorridor.to.y )
+			{
+				for( uint16_t iY = iCorridor.from.y; iY <= iCorridor.to.y; iY++ )
+				{
+					map[{ iCorridor.from.x, iY, iZ }] = fill;
+				}
+			}
+			else
+			{
+				for( uint16_t iY = iCorridor.from.y; iY >= iCorridor.to.y; iY-- )
+				{
+					map[{ iCorridor.from.x, iY, iZ }] = fill;
+				}
+			}
+			if( iCorridor.from.x < iCorridor.to.x )
+			{
+				for( uint16_t iX = iCorridor.from.x; iX <= iCorridor.to.x; iX++ )
+				{
+					map[{ iX, iCorridor.to.y, iZ }] = fill;
+				}
+			}
+			else
+			{
+				for( uint16_t iX = iCorridor.from.x; iX >= iCorridor.to.x; iX-- )
+				{
+					map[{ iX, iCorridor.to.y, iZ }] = fill;
+				}
+			}
+		}
+	}
+}
+
+bool DungeonGenerator::good( Dungeon const &dungeon, uint16_t level )
+{
+	for( auto iDungeon : mDungeons[ level ] )
 	{
 		if( touches( dungeon, iDungeon ))
 		{
@@ -138,12 +216,24 @@ bool DungeonGenerator::touches( Dungeon const &one, Dungeon const &two )
 
 bool DungeonGenerator::intersects( Dungeon const &one, Dungeon const &two )
 {
-	if( one.position.z != two.position.z )
-	{
-		return false;
-	}
 	return ( one.position.x < two.position.x + two.size.x &&
 			 one.position.y < two.position.y + two.size.y &&
 			 one.position.x + one.size.x > two.position.x &&
 			 one.position.y + one.size.y > two.position.y );
+}
+
+uint16_t DungeonGenerator::getDistance( Point2 const &from, Point2 const &to )
+{
+	uint16_t deltaX = std::abs(( int16_t )from.x - ( int16_t )to.x );
+	uint16_t deltaY = std::abs(( int16_t )from.y - ( int16_t )to.y );
+	return std::sqrt( std::pow( deltaX, 2 ) + std::pow( deltaY, 2 ));
+}
+
+Point2 DungeonGenerator::getOrigin( Dungeon const &dungeon )
+{
+	return
+	{
+		dungeon.position.x + ( dungeon.size.x / 2 ),
+		dungeon.position.y + ( dungeon.size.y / 2 )
+	};
 }

@@ -15,7 +15,12 @@ class DungeonGenerator : public Generator
 	struct Dungeon
 	{
 		Size2 size;
-		Point position;
+		Point2 position;
+	};
+	struct Corridor
+	{
+		Point2 from;
+		Point2 to;
 	};
 	public:
 	DungeonGenerator( Size2 const &minSize, Size2 const &maxSize, float const &density );
@@ -25,12 +30,17 @@ class DungeonGenerator : public Generator
 	Dungeon randomizeDungeon();
 	void generateDungeons( uint16_t const &number );
 	void applyDungeons( Map &map, Tile const &fill );
-	bool good( Dungeon const &dungeon );
+	void generateCorridors();
+	void applyCorridors( Map &map, Tile const &fill );
+	bool good( Dungeon const &dungeon, uint16_t level );
 
 	static bool touches( Dungeon const &one, Dungeon const &two );
 	static bool intersects( Dungeon const &one, Dungeon const &two );
+	static uint16_t getDistance( Point2 const &from, Point2 const &to );
+	static Point2 getOrigin( Dungeon const &dungeon );
 
-	std::vector< Dungeon > mDungeons;
+	std::vector< Dungeon > mDungeons[ global::mapSize.z ];
+	std::vector< Corridor > mCorridors[ global::mapSize.z ];
 
 	Size2 const mMinSize;
 	Size2 const mMaxSize;
