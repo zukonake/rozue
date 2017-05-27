@@ -17,10 +17,10 @@ class TransformedSprite;
 class Camera : public Entity
 {
 	public:
-	Camera( World &world, Sprite const &nothing );
+	Camera( Entity const &entity, World const &world, Sprite const &nothing );
 
 	virtual bool move( Vector const &by ) override;
-	virtual bool teleport( Vector const &to ) override;
+	virtual bool teleport( Point3 const &to ) override;
 
 	void lock();
 	void unlock();

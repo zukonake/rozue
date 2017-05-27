@@ -7,6 +7,7 @@
 #pragma once
 
 #include <cstddef>
+#include <utility>
 #include <functional>
 //
 #include <coldline-geometry/typedef.hpp>
@@ -58,12 +59,6 @@ struct Vector3
 	T x;
 	T y;
 	T z;
-};
-
-template< typename T >
-struct Vector3Hasher
-{
-	std::size_t operator()( Vector3< T > const &k ) const;
 };
 
 
@@ -222,14 +217,25 @@ constexpr bool Vector3< T >::operator>( Vector3< T > const &that ) const noexcep
 	return x > that.x || ( x == that.x && y > that.y ) || ( x == that.x && y == that.y && z > that.z );;
 }
 
-
-
-template< typename T >
-std::size_t Vector3Hasher< T >::operator()( Vector3< T > const &k ) const
-{
-	return ((( std::hash< T >()( k.x ) ^ //Not sure if this even works
-		( std::hash< T >()( k.y ) << 1 ) ) >> 1 ) ^
-		( std::hash< T >()( k.z ) << 1 ) ) >> 1;
 }
+
+
+
+namespace std
+{
+
+using namespace coldline::geometry;
+
+template<>
+template< typename T >
+struct hash< Vector3< T > >
+{
+	size_t operator()( Vector3< T > const &k ) const
+	{
+		return ((( hash< T >()( k.x ) ^
+			( hash< T >()( k.y ) << 1 ) ) >> 1 ) ^
+			( hash< T >()( k.z ) << 1 ) ) >> 1;
+	}
+};
 
 }

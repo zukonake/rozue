@@ -15,10 +15,12 @@ class Entity : public Renderable
 	virtual Sprite const &getSprite() const override;
 
 	virtual bool move( Vector const &by );
-	virtual bool teleport( Vector const &to );
+	virtual bool teleport( Point3 const &to );
 
 	Point3 const &getPosition() const noexcept;
 	private:
+	bool tryMove( Point3 const &to );
+
 	World &mWorld;
 	EntitySubtype const &mSubtype;
 	Point3 mPosition;

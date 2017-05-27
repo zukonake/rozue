@@ -13,7 +13,7 @@ OBJ_FILES = $(addprefix $(OBJ_DIR)/,$(patsubst %.cpp,%.o,$(notdir $(CPP_FILES)))
 
 DEBUG_FLAGS = -g -O0 -DDEBUG
 WARNING_FLAGS = -Wall -Wextra
-STD = --std=c++14
+STD = --std=c++17
 INCLUDES = -I $(SOURCE_DIR) -I $(INCLUDE_DIR)
 LDLIBS = -lsfml-graphics -lsfml-window -lsfml-system
 LDFLAGS = $(INCLUDES) $(STD) $(WARNING_FLAGS) $(DEBUG_FLAGS) -L $(LIB_DIR) $(LDLIBS)
@@ -28,8 +28,8 @@ $(TARGET) : $(OBJ_FILES)
 $(OBJ_DIR)/%.o : $$(shell find $(SOURCE_DIR) -type f -name %.cpp)
 	@mkdir -p $(OBJ_DIR)
 	@mkdir -p $(DEPEND_DIR)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
 	$(CXX) $(CXXFLAGS) -MM $< > $(DEPEND_DIR)/$*.d
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 	@sed -i '1s/^/$(OBJ_DIR)\//' $(DEPEND_DIR)/$*.d
 
 clean :

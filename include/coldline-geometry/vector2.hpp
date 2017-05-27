@@ -59,11 +59,7 @@ struct Vector2
 	T y;
 };
 
-template< typename T >
-struct Vector2Hasher
-{//TODO name is not gut
-	std::size_t operator()( Vector2< T > const &k ) const;
-};
+
 
 template< typename T >
 constexpr Vector2< T >::Vector2( T const &x, T const &y ) noexcept :
@@ -211,13 +207,24 @@ constexpr bool Vector2< T >::operator>( Vector2< T > const &that ) const noexcep
 	return x > that.x || ( x == that.x && y > that.y );
 }
 
-
-
-template< typename T >
-std::size_t Vector2Hasher< T >::operator()( Vector2< T > const &k ) const
-{
-	return ( ( std::hash< T >()( k.x ) xor
-	( std::hash< T >()( k.y ) << 1 ) ) >> 1 );
 }
+
+
+
+namespace std
+{
+
+using namespace coldline::geometry;
+
+template<>
+template< typename T >
+struct hash< Vector2< T > >
+{
+	size_t operator()( Vector2< T > const &k ) const
+	{
+		return ( ( hash< T >()( k.x ) xor
+			( hash< T >()( k.y ) << 1 ) ) >> 1 );
+	}
+};
 
 }

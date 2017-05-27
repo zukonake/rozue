@@ -36,7 +36,9 @@ World DungeonGenerator::generate()
 	generateCorridors();
 	applyCorridors( map, floor );
 	World world( map );
-	world.createPlayer( mDataset.at< EntitySubtype >( "human" ));
+	float monsterDensity = 0.025f;
+	uint16_t monsterNumber = emptyArea * monsterDensity;
+	placeMonsters( world, 100 );
 	return world;
 }
 
@@ -166,6 +168,15 @@ void DungeonGenerator::applyCorridors( Map &map, Tile const &fill )
 				}
 			}
 		}
+	}
+}
+
+void DungeonGenerator::placeMonsters( World &world, uint16_t const &number )
+{
+	for( uint16_t i = 0; i < number; i++ )
+	{
+		world.createEntity( mDataset.at< EntitySubtype >( "goblin" ),
+			world.getFreePosition());
 	}
 }
 

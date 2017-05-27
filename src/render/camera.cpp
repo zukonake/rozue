@@ -8,8 +8,8 @@
 #include <world/world.hpp>
 #include "camera.hpp"
 
-Camera::Camera( World &world, Sprite const &nothing ) :
-	Entity( world.getPlayer()),
+Camera::Camera( Entity const &entity, World const &world, Sprite const &nothing ) :
+	Entity( entity ),
 	mWorld( world ),
 	mNothing( nothing ),
 	mPosition( Entity::getPosition()),
@@ -36,7 +36,7 @@ bool Camera::move( Vector const &by )
 	return false;
 }
 
-bool Camera::teleport( Vector const &to )
+bool Camera::teleport( Point3 const &to )
 {
 	if( mLocked )
 	{
@@ -103,10 +103,9 @@ std::queue< TransformedSprite > Camera::getSprites() const
 					mWorld[ iMap ],
 					( Point2 )iScreen,
 					scale );
-				if( iMap.x == Entity::getPosition().x &&
-					iMap.y == Entity::getPosition().y )
+				if( mWorld.entityOn( iMap ))
 				{
-				addSprite( sprites, *this, iScreen, scale );
+					addSprite( sprites, mWorld.getEntityOn( iMap ), iScreen, scale );
 				}
 			}
 		}

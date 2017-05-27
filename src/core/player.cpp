@@ -1,13 +1,17 @@
 #include <geometry/vector.hpp>
+#include <render/sprite.hpp>
 #include <data/dataset.hpp>
+#include <world/entity/entitySubtype.hpp>
+#include <world/world.hpp>
 #include "player.hpp"
 #include <data/inputData.hpp>
-#include <render/sprite.hpp>
 
 Player::Player( Dataset const &dataset, World& world ) :
 	mDataset( dataset ),
 	mWorld( world ),
-	mCamera( mWorld, mDataset.at< Sprite >( "nothing" ))
+	mCamera( mWorld.createPlayer( mDataset.at< EntitySubtype >( "human" )),
+		mWorld,
+		mDataset.at< Sprite >( "nothing" ))
 {
 
 }

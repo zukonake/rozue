@@ -1,4 +1,5 @@
 #include <cstdint>
+#include <stdexcept>
 #include <vector>
 //
 #include <global.hpp>
@@ -8,9 +9,8 @@
 #include <world/entity/entity.hpp>
 #include "world.hpp"
 
-World::World( Map const &map, std::vector< Entity > const &entities ) :
-	mMap( map ),
-	mEntities( entities )
+World::World( Map const &map ) :
+	mMap( map )
 {
 
 }
@@ -33,7 +33,8 @@ Point3 World::getStartPosition() const
 	{
 		returnValue.x = rand() % global::mapSize.x;
 		returnValue.y = rand() % global::mapSize.y;
-	} while( !mMap[ returnValue ].passable());
+	} while( !mMap[ returnValue ].passable() ||
+		entityOn( returnValue ));
 	return returnValue;
 }
 
@@ -45,13 +46,24 @@ Point3 World::getFreePosition() const
 		returnValue.x = rand() % global::mapSize.x;
 		returnValue.y = rand() % global::mapSize.y;
 		returnValue.z = rand() % global::mapSize.z;
-	} while( !mMap[ returnValue ].passable());
+	} while( !mMap[ returnValue ].passable() ||
+		entityOn( returnValue ));
 	return returnValue;
 }
 
-Entity &World::getPlayer()
+Entity &World::getEntityOn( Point3 const &point )
 {
-	return mEntities.at( 0 );
+	return *mEntitiesMap.at( point );
+}
+
+Entity const &World::getEntityOn( Point3 const &point ) const
+{
+	return *mEntitiesMap.at( point );
+}
+
+bool World::entityOn( Point3 const &point ) const
+{
+	return mEntitiesMap.count( point );
 }
 
 bool World::sees( Point3 const &from, Point3 const &to ) const
@@ -80,14 +92,33 @@ void World::simulate()
 
 }
 
-void World::createEntity( EntitySubtype const &subtype )
+bool World::moveEntity( Point3 const &from, Point3 const &to )
 {
-	mEntities.push_back( Entity( *this, getFreePosition(), subtype ));
+	if( !entityOn( to ))
+	{
+		mEntitiesMap[ to ] = mEntitiesMap[ from ];
+		mEntitiesMap.erase( from );
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
-void World::createPlayer( EntitySubtype const &subtype )
+Entity &World::createEntity( EntitySubtype const &subtype, Point3 const &position )
 {
-	mEntities.push_back( Entity( *this, getStartPosition(), subtype ));
+	if( !entityOn( position ))
+	{
+		mEntities.emplace_back( *this, position, subtype );
+		mEntitiesMap.emplace( position, &mEntities.back());
+	}
+	return *mEntitiesMap.at( position );
+}
+
+Entity &World::createPlayer( EntitySubtype const &subtype )
+{
+	return createEntity( subtype, getStartPosition());
 }
 
 bool World::exists( Point3 const &where )

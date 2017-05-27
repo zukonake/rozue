@@ -33,6 +33,8 @@ class DungeonGenerator : public Generator
 	void applyDungeons( Map &map, Tile const &fill );
 	void generateCorridors();
 	void applyCorridors( Map &map, Tile const &fill );
+	void placeMonsters( World &world, uint16_t const &number );
+
 	bool good( Dungeon const &dungeon, uint16_t level );
 
 	static bool touches( Dungeon const &one, Dungeon const &two );

@@ -20,31 +20,46 @@ Sprite const &Entity::getSprite() const
 bool Entity::move( Vector const &by )
 {
 	Point3 newPosition = mPosition + by;
-	if( World::exists( newPosition )) 
+	if( tryMove( newPosition ))
 	{
-		if( mWorld[ newPosition ].passable())
-		{
-			mPosition = newPosition; //TODO check with pathfind
-			return true;
-		}
+		mPosition = newPosition; //TODO check with pathfind
+		return true;
 	}
-	return false;
+	else
+	{
+		return false;
+	}
 }
 
-bool Entity::teleport( Vector const &to )
+bool Entity::teleport( Point3 const &to )
 {
-	if( World::exists( to )) 
+	if( tryMove( to ))
 	{
-		if( mWorld[ to ].passable())
-		{
-			mPosition = to; //TODO check with pathfind
-			return true;
-		}
+		mPosition = to; //TODO check with pathfind
+		return true;
 	}
-	return false;
+	else
+	{
+		return false;
+	}
 }
 
 Point3 const &Entity::getPosition() const noexcept
 {
 	return mPosition;
+}
+
+bool Entity::tryMove( Point3 const &to )
+{
+	if( World::exists( to )) 
+	{
+		if( mWorld[ to ].passable())
+		{
+			if( mWorld.moveEntity( mPosition, to ))
+			{
+				return true;
+			}
+		}
+	}
+	return false;
 }

@@ -19,8 +19,6 @@ World FlatGenerator::generate()
 {
 	Tile fill( &mDataset.at< TileSubtype >( "stoneFloor" ));
 	Map map( fill );
-	std::vector< Entity > entities;
-	World world( map, entities );
-	world.createPlayer( mDataset.at< EntitySubtype >( "human" ));
+	World world( map );
 	return world;
 }

@@ -43,6 +43,14 @@ EntitySubtype const human =
 	}
 };
 
+EntitySubtype const goblin = 
+{
+	{
+		mainTileset,
+		{ 4, 0 }
+	}
+};
+
 Dataset::Dataset()
 {
 	mObjects[ "mainTileset" ] = &mainTileset;
@@ -50,4 +58,5 @@ Dataset::Dataset()
 	mObjects[ "stoneFloor" ] = &stoneFloor;
 	mObjects[ "stoneWall" ] = &stoneWall;
 	mObjects[ "human" ] = &human;
+	mObjects[ "goblin" ] = &goblin;
 }
