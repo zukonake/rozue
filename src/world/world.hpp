@@ -22,7 +22,9 @@ class World
 	Point3 getStartPosition() const;
 	Point3 getFreePosition() const;
 	Entity &getPlayer();
+	Entity &getEntityOn( Point3 const &point );
 	bool sees( Point3 const &from, Point3 const &to ) const;
+	bool entityOn( Point3 const &point ) const;
 
 	void simulate();
 	void createEntity( EntitySubtype const &subtype );

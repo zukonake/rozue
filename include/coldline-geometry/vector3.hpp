@@ -227,8 +227,9 @@ constexpr bool Vector3< T >::operator>( Vector3< T > const &that ) const noexcep
 template< typename T >
 std::size_t Vector3Hasher< T >::operator()( Vector3< T > const &k ) const
 {
-	return 0; /* TODO( ( std::hash< T >()( k.x ) xor
-	( std::hash< T >()( k.y ) << 1 ) ) >> 1 ); */
+	return ((( std::hash< T >()( k.x ) ^ //Not sure if this even works
+		( std::hash< T >()( k.y ) << 1 ) ) >> 1 ) ^
+		( std::hash< T >()( k.z ) << 1 ) ) >> 1;
 }
 
 }

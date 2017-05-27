@@ -6,7 +6,7 @@
 #include "server.hpp"
 
 Server::Server() :
-	mWorld( DungeonGenerator( mDataset, { 3, 3 }, { 10, 10 }, 1.3f ))
+	mWorld( DungeonGenerator( mDataset, { 4, 4 }, { 8, 8 }, 0.75f ))
 {
 
 }

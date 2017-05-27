@@ -28,8 +28,9 @@ World DungeonGenerator::generate()
 	Map map( wall );
 	uint64_t levelArea = global::mapSize.x * global::mapSize.y;
 	uint64_t dungeonMaxArea = mMaxSize.x * mMaxSize.y;
+	uint64_t dungeonMinArea = mMinSize.x * mMinSize.y;
 	uint64_t emptyArea = ( float )levelArea * mDensity;
-	uint16_t dungeonNumber = emptyArea / dungeonMaxArea;
+	uint16_t dungeonNumber = emptyArea / (( dungeonMaxArea + dungeonMinArea ) / 2 );
 	generateDungeons( dungeonNumber );
 	applyDungeons( map, floor );
 	generateCorridors();
