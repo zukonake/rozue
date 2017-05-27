@@ -3,14 +3,14 @@
 namespace bresenham
 {
 
-std::vector< Point > plotLine( Point const &from, Point const &to )
+std::vector< Point3 > plotLine( Point3 const &from, Point3 const &to )
 {
-	std::vector< Point > line;
+	std::vector< Point3 > line;
 	if( from.z != to.z )
 	{
 		return line;
 	}
-	Point temp = from;
+	Point3 temp = from;
 
 	int16_t deltaX( to.x - temp.x );
 	signed char const iX(( deltaX > 0 ) - ( deltaX < 0 ));

@@ -9,39 +9,33 @@
 #include <world/entity/entitySubtype.hpp>
 #include <world/entity/entity.hpp>
 #include <world/world.hpp>
-#include <objects/tileSubtypes.hpp>
-#include <objects/entitySubtypes.hpp>
+#include <data/dataset.hpp>
 #include "dungeonGenerator.hpp"
 
-#include <iostream>
-
-DungeonGenerator::DungeonGenerator( Size2 const &minSize, Size2 const &maxSize, float const &density ) :
+DungeonGenerator::DungeonGenerator( Dataset const &dataset, Size2 const &minSize, Size2 const &maxSize, float const &density ) :
 	mMinSize( minSize ),
 	mMaxSize( maxSize ),
-	mDensity( density )
+	mDensity( density ),
+	mDataset( dataset )
 {
 	srand( time( nullptr ));
 }
 
 World DungeonGenerator::generate()
 {
-	Tile wall( &stoneWall );
-	Tile floor( &stoneFloor );
+	Tile wall( &mDataset.at< TileSubtype >( "stoneWall" ));
+	Tile floor( &mDataset.at< TileSubtype >( "stoneFloor" ));
 	Map map( wall );
 	uint64_t levelArea = global::mapSize.x * global::mapSize.y;
-	std::cout << levelArea << "\n";
 	uint64_t dungeonMaxArea = mMaxSize.x * mMaxSize.y;
-	std::cout << dungeonMaxArea << "\n";
 	uint64_t emptyArea = ( float )levelArea * mDensity;
-	std::cout << emptyArea << "\n";
 	uint16_t dungeonNumber = emptyArea / dungeonMaxArea;
-	std::cout << dungeonNumber << "\n";
 	generateDungeons( dungeonNumber );
 	applyDungeons( map, floor );
 	generateCorridors();
 	applyCorridors( map, floor );
 	World world( map );
-	world.createPlayer( human );
+	world.createPlayer( mDataset.at< EntitySubtype >( "human" ));
 	return world;
 }
 
@@ -77,15 +71,6 @@ void DungeonGenerator::generateDungeons( uint16_t const &number )
 			} while( !good( dungeon, iZ && tries < maxTries ));
 			if( tries < maxTries )
 			{
-				std::cout << "INFO: New dungeon: {"
-				  	  	  << dungeon.position.x
-				  	  	  << ", "
-				  	  	  << dungeon.position.y
-				  	  	  << "}, {"
-				  	  	  << dungeon.size.x
-				  	  	  << ", "
-				  	  	  << dungeon.size.y
-				  	  	  << "}\n";
 				mDungeons[ iZ ].push_back( dungeon );
 			}
 		}
@@ -138,15 +123,6 @@ void DungeonGenerator::generateCorridors()
 						 toOrigin == fromOrigin );
 				if( tries < maxTries )
 				{
-					std::cout << "INFO: New corridor: {"
-					  	  	  << fromOrigin.x
-					  	  	  << ", "
-					  	  	  << fromOrigin.y
-					  	  	  << "}, {"
-					  	  	  << toOrigin.x
-					  	  	  << ", "
-					  	  	  << toOrigin.y
-					  	  	  << "}\n";
 					mCorridors[ iZ ].push_back({ fromOrigin, toOrigin });
 				}
 			}

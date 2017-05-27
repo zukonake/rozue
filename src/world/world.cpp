@@ -6,8 +6,6 @@
 #include <world/tile/tile.hpp>
 #include <world/map.hpp>
 #include <world/entity/entity.hpp>
-#include <objects/tileSubtypes.hpp>
-#include <objects/entitySubtypes.hpp>
 #include "world.hpp"
 
 World::World( Map const &map, std::vector< Entity > const &entities ) :
@@ -17,19 +15,19 @@ World::World( Map const &map, std::vector< Entity > const &entities ) :
 
 }
 
-Tile &World::operator[]( Point const &index )
+Tile &World::operator[]( Point3 const &index )
 {
 	return mMap[ index ];
 }
 
-Tile const &World::operator[]( Point const &index ) const
+Tile const &World::operator[]( Point3 const &index ) const
 {
 	return mMap[ index ];
 }
 
-Point World::getStartPosition() const
+Point3 World::getStartPosition() const
 {
-	Point returnValue;
+	Point3 returnValue;
 	returnValue.z = 0;
 	do
 	{
@@ -39,9 +37,9 @@ Point World::getStartPosition() const
 	return returnValue;
 }
 
-Point World::getFreePosition() const
+Point3 World::getFreePosition() const
 {
-	Point returnValue;
+	Point3 returnValue;
 	do
 	{
 		returnValue.x = rand() % global::mapSize.x;
@@ -56,13 +54,13 @@ Entity &World::getPlayer()
 	return mEntities.at( 0 );
 }
 
-bool World::sees( Point const &from, Point const &to ) const
+bool World::sees( Point3 const &from, Point3 const &to ) const
 {
 	if( !exists( to ) || !exists( from ))
 	{
 		return false;
 	}
-	std::vector< Point > line = bresenham::plotLine( from, to );
+	std::vector< Point3 > line = bresenham::plotLine( from, to );
 	if( line.empty())
 	{
 		return false;
@@ -92,7 +90,7 @@ void World::createPlayer( EntitySubtype const &subtype )
 	mEntities.push_back( Entity( *this, getStartPosition(), subtype ));
 }
 
-bool World::exists( Point const &where )
+bool World::exists( Point3 const &where )
 {
 	return where.x < global::mapSize.x &&
 		   where.y < global::mapSize.y &&

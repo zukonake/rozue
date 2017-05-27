@@ -1,10 +1,10 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
+#include <render/renderable.hpp>
 
 class TileSubtype;
 
-class Tile : public virtual sf::Drawable
+class Tile : public Renderable
 {
 	public:
 	Tile();
@@ -13,9 +13,9 @@ class Tile : public virtual sf::Drawable
 
 	Tile &operator=( Tile const &that );
 
-	virtual void draw( sf::RenderTarget &target, sf::RenderStates states ) const override;
+	virtual Sprite const &getSprite() const override;
 
 	bool passable() const;
-
-	TileSubtype const *subtype;
+	private:
+	TileSubtype const *mSubtype;
 };

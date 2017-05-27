@@ -1,9 +1,18 @@
 #pragma once
 
-#include <SFML/System.hpp>
+#include <data/loadable.hpp>
+#include <render/sprite.hpp>
 
-struct TileSubtype
+class Dataset;
+class DataMap;
+
+class TileSubtype : public Sprite, public virtual Loadable
 {
-	sf::Vector2f tilesetPosition;
-	bool solid;
+	public:
+	TileSubtype( Dataset const &dataset, DataMap const &dataMap );
+	TileSubtype( Sprite const &sprite, bool const &solid );
+
+	bool passable() const noexcept;
+	private:
+	bool mSolid;
 };

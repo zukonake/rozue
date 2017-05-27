@@ -4,53 +4,25 @@
 #include <world/world.hpp>
 #include "entity.hpp"
 
-Entity::Entity( World &world, Point const &position, EntitySubtype const &subtype ) :
+Entity::Entity( World &world, Point3 const &position, EntitySubtype const &subtype ) :
 	mWorld( world ),
-	mPosition( position ),
-	subtype( subtype )
+	mSubtype( subtype ),
+	mPosition( position )
 {
 
 }
 
-void Entity::draw( sf::RenderTarget &target, sf::RenderStates states ) const
+Sprite const &Entity::getSprite() const
 {
-	sf::VertexArray square( sf::Quads, 4 );
-
-	square[ 0 ].position =
-		{ 0,
-		  0 };
-	square[ 1 ].position =
-		{ global::textureSpriteSize.x,
-		  0 };
-	square[ 2 ].position =
-		{ global::textureSpriteSize.x,
-		  global::textureSpriteSize.y };
-	square[ 3 ].position =
-		{ 0,
-		  global::textureSpriteSize.y };
-
-	square[ 0 ].texCoords =
-		{ subtype.tilesetPosition.x + 0,
-		  subtype.tilesetPosition.y + 0 };
-	square[ 1 ].texCoords =
-		{ subtype.tilesetPosition.x + global::textureSpriteSize.x,
-		  subtype.tilesetPosition.y + 0 };
-	square[ 2 ].texCoords =
-		{ subtype.tilesetPosition.x + global::textureSpriteSize.x,
-		  subtype.tilesetPosition.y + global::textureSpriteSize.y };
-	square[ 3 ].texCoords =
-		{ subtype.tilesetPosition.x + 0,
-		  subtype.tilesetPosition.y + global::textureSpriteSize.y };
-
-	target.draw( square, states );
+	return mSubtype;
 }
 
 bool Entity::move( Vector const &by )
 {
-	Point newPosition = mPosition + by;
+	Point3 newPosition = mPosition + by;
 	if( World::exists( newPosition )) 
 	{
-		if( !mWorld[ newPosition ].subtype->solid )
+		if( mWorld[ newPosition ].passable())
 		{
 			mPosition = newPosition; //TODO check with pathfind
 			return true;
@@ -63,7 +35,7 @@ bool Entity::teleport( Vector const &to )
 {
 	if( World::exists( to )) 
 	{
-		if( !mWorld[ to ].subtype->solid )
+		if( mWorld[ to ].passable())
 		{
 			mPosition = to; //TODO check with pathfind
 			return true;
@@ -72,7 +44,7 @@ bool Entity::teleport( Vector const &to )
 	return false;
 }
 
-Point const &Entity::getPosition() const noexcept
+Point3 const &Entity::getPosition() const noexcept
 {
 	return mPosition;
 }

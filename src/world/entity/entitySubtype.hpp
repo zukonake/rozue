@@ -1,8 +1,14 @@
 #pragma once
 
-#include <SFML/System.hpp>
+#include <data/loadable.hpp>
+#include <render/sprite.hpp>
 
-struct EntitySubtype
+class Dataset;
+class DataMap;
+
+class EntitySubtype : public Sprite, public virtual Loadable
 {
-	sf::Vector2f tilesetPosition;
+	public:
+	EntitySubtype( Dataset const &dataset, DataMap const &dataMap );
+	EntitySubtype( Sprite const &sprite );
 };

@@ -28,7 +28,7 @@ struct Vector2
 	constexpr Vector2() = default;
 	constexpr Vector2( T const &x, T const &y ) noexcept;
 	template< typename U >
-	constexpr Vector2( U const &that ) noexcept;
+	constexpr explicit Vector2( U const &that ) noexcept;
 
 	~Vector2() = default;
 
@@ -61,7 +61,7 @@ struct Vector2
 
 template< typename T >
 struct Vector2Hasher
-{
+{//TODO name is not gut
 	std::size_t operator()( Vector2< T > const &k ) const;
 };
 

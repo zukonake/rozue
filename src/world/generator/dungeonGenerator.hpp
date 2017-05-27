@@ -8,6 +8,7 @@
 #include <world/generator/generator.hpp>
 
 class Tile;
+class Dataset;
 class World;
 
 class DungeonGenerator : public Generator
@@ -23,7 +24,7 @@ class DungeonGenerator : public Generator
 		Point2 to;
 	};
 	public:
-	DungeonGenerator( Size2 const &minSize, Size2 const &maxSize, float const &density );
+	DungeonGenerator( Dataset const &dataset, Size2 const &minSize, Size2 const &maxSize, float const &density );
 
 	virtual World generate() override;
 	private:
@@ -42,7 +43,8 @@ class DungeonGenerator : public Generator
 	std::vector< Dungeon > mDungeons[ global::mapSize.z ];
 	std::vector< Corridor > mCorridors[ global::mapSize.z ];
 
-	Size2 const mMinSize;
+	Size2 const mMinSize; //TODO should it really be const?
 	Size2 const mMaxSize;
 	float const mDensity;
+	Dataset const &mDataset;
 };

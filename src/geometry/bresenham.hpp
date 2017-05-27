@@ -5,6 +5,6 @@
 namespace bresenham
 {
 
-std::vector< Point > plotLine( Point const &from, Point const &to );
+std::vector< Point3 > plotLine( Point3 const &from, Point3 const &to );
 
 }

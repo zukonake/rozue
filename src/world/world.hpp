@@ -16,19 +16,19 @@ class World
 	World( World const &that ) = default;
 	World( Map const &map, std::vector< Entity > const &entities = std::vector< Entity >());
 
-	Tile &operator[]( Point const &index );
-	Tile const &operator[]( Point const &index ) const;
+	Tile &operator[]( Point3 const &index );
+	Tile const &operator[]( Point3 const &index ) const;
 
-	Point getStartPosition() const;
-	Point getFreePosition() const;
+	Point3 getStartPosition() const;
+	Point3 getFreePosition() const;
 	Entity &getPlayer();
-	bool sees( Point const &from, Point const &to ) const;
+	bool sees( Point3 const &from, Point3 const &to ) const;
 
 	void simulate();
 	void createEntity( EntitySubtype const &subtype );
 	void createPlayer( EntitySubtype const &subtype );
 
-	static bool exists( Point const &where );
+	static bool exists( Point3 const &where );
 	private:
 	Map mMap;
 	std::vector< Entity > mEntities;

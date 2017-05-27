@@ -1,8 +1,11 @@
-#include <core/game.hpp>
+#include <core/server.hpp>
+#include <core/client.hpp>
 
 int main()
 {
-	Game game;
-	game.start();
+	Client client( "rozueClient" );
+	Server server;
+	client.connect( &server );
+	server.loop();
 	return 0;
 }

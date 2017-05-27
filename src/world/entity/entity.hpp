@@ -1,27 +1,25 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
-//
 #include <geometry/point.hpp>
 #include <geometry/vector.hpp>
+#include <render/renderable.hpp>
 
 class World;
 class EntitySubtype;
 
-class Entity : public virtual sf::Drawable
+class Entity : public Renderable
 {
 	public:
-	Entity( World &world, Point const &position, EntitySubtype const &subtype );
+	Entity( World &world, Point3 const &position, EntitySubtype const &subtype );
 
-	virtual void draw( sf::RenderTarget &target, sf::RenderStates states ) const override;
+	virtual Sprite const &getSprite() const override;
 
 	virtual bool move( Vector const &by );
 	virtual bool teleport( Vector const &to );
 
-	Point const &getPosition() const noexcept;
+	Point3 const &getPosition() const noexcept;
 	private:
 	World &mWorld;
-	Point mPosition;
-	public:
-	EntitySubtype const &subtype;
+	EntitySubtype const &mSubtype;
+	Point3 mPosition;
 };
