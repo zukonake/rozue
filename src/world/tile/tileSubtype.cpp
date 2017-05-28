@@ -14,8 +14,3 @@ TileSubtype::TileSubtype( Sprite const &sprite, bool const &solid ) :
 {
 
 }
-
-bool TileSubtype::passable() const noexcept
-{
-	return !mSolid;
-}

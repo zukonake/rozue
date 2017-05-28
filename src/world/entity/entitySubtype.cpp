@@ -2,13 +2,15 @@
 #include "entitySubtype.hpp"
 
 EntitySubtype::EntitySubtype( Dataset const &dataset, DataMap const &dataMap ) :
-	Sprite( dataset, dataMap )
+	Sprite( dataset, dataMap ),
+	mSolid( dataMap.getBool( "solid" ))
 {
 
 }
 
-EntitySubtype::EntitySubtype( Sprite const &sprite ) :
-	Sprite( sprite )
+EntitySubtype::EntitySubtype( Sprite const &sprite, bool const &solid ) :
+	Sprite( sprite ),
+	mSolid( solid )
 {
 
 }

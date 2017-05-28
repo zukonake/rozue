@@ -49,6 +49,11 @@ Point3 const &Entity::getPosition() const noexcept
 	return mPosition;
 }
 
+bool Entity::passable() const noexcept
+{
+	return !mSubtype.mSolid;
+}
+
 bool Entity::tryMove( Point3 const &to )
 {
 	if( World::exists( to )) 

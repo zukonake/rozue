@@ -18,6 +18,7 @@ class Entity : public Renderable
 	virtual bool teleport( Point3 const &to );
 
 	Point3 const &getPosition() const noexcept;
+	bool passable() const noexcept;
 	private:
 	bool tryMove( Point3 const &to );
 

@@ -5,58 +5,80 @@
 #include <world/entity/entitySubtype.hpp>
 #include "dataset.hpp"
 
-Tileset const mainTileset =
+Tileset const tilesTileset =
 {
-	"tilesets/mainTileset.png",
+	"tilesets/tiles.png",
+	{ 16, 16 }
+};
+Tileset const entitiesTileset =
+{
+	"tilesets/entities.png",
 	{ 16, 16 }
 };
 
-Sprite const nothing = 
+Tileset const creaturesTileset =
 {
-	mainTileset,
+	"tilesets/creatures.png",
+	{ 16, 16 }
+};
+
+Sprite const nothing =
+{
+	tilesTileset,
 	{ 0, 0 }
 };
 
-TileSubtype const stoneFloor = 
+TileSubtype const stoneFloor =
 {
 	{
-		mainTileset,
+		tilesTileset,
 		{ 1, 0 }
 	},
 	false
 };
 
-TileSubtype const stoneWall = 
+TileSubtype const stoneWall =
 {
 	{
-		mainTileset,
+		tilesTileset,
 		{ 2, 0 }
 	},
 	true
 };
 
-EntitySubtype const human = 
+EntitySubtype const human =
 {
 	{
-		mainTileset,
-		{ 3, 0 }
-	}
+		creaturesTileset,
+		{ 0, 0 }
+	},
+	false
 };
 
-EntitySubtype const goblin = 
+EntitySubtype const goblin =
 {
 	{
-		mainTileset,
-		{ 4, 0 }
-	}
+		creaturesTileset,
+		{ 1, 0 }
+	},
+	false
+};
+
+EntitySubtype const door =
+{
+	{
+		entitiesTileset,
+		{ 0, 0 }
+	},
+	true
 };
 
 Dataset::Dataset()
 {
-	mObjects[ "mainTileset" ] = &mainTileset;
 	mObjects[ "nothing" ] = &nothing;
 	mObjects[ "stoneFloor" ] = &stoneFloor;
 	mObjects[ "stoneWall" ] = &stoneWall;
 	mObjects[ "human" ] = &human;
 	mObjects[ "goblin" ] = &goblin;
+	mObjects[ "door" ] = &door;
 }

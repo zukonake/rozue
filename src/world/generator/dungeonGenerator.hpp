@@ -20,8 +20,8 @@ class DungeonGenerator : public Generator
 	};
 	struct Corridor
 	{
-		Point2 from;
-		Point2 to;
+		Dungeon from;
+		Dungeon to;
 	};
 	public:
 	DungeonGenerator( Dataset const &dataset, Size2 const &minSize, Size2 const &maxSize, float const &density );
@@ -33,6 +33,8 @@ class DungeonGenerator : public Generator
 	void applyDungeons( Map &map, Tile const &fill );
 	void generateCorridors();
 	void applyCorridors( Map &map, Tile const &fill );
+	void createAlignedLine( Map &map, Tile const &fill, Point2 const &from, Point2 const &to, uint32_t const &z );
+	void placeDoors( World &world );
 	void placeMonsters( World &world, uint16_t const &number );
 
 	bool good( Dungeon const &dungeon, uint16_t level );

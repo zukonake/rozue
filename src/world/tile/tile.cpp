@@ -20,6 +20,12 @@ Tile &Tile::operator=( Tile const &that )
 	return *this;
 }
 
+Tile &Tile::operator=( TileSubtype const &that )
+{
+	mSubtype = &that;
+	return *this;
+}
+
 Tile::Tile( TileSubtype const *subtype ) :
 	mSubtype( subtype )
 {
@@ -33,5 +39,5 @@ Sprite const &Tile::getSprite() const
 
 bool Tile::passable() const
 {
-	return mSubtype->passable();
+	return !mSubtype->mSolid;
 }

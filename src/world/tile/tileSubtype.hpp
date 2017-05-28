@@ -8,11 +8,11 @@ class DataMap;
 
 class TileSubtype : public Sprite, public virtual Loadable
 {
+	friend class Tile;
 	public:
 	TileSubtype( Dataset const &dataset, DataMap const &dataMap );
 	TileSubtype( Sprite const &sprite, bool const &solid );
 
-	bool passable() const noexcept;
 	private:
 	bool mSolid;
 };

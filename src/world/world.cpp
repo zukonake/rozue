@@ -77,11 +77,18 @@ bool World::sees( Point3 const &from, Point3 const &to ) const
 	{
 		return false;
 	}
-	for( uint16_t i = 0; i < line.size() - 1; i++ )
+	for( uint16_t i = 1; i < line.size() - 1; i++ )
 	{
 		if( !mMap[ line[ i ]].passable())
 		{
 			return false;
+		}
+		if( entityOn( line[ i ]))
+		{
+			if( getEntityOn( line[ i ]).passable())
+			{
+				return false;
+			}
 		}
 	}
 	return true;

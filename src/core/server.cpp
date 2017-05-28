@@ -2,11 +2,11 @@
 //
 #include <core/client.hpp>
 #include <data/inputData.hpp>
-#include <world/generator/dungeonGenerator.hpp>
+#include <world/generator/randomWallsGenerator.hpp>
 #include "server.hpp"
 
 Server::Server() :
-	mWorld( DungeonGenerator( mDataset, { 4, 4 }, { 8, 8 }, 0.75f ))
+	mWorld( RandomWallsGenerator( mDataset, 0.15f ))
 {
 
 }

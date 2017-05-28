@@ -12,6 +12,7 @@ class Tile : public Renderable
 	Tile( TileSubtype const *subtype );
 
 	Tile &operator=( Tile const &that );
+	Tile &operator=( TileSubtype const &that );
 
 	virtual Sprite const &getSprite() const override;
 

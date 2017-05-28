@@ -12,6 +12,10 @@
 #include <data/dataset.hpp>
 #include "dungeonGenerator.hpp"
 
+//TODO rewrite this shit
+//TODO arena stuff
+//TODO ROM FUCK
+
 DungeonGenerator::DungeonGenerator( Dataset const &dataset, Size2 const &minSize, Size2 const &maxSize, float const &density ) :
 	mMinSize( minSize ),
 	mMaxSize( maxSize ),
@@ -36,9 +40,10 @@ World DungeonGenerator::generate()
 	generateCorridors();
 	applyCorridors( map, floor );
 	World world( map );
+	placeDoors( world );
 	float monsterDensity = 0.025f;
 	uint16_t monsterNumber = emptyArea * monsterDensity;
-	placeMonsters( world, 100 );
+	placeMonsters( world, monsterNumber );
 	return world;
 }
 
@@ -109,24 +114,25 @@ void DungeonGenerator::generateCorridors()
 	{
 		for( auto &from : mDungeons[ iZ ] )
 		{
-			uint8_t corridorNumber = ( rand() % 2 ) + 1;
+			uint8_t corridorNumber = ( rand() % 5 == 0 ? 1 : 0 ) + 1;
 			for( uint8_t i = 0; i < corridorNumber; i++ )
 			{
-				Point2 fromOrigin = getOrigin( from );
-				Point2 toOrigin;
+				Dungeon to;
 				uint32_t tries = 0;
+				Point2 fromOrigin;
+				Point2 toOrigin;
 				do
 				{
-					Dungeon to;
 					to = mDungeons[ iZ ][ rand() % mDungeons[ iZ ].size()];
 					tries++;
+					fromOrigin = getOrigin( from );
 					toOrigin = getOrigin( to );
-				} while(( getDistance( fromOrigin, toOrigin ) >= ( tries * corridorDensity ) + 1 &&
-						 tries < maxTries )||
-						 toOrigin == fromOrigin );
+				} while(( getDistance( fromOrigin, toOrigin ) >= ( tries * corridorDensity ) + 1 ||
+						toOrigin == fromOrigin ) &&
+						tries < maxTries );
 				if( tries < maxTries )
 				{
-					mCorridors[ iZ ].push_back({ fromOrigin, toOrigin });
+					mCorridors[ iZ ].push_back({ from, to });
 				}
 			}
 		}
@@ -139,34 +145,54 @@ void DungeonGenerator::applyCorridors( Map &map, Tile const &fill )
 	{
 		for( auto &iCorridor : mCorridors[ iZ ] )
 		{
-			if( iCorridor.from.y < iCorridor.to.y )
-			{
-				for( uint16_t iY = iCorridor.from.y; iY <= iCorridor.to.y; iY++ )
-				{
-					map[{ iCorridor.from.x, iY, iZ }] = fill;
-				}
-			}
-			else
-			{
-				for( uint16_t iY = iCorridor.from.y; iY >= iCorridor.to.y; iY-- )
-				{
-					map[{ iCorridor.from.x, iY, iZ }] = fill;
-				}
-			}
-			if( iCorridor.from.x < iCorridor.to.x )
-			{
-				for( uint16_t iX = iCorridor.from.x; iX <= iCorridor.to.x; iX++ )
-				{
-					map[{ iX, iCorridor.to.y, iZ }] = fill;
-				}
-			}
-			else
-			{
-				for( uint16_t iX = iCorridor.from.x; iX >= iCorridor.to.x; iX-- )
-				{
-					map[{ iX, iCorridor.to.y, iZ }] = fill;
-				}
-			}
+			Point2 fromOrigin = getOrigin( iCorridor.from );
+			Point2 toOrigin = getOrigin( iCorridor.to );
+			createAlignedLine( map, fill, fromOrigin, toOrigin, iZ );
+		}
+	}
+}
+
+void DungeonGenerator::createAlignedLine( Map &map, Tile const &fill, Point2 const &from, Point2 const &to, uint32_t const &z )
+{
+	if( from.y < to.y )
+	{
+		for( uint16_t iY = from.y; iY <= to.y; iY++ )
+		{
+			map[{ from.x, iY, z }] = fill;
+		}
+	}
+	else
+	{
+		for( uint16_t iY = from.y; iY >= to.y; iY-- )
+		{
+			map[{ from.x, iY, z }] = fill;
+		}
+	}
+	if( from.x < to.x )
+	{
+		for( uint16_t iX = from.x; iX <= to.x; iX++ )
+		{
+			map[{ iX, to.y, z }] = fill;
+		}
+	}
+	else
+	{
+		for( uint16_t iX = from.x; iX >= to.x; iX-- )
+		{
+			map[{ iX, to.y, z }] = fill;
+		}
+	}
+}
+
+void DungeonGenerator::placeDoors( World &world )
+{
+	for( uint16_t iZ = 0; iZ < global::mapSize.z; iZ++ )
+	{
+		for( auto &iCorridor : mCorridors[ iZ ] )
+		{
+			Point2 fromOrigin = getOrigin( iCorridor.from );
+			Point2 toOrigin = getOrigin( iCorridor.to );
+			//TODO
 		}
 	}
 }
