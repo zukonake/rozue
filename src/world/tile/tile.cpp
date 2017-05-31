@@ -1,3 +1,5 @@
+#include <SFML/Graphics/RenderTarget.hpp>
+//
 #include <world/tile/tileSubtype.hpp>
 #include "tile.hpp"
 
@@ -16,6 +18,12 @@ Tile::Tile( Tile const &that ) :
 
 }
 
+Tile::Tile( TileSubtype const &subtype ) :
+	mSubtype( &subtype )
+{
+	
+}
+
 Tile &Tile::operator=( Tile const &that )
 {
 	mSubtype = that.mSubtype;
@@ -28,10 +36,9 @@ Tile &Tile::operator=( TileSubtype const &that )
 	return *this;
 }
 
-Tile::Tile( TileSubtype const &subtype ) :
-	mSubtype( &subtype )
+void Tile::draw( sf::RenderTarget &target, sf::RenderStates states ) const
 {
-	
+	target.draw( *mSubtype, states );
 }
 
 bool Tile::passable() const
