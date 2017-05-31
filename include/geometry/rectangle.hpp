@@ -25,9 +25,9 @@ struct Rectangle
 	typedef TLength Area;
 
 	constexpr Rectangle() noexcept = default;
-	constexpr Rectangle( Point const &pos, Size const &size ) noexcept = default;
-	//TODO converions?
 	constexpr Rectangle< TCoordinate, TLength > operator=( Rectangle< TCoordinate, TLength > const &that ) noexcept;
+	constexpr Rectangle( Point const &pos, Size const &size ) noexcept;
+	//TODO converions?
 
 	constexpr bool operator==( Rectangle< TCoordinate, TLength > const &that ) const noexcept;
 	constexpr bool operator!=( Rectangle< TCoordinate, TLength > const &that ) const noexcept;
@@ -51,6 +51,16 @@ struct Rectangle
 	TLength &w = size.x;
 	TLength &h = size.y;
 };
+
+
+
+template< typename TCoordinate, typename TLength >
+constexpr Rectangle< TCoordinate, TLength >::Rectangle( Point const &pos, Size const &size ) noexcept :
+	pos( pos ),
+	size( size )
+{
+	
+}
 
 
 
