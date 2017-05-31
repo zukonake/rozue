@@ -52,7 +52,6 @@ struct Vector3
 	constexpr Vector3< T > operator+( Vector3< T > const &that ) const noexcept;
 	constexpr Vector3< T > operator-( Vector3< T > const &that ) const noexcept;
 
-	constexpr Vector3< T > &operator=( Vector3< T > const &that ) noexcept;
 	constexpr Vector3< T > &operator*=( Vector3< T > const &that ) noexcept;
 	constexpr Vector3< T > &operator/=( Vector3< T > const &that ) noexcept;
 	constexpr Vector3< T > &operator+=( Vector3< T > const &that ) noexcept;
@@ -147,15 +146,6 @@ constexpr Vector3< T > Vector3< T >::operator-( Vector3< T > const &that ) const
 }
 
 
-
-template< typename T >
-constexpr Vector3< T > &Vector3< T >::operator=( Vector3< T > const &that ) noexcept
-{
-	x = that.x;
-	y = that.y;
-	z = that.z;
-	return *this;
-}
 
 template< typename T >
 constexpr Vector3< T > &Vector3< T >::operator*=( Vector3< T > const &that ) noexcept
