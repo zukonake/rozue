@@ -22,14 +22,12 @@ class Map2
 {
 public:
 	Map2() = default;
+	Map2( Map2< T, width, height > const &that ) = default;
+	Map2( Map2< T, width, height > &&that ) = default;
 	Map2( T const &fill );
-	Map2( Map2< T, width, height > const &that );
-	Map2( Map2< T, width, height > &&that );
 
-	~Map2() = default;
-
-	Map2 &operator=( Map2< T, width, height > const &that );
-	Map2 &operator=( Map2< T, width, height > &&that );
+	Map2 &operator=( Map2< T, width, height > const &that ) = default;
+	Map2 &operator=( Map2< T, width, height > &&that ) = default;
 
 	T &operator[]( Vector2ull const &index );
 	T const &operator[]( Vector2ull const &index ) const;
@@ -50,46 +48,6 @@ Map2< T, width, height >::Map2( T const &fill )
 			mValue[ iY ].push_back( fill );
 		}
 	}
-}
-
-template< typename T, unsigned long long width, unsigned long long height >
-Map2< T, width, height >::Map2( Map2< T, width, height > const &that )
-{
-	mValue = that.mValue;
-}
-
-template< typename T, unsigned long long width, unsigned long long height >
-Map2< T, width, height >::Map2( Map2< T, width, height > &&that ) :
-	mValue( std::move( that.mValue ))
-{
-
-}
-
-template< typename T, unsigned long long width, unsigned long long height >
-Map2< T, width, height > &Map2< T, width, height >::operator=( T const &fill )
-{
-	for( unsigned long long iY = 0; iY < height; iY++ )
-	{
-		for( unsigned long long iX = 0; iX < width; iX++ )
-		{
-			mValue[ iY ][ iX ] = fill;
-		}
-	}
-	return *this;
-}
-
-template< typename T, unsigned long long width, unsigned long long height >
-Map2< T, width, height > &Map2< T, width, height >::operator=( Map2< T, width, height > const &that )
-{
-	mValue = that.mValue;
-	return *this;
-}
-
-template< typename T, unsigned long long width, unsigned long long height >
-Map2< T, width, height > &Map2< T, width, height >::operator=( Map2< T, width, height > &&that )
-{
-	mValue.swap( that.mValue );
-	return *this;
 }
 
 template< typename T, unsigned long long width, unsigned long long height >

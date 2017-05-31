@@ -26,8 +26,6 @@ public:
 	Map3( Map3< T, width, height, depth > const &that );
 	Map3( Map3< T, width, height, depth > &&that );
 
-	~Map3() = default;
-
 	Map3 &operator=( T const &fill );
 	Map3 &operator=( Map3< T, width, height, depth > const &that );
 	Map3 &operator=( Map3< T, width, height, depth > &&that );
