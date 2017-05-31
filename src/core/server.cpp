@@ -1,14 +1,15 @@
 #include <stdexcept>
 //
-#include <core/client.hpp>
+#include <data/config.hpp>
 #include <data/inputData.hpp>
+#include <core/client.hpp>
 #include "server.hpp"
 
 namespace coldline
 {
 
 Server::Server() :
-	mWorld()
+	mWorld( mDataset.at< Config >( "config" ).startingLocation )
 {
 
 }

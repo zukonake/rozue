@@ -4,6 +4,12 @@
 namespace coldline
 {
 
+World::World( world::Location const &startingLocation ) :
+	mStartingLocation( startingLocation )
+{
+
+}
+
 Map &World::operator[]( world::Location const &location )
 {
 	return *std::map< world::Location, Map * >::operator[]( location );
@@ -13,9 +19,10 @@ Map const &World::operator[]( world::Location const &location ) const
 {
 	return *std::map< world::Location, Map * >::at( location );
 }
-Map const &World::at( world::Location const &location ) const
+
+Entity &World::createPlayer( EntitySubtype const &subtype )
 {
-	return *std::map< world::Location, Map * >::at( location );
+	return operator[]( mStartingLocation ).createPlayer( subtype );
 }
 
 void World::simulate()

@@ -15,7 +15,7 @@ Player::Player( Dataset const &dataset, World& world ) :
 	mWorld( world ),
 	mCamera( mDataset.at< Sprite >( "nothing" ),
 		mWorld,
-		mWorld[ mDataset.at< Config >( "config" ).startingLocation ].createPlayer( mDataset.at< EntitySubtype >( "human" )))
+		mWorld.createPlayer( mDataset.at< EntitySubtype >( "human" )))
 {
 
 }
