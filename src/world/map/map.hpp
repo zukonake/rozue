@@ -19,15 +19,13 @@ class Map : public EntityMap
 	virtual Tile &operator[]( map::Point3 const &point ) = 0;
 	virtual Tile &operator[]( map::Point3 const &point ) const = 0;
 
-	virtual map::Point3 getFreePosition() const = 0;
-	virtual map::Point3 getFreePosition( map::Coordinate const &z ) const = 0;
+	virtual map::Point3 getFreePosition() = 0;
+	virtual map::Point3 getFreePosition( map::Coordinate const &z ) = 0;
 
 	virtual bool exists( map::Point3 const &point ) = 0;
-	virtual bool exists( map::Point3 const &point ) const = 0;
 
 	bool sees( map::Point3 const &from, map::Point3 const &to );
-	bool sees( map::Point3 const &from, map::Point3 const &to ) const;
-	bool canMove( map::Point3 const &from, map::Point3 const &to ) const;
+	bool canMove( map::Point3 const &from, map::Point3 const &to );
 
 	virtual void simulate();
 };

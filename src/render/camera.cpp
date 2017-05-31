@@ -12,13 +12,13 @@
 namespace coldline
 {
 
-Camera::Camera( Entity const &entity, World const &world, Sprite const &nothing ) :
-	Entity( entity ),
+Camera::Camera( Sprite const &nothing, World &world, Entity &entity ) :
 	mLocked( true ),
 	mScale({ 1.f, 1.f }),
-	mPosition( Entity::getPosition()),
+	mNothing( nothing ),
 	mWorld( world ),
-	mNothing( nothing )
+	mEntity( entity ),
+	mPosition( mEntity.get().getPosition())
 {
 	lock();
 }
@@ -27,7 +27,7 @@ bool Camera::move( map::Vector3 const &by )
 {
 	if( mLocked )
 	{
-		if( Entity::move( by ))
+		if( mEntity.get().move( by ))
 		{
 			mPosition.point += by;
 			return true;
@@ -44,7 +44,7 @@ bool Camera::teleport( map::Point3 const &to )
 {
 	if( mLocked )
 	{
-		if( Entity::teleport( to ))
+		if( mEntity.get().teleport( to ))
 		{
 			mPosition.point = to;
 			return true;
@@ -59,7 +59,7 @@ bool Camera::teleport( map::Point3 const &to )
 
 void Camera::lock()
 {
-	teleport( Entity::getPoint());
+	teleport( mEntity.get().getPoint());
 	mLocked = true;
 }
 
@@ -118,7 +118,7 @@ std::queue< TransformedDrawable > Camera::getRenderQueue() const
 }
 
 void Camera::addDrawable( std::queue< TransformedDrawable > &renderQueue,
-	Drawable const &drawable,
+	sf::Drawable const &drawable,
 	screen::Point const &point,
 	screen::Scale const &scale )
 {
@@ -131,7 +131,7 @@ void Camera::addDrawable( std::queue< TransformedDrawable > &renderQueue,
 //TODO candidate for deletion
 bool Camera::sees( map::Point3 const &what ) const
 {
-	return mWorld[ mPosition.location ].sees( Entity::getPoint(), what );
+	return mWorld[ mPosition.location ].sees( mEntity.get().getPoint(), what );
 }
 
 }

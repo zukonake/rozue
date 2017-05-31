@@ -3,12 +3,12 @@
 #include <SFML/Graphics/Drawable.hpp>
 //
 #include <queue>
+#include <functional>
 //
 #include <render/typedef.hpp>
 #include <render/sprite.hpp>
 #include <world/map/typedef.hpp>
 #include <world/typedef.hpp>
-#include <world/entity/entity.hpp>
 
 namespace coldline
 {
@@ -16,14 +16,15 @@ namespace coldline
 class Map;
 class Renderable;
 class TransformedSprite;
+class Entity;
 
-class Camera : public Entity
+class Camera
 {
 	public:
-	Camera( Entity const &entity, World const &world, Sprite const &nothing );
+	Camera( Sprite const &nothing, World &world, Entity &entity );
 
-	virtual bool move( map::Vector3 const &by ) override;
-	virtual bool teleport( map::Point3 const &to ) override;
+	bool move( map::Vector3 const &by );
+	bool teleport( map::Point3 const &to );
 
 	void lock();
 	void unlock();
@@ -39,9 +40,10 @@ class Camera : public Entity
 
 	bool mLocked;
 	screen::Scale mScale;
-	world::Position mPosition;
-	World const &mWorld;
 	Sprite const &mNothing;
+	World &mWorld;
+	std::reference_wrapper< Entity > mEntity;
+	world::Position mPosition;
 
 	unsigned short const mFov = 6;
 };

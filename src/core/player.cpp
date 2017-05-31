@@ -13,9 +13,9 @@ namespace coldline
 Player::Player( Dataset const &dataset, World& world ) :
 	mDataset( dataset ),
 	mWorld( world ),
-	mCamera( mWorld[ mDataset.at< Config >( "config" ).startingLocation ].createPlayer( mDataset.at< EntitySubtype >( "human" )),
+	mCamera( mDataset.at< Sprite >( "nothing" ),
 		mWorld,
-		mDataset.at< Sprite >( "nothing" ))
+		mWorld[ mDataset.at< Config >( "config" ).startingLocation ].createPlayer( mDataset.at< EntitySubtype >( "human" )))
 {
 
 }
