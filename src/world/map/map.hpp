@@ -26,6 +26,7 @@ class Map : public EntityMap
 
 	bool sees( map::Point3 const &from, map::Point3 const &to );
 	bool sees( map::Point3 const &from, map::Point3 const &to ) const;
+	bool canMove( map::Point3 const &from, map::Point3 const &to ) const;
 
 	virtual void simulate();
 };
