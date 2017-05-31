@@ -1,9 +1,11 @@
-#include <global.hpp>
 #include <render/tileset.hpp>
 #include <render/sprite.hpp>
 #include <world/tile/tileSubtype.hpp>
 #include <world/entity/entitySubtype.hpp>
 #include "dataset.hpp"
+
+namespace coldline
+{
 
 Tileset const tilesTileset =
 {
@@ -81,4 +83,6 @@ Dataset::Dataset()
 	mObjects[ "human" ] = &human;
 	mObjects[ "goblin" ] = &goblin;
 	mObjects[ "door" ] = &door;
+}
+
 }

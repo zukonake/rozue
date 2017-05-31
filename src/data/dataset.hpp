@@ -6,6 +6,9 @@
 //
 #include <data/loadable.hpp>
 
+namespace coldline
+{
+
 class Dataset
 {
 	public:
@@ -20,6 +23,8 @@ class Dataset
 template< typename T >
 T const &Dataset::at( std::string const &key ) const
 {
-	static_assert( std::is_base_of< Loadable, T >::value );
+	static_assert( std::is_base_of< Loadable, T >::value, "Dataset only holds objects of base Loadable" );
 	return dynamic_cast< T const & >( *mObjects.at( key ));
+}
+
 }

@@ -1,61 +1,65 @@
 #include <cstdint>
 #include <cmath>
 //
-#include <geometry/scale.hpp>
-#include <render/renderable.hpp>
-#include <render/transformedSprite.hpp>
+#include <render/typedef.hpp>
+#include <render/sprite.hpp>
+#include <render/transformedDrawable.hpp>
 #include <world/tile/tileSubtype.hpp>
+#include <world/map/map.hpp>
 #include <world/world.hpp>
 #include "camera.hpp"
 
+namespace coldline
+{
+
 Camera::Camera( Entity const &entity, World const &world, Sprite const &nothing ) :
 	Entity( entity ),
-	mWorld( world ),
-	mNothing( nothing ),
-	mPosition( Entity::getPosition()),
 	mLocked( true ),
-	mScale({ 1.f, 1.f })
+	mScale({ 1.f, 1.f }),
+	mPosition( Entity::getPosition()),
+	mWorld( world ),
+	mNothing( nothing )
 {
 	lock();
 }
 
-bool Camera::move( Vector const &by )
+bool Camera::move( map::Vector3 const &by )
 {
 	if( mLocked )
 	{
 		if( Entity::move( by ))
 		{
-			mPosition += by;
+			mPosition.point += by;
 			return true;
 		}
 	}
 	else
 	{
-		mPosition += by;
+		mPosition.point += by;
 	}
 	return false;
 }
 
-bool Camera::teleport( Point3 const &to )
+bool Camera::teleport( map::Point3 const &to )
 {
 	if( mLocked )
 	{
 		if( Entity::teleport( to ))
 		{
-			mPosition = to;
+			mPosition.point = to;
 			return true;
 		}
 	}
 	else
 	{
-		mPosition = to;
+		mPosition.point = to;
 	}
 	return false;
 }
 
 void Camera::lock()
 {
-	teleport( Entity::getPosition());
+	teleport( Entity::getPoint());
 	mLocked = true;
 }
 
@@ -64,12 +68,12 @@ void Camera::unlock()
 	mLocked = false;
 }
 
-void Camera::setScale( Scale2 const &scale )
+void Camera::setScale( screen::Scale const &scale )
 {
 	mScale = scale;
 }
 
-void Camera::changeScale( Scale2 const &scale )
+void Camera::changeScale( screen::Scale const &scale )
 {
 	if( scale.x > -mScale.x && scale.y > -mScale.y )
 	{
@@ -77,54 +81,57 @@ void Camera::changeScale( Scale2 const &scale )
 	}
 }
 
-std::queue< TransformedSprite > Camera::getSprites() const
+std::queue< TransformedDrawable > Camera::getRenderQueue() const
 {
-	std::queue< TransformedSprite > sprites;
+	std::queue< TransformedDrawable > renderQueue;/*
 	coldline::geometry::Vector3i iRelative = { 0, 0, ( int16_t )mPosition.z };
 	coldline::geometry::Vector2f iScreen;
 	for( iRelative.y = mPosition.y - ( mFov / mScale.y ), iScreen.y = 0;
 		 iRelative.y <= ( int16_t )mPosition.y + ( mFov / mScale.y );
-		 iRelative.y++, iScreen.y += global::screenSpriteSize.y * mScale.y )
+		 iRelative.y++, iScreen.y += 16.f * mScale.x ) //TODO
 	{
 		for( iRelative.x = mPosition.x - ( mFov / mScale.x ), iScreen.x = 0;
 			 iRelative.x <= ( int16_t )mPosition.x + ( mFov / mScale.x );
-			 iRelative.x++, iScreen.x += global::screenSpriteSize.x * mScale.x )
+			 iRelative.x++, iScreen.x += 16.f * mScale.x ) //TODO
 		{
-			Scale2 scale = mScale * global::spriteScale;
+			screen::Scale scale = mScale * screen::Scale( 3.f, 3.f );
 			if( iRelative.x < 0 || iRelative.y < 0 || iRelative.z < 0 ||
-				!sees( iRelative ))
+				!sees(( map::Point3 )iRelative ))
 			{
-				addSprite( sprites, mNothing, iScreen, scale );
+				addDrawable( renderQueue, mNothing, iScreen, scale );
 			}
 			else
 			{
-				Point3 iMap = iRelative;
-				addSprite( sprites,
-					mWorld[ iMap ],
-					( Point2 )iScreen,
+				map::Point3 iMap = ( map::Point3 )iRelative;
+				addDrawable( renderQueue,
+					m.at( iMap ),
+					( screen::Point )iScreen,
 					scale );
-				if( mWorld.entityOn( iMap ))
+				if( mMap.entityOn( iMap ))
 				{
-					addSprite( sprites, mWorld.getEntityOn( iMap ), iScreen, scale );
+					addDrawable( renderQueue, mMap.getEntityOn( iMap ), iScreen, scale );
 				}
 			}
 		}
-	}
-	return sprites;
+	} TODO */ 
+	return renderQueue;
 }
 
-void Camera::addSprite( std::queue< TransformedSprite > &sprites,
-	Renderable const &sprite,
-	Point2 const &position,
-	Scale2 const &scale )
+void Camera::addDrawable( std::queue< TransformedDrawable > &renderQueue,
+	Drawable const &drawable,
+	screen::Point const &point,
+	screen::Scale const &scale )
 {
-	sprites.emplace( sprite );
-	sprites.back().setPosition( position );
-	sprites.back().scale( scale );
+	sf::Transform transform;
+	transform.translate( static_cast< sf::Vector2f >( point ));
+	transform.scale( static_cast< sf::Vector2f >( scale ));
+	renderQueue.emplace( transform, drawable );
 }
 
 //TODO candidate for deletion
-bool Camera::sees( Point3 const &what ) const
+bool Camera::sees( map::Point3 const &what ) const
 {
-	return mWorld.sees( Entity::getPosition(), what );
+	return mWorld[ mPosition.location ].sees( Entity::getPoint(), what );
+}
+
 }

@@ -2,19 +2,11 @@
 #include <stdexcept>
 #include <vector>
 //
-#include <global.hpp>
-#include <geometry/bresenham.hpp>
 #include <world/tile/tile.hpp>
-#include <world/map.hpp>
+#include <world/map/map.hpp>
 #include <world/entity/entity.hpp>
 #include "world.hpp"
-
-World::World( Map const &map ) :
-	mMap( map )
-{
-
-}
-
+/*
 Tile &World::operator[]( Point3 const &index )
 {
 	return mMap[ index ];
@@ -66,32 +58,14 @@ bool World::entityOn( Point3 const &point ) const
 	return mEntitiesMap.count( point );
 }
 
-bool World::sees( Point3 const &from, Point3 const &to ) const
+
+bool World::canMove( Point3 const &from, Point3 const &to ) const
 {
-	if( !exists( to ) || !exists( from ))
+	if( exists( to ) && exists( from ))
 	{
-		return false;
+		return mMap[ to ].passable() && !entityOn( to ));
 	}
-	std::vector< Point3 > line = bresenham::plotLine( from, to );
-	if( line.empty())
-	{
-		return false;
-	}
-	for( uint16_t i = 1; i < line.size() - 1; i++ )
-	{
-		if( !mMap[ line[ i ]].passable())
-		{
-			return false;
-		}
-		if( entityOn( line[ i ]))
-		{
-			if( getEntityOn( line[ i ]).passable())
-			{
-				return false;
-			}
-		}
-	}
-	return true;
+	return false;
 }
 
 void World::simulate()
@@ -99,18 +73,10 @@ void World::simulate()
 
 }
 
-bool World::moveEntity( Point3 const &from, Point3 const &to )
+void World::moveEntity( Point3 const &from, Point3 const &to )
 {
-	if( !entityOn( to ))
-	{
-		mEntitiesMap[ to ] = mEntitiesMap[ from ];
-		mEntitiesMap.erase( from );
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	mEntitiesMap[ to ] = mEntitiesMap[ from ];
+	mEntitiesMap.erase( from );
 }
 
 Entity &World::createEntity( EntitySubtype const &subtype, Point3 const &position )
@@ -134,3 +100,4 @@ bool World::exists( Point3 const &where )
 		   where.y < global::mapSize.y &&
 		   where.z < global::mapSize.z;
 }
+*/

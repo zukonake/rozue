@@ -6,6 +6,9 @@
 #include <render/SFMLClient.hpp>
 #include <data/dataset.hpp>
 
+namespace coldline
+{
+
 class Server;
 struct OutputData;
 struct InputData;
@@ -38,3 +41,5 @@ private:
 	Dataset mDataset;
 	Server* mServer;
 };
+
+}

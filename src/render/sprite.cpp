@@ -2,18 +2,20 @@
 //
 #include <data/dataMap.hpp>
 #include <data/dataset.hpp>
-#include <auxiliary.hpp>
 #include <render/tileset.hpp>
 #include "sprite.hpp"
 
+namespace coldline
+{
+
 Sprite::Sprite( Dataset const &dataset, DataMap const &dataMap ) :
 	mTileset( dataset.at< Tileset >( dataMap.getString( "tileset" ))),
-	mTilesetPosition( auxiliary::loadPoint2( dataMap ))
+	mTilesetPosition( dataMap.toVector2< screen::Coordinate >())
 {
 
 }
 
-Sprite::Sprite( Tileset const &tileset, Point2 const &tilesetPosition ) :
+Sprite::Sprite( Tileset const &tileset, screen::Point const &tilesetPosition ) :
 	mTileset( tileset ),
 	mTilesetPosition( tilesetPosition )
 {
@@ -70,12 +72,9 @@ void Sprite::draw( sf::RenderTarget &target, sf::RenderStates states ) const
 	target.draw( square, states );
 }
 
-Sprite const &Sprite::getSprite() const
-{
-	return *this;
-}
-
-Size2 const &Sprite::getSize() const noexcept
+screen::Size const &Sprite::getSize() const noexcept
 {
 	return mTileset.getSpriteSize();
+}
+
 }

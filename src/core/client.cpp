@@ -3,7 +3,8 @@
 #include <data/inputData.hpp>
 #include "client.hpp"
 
-#include <iostream> //TODO
+namespace coldline
+{
 
 Client::Client( std::string const &name ) :
 	mName( name ),
@@ -40,8 +41,6 @@ void Client::receiveOutputData( OutputData outputData ) noexcept
 			disconnect();
 			return;
 		}
-		SFMLClient::getView().setCenter( outputData.viewPosition );
-		SFMLClient::getView().zoom( outputData.zoom );
 		if( !SFMLClient::isRunning())
 		{
 			SFMLClient::openWindow(
@@ -86,10 +85,12 @@ std::string const &Client::getName() const noexcept
 
 void Client::render( OutputData const &outputData )
 {
-	auto sprites = outputData.sprites;
-	for( uint16_t i = 0; i < sprites.size() + i; i++ )
+	auto renderQueue = outputData.renderQueue;
+	for( unsigned i = 0; i < renderQueue.size() + i; i++ )
 	{
-		SFMLClient::getWindow().draw( sprites.front());
-		sprites.pop();
+		SFMLClient::getWindow().draw( renderQueue.front());
+		renderQueue.pop();
 	}
+}
+
 }

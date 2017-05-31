@@ -1,15 +1,19 @@
-#include <geometry/vector.hpp>
+#include <data/inputData.hpp>
+#include <data/config.hpp>
 #include <render/sprite.hpp>
 #include <data/dataset.hpp>
 #include <world/entity/entitySubtype.hpp>
+#include <world/map/map.hpp>
 #include <world/world.hpp>
 #include "player.hpp"
-#include <data/inputData.hpp>
+
+namespace coldline
+{
 
 Player::Player( Dataset const &dataset, World& world ) :
 	mDataset( dataset ),
 	mWorld( world ),
-	mCamera( mWorld.createPlayer( mDataset.at< EntitySubtype >( "human" )),
+	mCamera( mWorld[ mDataset.at< Config >( "config" ).startingLocation ].createPlayer( mDataset.at< EntitySubtype >( "human" )),
 		mWorld,
 		mDataset.at< Sprite >( "nothing" ))
 {
@@ -19,8 +23,7 @@ Player::Player( Dataset const &dataset, World& world ) :
 OutputData Player::requestOutputData() noexcept
 {
 	OutputData returnValue = mOutputData;
-	returnValue.sprites = mCamera.getSprites();
-	returnValue.viewPosition = { 0, 0 }; //TODO?
+	returnValue.renderQueue = mCamera.getRenderQueue();
 	return returnValue;
 }
 
@@ -79,4 +82,6 @@ void Player::handleKeys( sf::Event event )
 		default:
 			break;
 	}
+}
+
 }

@@ -1,10 +1,17 @@
-#include <global.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
+//
+#include <world/map/typedef.hpp>
+#include <world/typedef.hpp>
 #include <world/tile/tileSubtype.hpp>
 #include <world/entity/entitySubtype.hpp>
+#include <world/map/map.hpp>
 #include <world/world.hpp>
 #include "entity.hpp"
 
-Entity::Entity( World &world, Point3 const &position, EntitySubtype const &subtype ) :
+namespace coldline
+{
+
+Entity::Entity( World &world, world::Position const &position, EntitySubtype const &subtype ) :
 	mWorld( world ),
 	mSubtype( subtype ),
 	mPosition( position )
@@ -12,17 +19,18 @@ Entity::Entity( World &world, Point3 const &position, EntitySubtype const &subty
 
 }
 
-Sprite const &Entity::getSprite() const
+void Entity::draw( sf::RenderTarget &target, sf::RenderStates states ) const
 {
-	return mSubtype;
+	target.draw( mSubtype, states );
 }
 
-bool Entity::move( Vector const &by )
+bool Entity::move( map::Vector3 const &by )
 {
-	Point3 newPosition = mPosition + by;
-	if( tryMove( newPosition ))
+	map::Point3 newPoint = mPosition.point + ( map::Point3 )by;
+	if( canMove( newPoint ))
 	{
-		mPosition = newPosition; //TODO check with pathfind
+		mWorld[ mPosition.location ].moveEntity( mPosition.point, newPoint );
+		mPosition.point = newPoint; //TODO check with pathfind
 		return true;
 	}
 	else
@@ -31,11 +39,12 @@ bool Entity::move( Vector const &by )
 	}
 }
 
-bool Entity::teleport( Point3 const &to )
+bool Entity::teleport( map::Point3 const &to )
 {
-	if( tryMove( to ))
+	if( canMove( to ))
 	{
-		mPosition = to; //TODO check with pathfind
+		mWorld[ mPosition.location ].moveEntity( mPosition.point, to );
+		mPosition.point = to;
 		return true;
 	}
 	else
@@ -44,7 +53,15 @@ bool Entity::teleport( Point3 const &to )
 	}
 }
 
-Point3 const &Entity::getPosition() const noexcept
+map::Point3 const &Entity::getPoint() const noexcept
+{
+	return mPosition.point;
+}
+world::Location const &Entity::getLocation() const noexcept
+{
+	return mPosition.location;
+}
+world::Position const &Entity::getPosition() const noexcept
 {
 	return mPosition;
 }
@@ -54,17 +71,9 @@ bool Entity::passable() const noexcept
 	return !mSubtype.mSolid;
 }
 
-bool Entity::tryMove( Point3 const &to )
+bool Entity::canMove( map::Point3 const &to )
 {
-	if( World::exists( to )) 
-	{
-		if( mWorld[ to ].passable())
-		{
-			if( mWorld.moveEntity( mPosition, to ))
-			{
-				return true;
-			}
-		}
-	}
-	return false;
+	return mWorld[ mPosition.location ].canMove( mPosition.point, to );
+}
+
 }

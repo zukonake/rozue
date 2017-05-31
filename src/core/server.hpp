@@ -8,6 +8,9 @@
 #include <world/world.hpp>
 #include <core/player.hpp>
 
+namespace coldline
+{
+
 class Client;
 
 class Server
@@ -28,3 +31,5 @@ class Server
 	Dataset mDataset;
 	World mWorld;
 };
+
+}

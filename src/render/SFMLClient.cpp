@@ -1,6 +1,9 @@
 #include <stdexcept>
 #include "SFMLClient.hpp"
 
+namespace coldline
+{
+
 SFMLClient::~SFMLClient() noexcept
 {
 	mWindow.close();
@@ -19,7 +22,11 @@ void SFMLClient::draw( sf::Drawable const &drawable, sf::RenderStates states )
 	mWindow.draw( drawable, states );
 }
 
-void SFMLClient::openWindow( Size2 const &windowSize, std::string const &windowTitle, uint8_t fpsLimit, bool vsync, uint8_t antialiasingLevel )
+void SFMLClient::openWindow( screen::Size const &windowSize,
+	std::string const &windowTitle,
+	unsigned short fpsLimit,
+	bool vsync,
+	unsigned short antialiasingLevel ) //TODO change to screenConfig?
 {
 	mSettings.antialiasingLevel = antialiasingLevel;
 	mWindow.create( sf::VideoMode( windowSize.x, windowSize.y, 32 ),
@@ -67,7 +74,9 @@ sf::View& SFMLClient::getView() noexcept
 	return mView;
 }
 
-Size2 SFMLClient::getWindowSize() const noexcept
+screen::Size SFMLClient::getWindowSize() const noexcept
 {
-	return ( Size2 )mWindow.getSize();
+	return ( screen::Size )mWindow.getSize();
+}
+
 }

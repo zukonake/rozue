@@ -1,6 +1,8 @@
-#include <global.hpp>
 #include <world/tile/tileSubtype.hpp>
 #include "tile.hpp"
+
+namespace coldline
+{
 
 Tile::Tile() :
 	mSubtype( nullptr )
@@ -26,18 +28,15 @@ Tile &Tile::operator=( TileSubtype const &that )
 	return *this;
 }
 
-Tile::Tile( TileSubtype const *subtype ) :
-	mSubtype( subtype )
+Tile::Tile( TileSubtype const &subtype ) :
+	mSubtype( &subtype )
 {
 	
-}
-
-Sprite const &Tile::getSprite() const
-{
-	return *mSubtype;
 }
 
 bool Tile::passable() const
 {
 	return !mSubtype->mSolid;
+}
+
 }

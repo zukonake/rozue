@@ -2,11 +2,13 @@
 //
 #include <core/client.hpp>
 #include <data/inputData.hpp>
-#include <world/generator/randomWallsGenerator.hpp>
 #include "server.hpp"
 
+namespace coldline
+{
+
 Server::Server() :
-	mWorld( RandomWallsGenerator( mDataset, 0.15f ))
+	mWorld()
 {
 
 }
@@ -61,4 +63,6 @@ void Server::cleanClients()
 			++iPair;
 		}
 	}
+}
+
 }

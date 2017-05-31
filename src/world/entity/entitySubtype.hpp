@@ -1,12 +1,17 @@
 #pragma once
 
+#include <SFML/Graphics/Drawable.hpp>
+//
 #include <data/loadable.hpp>
 #include <render/sprite.hpp>
+
+namespace coldline
+{
 
 class Dataset;
 class DataMap;
 
-class EntitySubtype : public Sprite, public virtual Loadable
+class EntitySubtype : public virtual Loadable, public Sprite
 {
 	friend class Entity;
 	public:
@@ -16,3 +21,5 @@ class EntitySubtype : public Sprite, public virtual Loadable
 	private:
 	bool mSolid;
 };
+
+}

@@ -11,9 +11,10 @@ TARGET = rozue
 CPP_FILES = $(shell find $(SOURCE_DIR) -type f -name "*.cpp" -printf '%p ')
 OBJ_FILES = $(addprefix $(OBJ_DIR)/,$(patsubst %.cpp,%.o,$(notdir $(CPP_FILES))))
 
+CXX = clang++
 DEBUG_FLAGS = -g -O0 -DDEBUG
-WARNING_FLAGS = -Wall -Wextra
-STD = --std=c++17
+WARNING_FLAGS = -Wall -Wextra -ferror-limit=3
+STD = -std=c++14 -pedantic
 INCLUDES = -I $(SOURCE_DIR) -I $(INCLUDE_DIR)
 LDLIBS = -lsfml-graphics -lsfml-window -lsfml-system
 LDFLAGS = $(INCLUDES) $(STD) $(WARNING_FLAGS) $(DEBUG_FLAGS) -L $(LIB_DIR) $(LDLIBS)

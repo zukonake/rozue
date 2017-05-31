@@ -1,28 +1,39 @@
 #pragma once
 
-#include <geometry/point.hpp>
-#include <geometry/vector.hpp>
-#include <render/renderable.hpp>
+#include <SFML/Graphics/Drawable.hpp>
+//
+#include <world/map/typedef.hpp>
+#include <world/typedef.hpp>
+
+namespace coldline
+{
 
 class World;
 class EntitySubtype;
 
-class Entity : public Renderable
+class Entity : public sf::Drawable
 {
 	public:
-	Entity( World &world, Point3 const &position, EntitySubtype const &subtype );
+	Entity( World &mWorld, world::Position const &position, EntitySubtype const &subtype );
 
-	virtual Sprite const &getSprite() const override;
+	virtual void draw( sf::RenderTarget &target, sf::RenderStates states ) const override;
 
-	virtual bool move( Vector const &by );
-	virtual bool teleport( Point3 const &to );
+	virtual bool move( map::Vector3 const &by );
+	virtual bool teleport( map::Point3 const &to );
 
-	Point3 const &getPosition() const noexcept;
+	void setLocation( world::Location const &location );
+
+	map::Point3 const &getPoint() const noexcept;
+	world::Location const &getLocation() const noexcept;
+	world::Position const &getPosition() const noexcept;
+
 	bool passable() const noexcept;
 	private:
-	bool tryMove( Point3 const &to );
+	bool canMove( map::Point3 const &to );
 
 	World &mWorld;
 	EntitySubtype const &mSubtype;
-	Point3 mPosition;
+	world::Position mPosition;
 };
+
+}

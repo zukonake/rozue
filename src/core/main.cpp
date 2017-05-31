@@ -3,8 +3,8 @@
 
 int main()
 {
-	Client client( "rozueClient" );
-	Server server;
+	coldline::Client client( "rozueClient" );
+	coldline::Server server;
 	client.connect( &server );
 	server.loop();
 	return 0;

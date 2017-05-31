@@ -2,13 +2,15 @@
 
 #include <queue>
 //
-#include <geometry/point.hpp>
-#include <render/transformedSprite.hpp>
+#include <render/transformedDrawable.hpp>
+
+namespace coldline
+{
 
 struct OutputData
 {
-	std::queue< TransformedSprite > sprites;
+	std::queue< TransformedDrawable > renderQueue;
 	bool playing = true;
-	float zoom = 1;
-	Point2 viewPosition;
 };
+
+}

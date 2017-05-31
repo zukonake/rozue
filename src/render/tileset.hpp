@@ -2,10 +2,13 @@
 
 #include <string>
 //
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Texture.hpp>
 //
-#include <geometry/size.hpp>
+#include <render/typedef.hpp>
 #include <data/loadable.hpp>
+
+namespace coldline
+{
 
 class DataMap;
 
@@ -13,12 +16,14 @@ class Tileset : public virtual Loadable
 {
 	public:
 	Tileset( DataMap const &dataMap );
-	Tileset( std::string const &path, Size2 const &spriteSize );
+	Tileset( std::string const &path, screen::Size const &spriteSize );
 
-	Size2 const &getSpriteSize() const noexcept;
+	screen::Size const &getSpriteSize() const noexcept;
 	sf::Texture const &getTexture() const noexcept;
 	private:
-	Size2 mSpriteSize;
+	screen::Size mSpriteSize;
 
 	sf::Texture mTexture;
 };
+
+}

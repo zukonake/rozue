@@ -2,6 +2,5 @@
 
 struct Loadable
 {
-	Loadable() = default;
 	virtual ~Loadable() = default;
 };

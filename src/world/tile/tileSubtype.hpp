@@ -3,6 +3,9 @@
 #include <data/loadable.hpp>
 #include <render/sprite.hpp>
 
+namespace coldline
+{
+
 class Dataset;
 class DataMap;
 
@@ -16,3 +19,5 @@ class TileSubtype : public Sprite, public virtual Loadable
 	private:
 	bool mSolid;
 };
+
+}
