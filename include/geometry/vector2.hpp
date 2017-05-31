@@ -53,7 +53,6 @@ struct Vector2
 	constexpr Vector2< T > operator+( Vector2< T > const &that ) const noexcept;
 	constexpr Vector2< T > operator-( Vector2< T > const &that ) const noexcept;
 
-	constexpr Vector2< T > &operator=( Vector2< T > const &that ) noexcept;
 	constexpr Vector2< T > &operator*=( Vector2< T > const &that ) noexcept;
 	constexpr Vector2< T > &operator/=( Vector2< T > const &that ) noexcept;
 	constexpr Vector2< T > &operator+=( Vector2< T > const &that ) noexcept;
@@ -153,14 +152,6 @@ constexpr Vector2< T > Vector2< T >::operator-( Vector2< T > const &that ) const
 }
 
 
-
-template< typename T >
-constexpr Vector2< T > &Vector2< T >::operator=( Vector2< T > const &that ) noexcept
-{
-	x = that.x;
-	y = that.y;
-	return *this;
-}
 
 template< typename T >
 constexpr Vector2< T > &Vector2< T >::operator*=( Vector2< T > const &that ) noexcept

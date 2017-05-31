@@ -28,25 +28,24 @@ struct Line2
 	constexpr Line2() noexcept = default;
 	constexpr Line2( Line2 const &that ) noexcept = default;
 	constexpr Line2( Point const &from, Point const &to ) noexcept;
-	template < typename T >
-	constexpr Line2( Line2< T > const &that ) noexcept;
+	template< typename TTCoordinate >
+	constexpr Line2( Line2< TTCoordinate > const &that ) noexcept;
 
-	template< typename T >
-	constexpr operator Line2< T >();
+	template< typename TTCoordinate >
+	constexpr operator Line2< TTCoordinate >() const noexcept;
 
-	constexpr Line2< TCoordinate > &operator=( Line2 const &that );
-	constexpr Line2< TCoordinate > &operator+( Line2 const &that );
-	constexpr Line2< TCoordinate > &operator-( Line2 const &that );
+	constexpr Line2< TCoordinate > &operator+( Line2< TCoordinate > const &that );
+	constexpr Line2< TCoordinate > &operator-( Line2< TCoordinate > const &that );
 
-	constexpr Line2< TCoordinate > &operator+=( Line2 const &that );
-	constexpr Line2< TCoordinate > &operator-=( Line2 const &that );
+	constexpr Line2< TCoordinate > &operator+=( Line2< TCoordinate > const &that );
+	constexpr Line2< TCoordinate > &operator-=( Line2< TCoordinate > const &that );
 
-	constexpr bool operator==( Line2 const &that );
-	constexpr bool operator!=( Line2 const &that );
-	constexpr bool operator<=( Line2 const &that );
-	constexpr bool operator>=( Line2 const &that );
-	constexpr bool operator<( Line2 const &that );
-	constexpr bool operator>( Line2 const &that );
+	constexpr bool operator==( Line2< TCoordinate > const &that );
+	constexpr bool operator!=( Line2< TCoordinate > const &that );
+	constexpr bool operator<=( Line2< TCoordinate > const &that );
+	constexpr bool operator>=( Line2< TCoordinate > const &that );
+	constexpr bool operator<( Line2< TCoordinate > const &that );
+	constexpr bool operator>( Line2< TCoordinate > const &that );
 
 	constexpr Length getLength() const noexcept;
 	constexpr Center getCenter() const noexcept;
@@ -57,29 +56,133 @@ struct Line2
 	Point to;
 };
 
-/*
-std::vector< Point3 > plotLine( Point3 const &from, Point3 const &to )
-{
-	std::vector< Point3 > line;
-	if( from.z != to.z )
-	{
-		return line;
-	}
-	Point3 temp = from;
 
-	int16_t deltaX( to.x - temp.x );
-	signed char const iX(( deltaX > 0 ) - ( deltaX < 0 ));
+
+template< typename TCoordinate >
+constexpr Line2< TCoordinate >::Line2( Point const &from, Point const &to ) noexcept :
+	from( from ),
+	to( to )
+{
+
+}
+
+template< typename TCoordinate >
+template< typename TTCoordinate >
+constexpr Line2< TCoordinate >::Line2( Line2< TTCoordinate > const &that ) noexcept :
+	from( static_cast< Point >( that.from )),
+	to( static_cast< Point >( that.to ))
+{
+	
+}
+
+
+
+template< typename TCoordinate >
+template< typename TTCoordinate >
+constexpr Line2< TCoordinate >::operator Line2< TTCoordinate >() const noexcept
+{
+	return Line2< TTCoordinate >( from, to );
+}
+
+
+
+template< typename TCoordinate >
+constexpr Line2< TCoordinate > &Line2< TCoordinate >::operator+( Line2< TCoordinate > const &that )
+{
+	return Line2< TCoordinate >( from + that.from, to + that.to );
+}
+
+template< typename TCoordinate >
+constexpr Line2< TCoordinate > &Line2< TCoordinate >::operator-( Line2< TCoordinate > const &that )
+{
+	return Line2< TCoordinate >( from - that.from, to - that.to );
+}
+
+template< typename TCoordinate >
+constexpr Line2< TCoordinate > &Line2< TCoordinate >::operator+=( Line2< TCoordinate > const &that )
+{
+	from += that.from;
+	to += that.to;
+	return *this;
+}
+
+template< typename TCoordinate >
+constexpr Line2< TCoordinate > &Line2< TCoordinate >::operator-=( Line2< TCoordinate > const &that )
+{
+	from -= that.from;
+	to -= that.to;
+	return *this;
+}
+
+
+
+template< typename TCoordinate >
+constexpr bool Line2< TCoordinate >::operator==( Line2< TCoordinate > const &that )
+{
+	return from == that.from && to == that.to;
+}
+
+template< typename TCoordinate >
+constexpr bool Line2< TCoordinate >::operator!=( Line2< TCoordinate > const &that )
+{
+	return from != that.from || to != that.to;
+}
+
+template< typename TCoordinate >
+constexpr bool Line2< TCoordinate >::operator<=( Line2< TCoordinate > const &that )
+{
+	return getLength() <= that.getLength();
+}
+
+template< typename TCoordinate >
+constexpr bool Line2< TCoordinate >::operator>=( Line2< TCoordinate > const &that )
+{
+	return getLength() >= that.getLength();
+}
+
+template< typename TCoordinate >
+constexpr bool Line2< TCoordinate >::operator<( Line2< TCoordinate > const &that )
+{
+	return getLength() < that.getLength();
+}
+
+template< typename TCoordinate >
+constexpr bool Line2< TCoordinate >::operator>( Line2< TCoordinate > const &that )
+{
+	return getLength() > that.getLength();
+}
+
+template< typename TCoordinate >
+constexpr typename Line2< TCoordinate >::Length Line2< TCoordinate >::getLength() const noexcept
+{
+	return from.getDistance( to );
+}
+
+template< typename TCoordinate >
+constexpr typename Line2< TCoordinate >::Center Line2< TCoordinate >::getCenter() const noexcept
+{
+	return Line2< TCoordinate >( from + getLength() / 2.f, to + getLength() / 2.f );
+}
+
+template< typename TCoordinate >
+typename Line2< TCoordinate >::Plot Line2< TCoordinate >::getPlot() const noexcept
+{
+	Plot plot;
+	Point temp = from;
+
+	signed long deltaX( to.x - temp.x );
+	signed short const iX(( deltaX > 0 ) - ( deltaX < 0 ));
 	deltaX = std::abs( deltaX ) << 1;
 
-	int deltaY( to.y - temp.y );
-	signed char const iY(( deltaY > 0 ) - ( deltaY < 0 ));
+	signed long deltaY( to.y - temp.y );
+	signed short const iY(( deltaY > 0 ) - ( deltaY < 0 ));
 	deltaY = std::abs( deltaY ) << 1;
 	
-	line.push_back( temp );
+	plot.push_back( temp );
 
 	if( deltaX >= deltaY )
 	{
-		int16_t error( deltaY - ( deltaX >> 1 ));
+		signed long error( deltaY - ( deltaX >> 1 ));
 
 		while( temp.x != to.x )
 		{
@@ -92,12 +195,12 @@ std::vector< Point3 > plotLine( Point3 const &from, Point3 const &to )
 			error += deltaY;
 			temp.x += iX;
 
-			line.push_back( temp );
+			plot.push_back( temp );
 		}
 	}
 	else
 	{
-		int16_t error( deltaX - ( deltaY >> 1 ));
+		signed long error( deltaX - ( deltaY >> 1 ));
  
 		while( temp.y != to.y )
 		{
@@ -106,16 +209,21 @@ std::vector< Point3 > plotLine( Point3 const &from, Point3 const &to )
 				error -= deltaY;
 				temp.x += iX;
 			}
-	
+
 			error += deltaX;
 			temp.y += iY;
  
-			line.push_back( temp );
+			plot.push_back( temp );
 		}
 	}
-	return line;
+	return plot;
 }
-
+/* TODO
+template< typename TCoordinate >
+typename Line2< TCoordinate >::Plot Line2< TCoordinate >::getBounds() const noexcept
+{
+	Plot bounds;
+	return bounds;
 }*/
 
 }
