@@ -1,3 +1,4 @@
+#include <data/config.hpp>
 #include <render/tileset.hpp>
 #include <render/sprite.hpp>
 #include <world/tile/tileSubtype.hpp>
@@ -7,11 +8,18 @@
 namespace coldline
 {
 
+Config const config =
+{
+	"testLocation",
+	{ 1024, 768 }
+};
+
 Tileset const tilesTileset =
 {
 	"tilesets/tiles.png",
 	{ 16, 16 }
 };
+
 Tileset const entitiesTileset =
 {
 	"tilesets/entities.png",
@@ -77,6 +85,7 @@ EntitySubtype const door =
 
 Dataset::Dataset()
 {
+	mObjects[ "config" ] = &config;
 	mObjects[ "nothing" ] = &nothing;
 	mObjects[ "stoneFloor" ] = &stoneFloor;
 	mObjects[ "stoneWall" ] = &stoneWall;
