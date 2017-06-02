@@ -26,47 +26,48 @@ void Sprite::draw( sf::RenderTarget &target, sf::RenderStates states ) const
 {
 	states.texture = &mTileset.getTexture();
 	sf::VertexArray square( sf::Quads, 4 );
+	screen::Size spriteSize = mTileset.getTileSize();
 
 	square[ 0 ].position =
 	{
-		0.f * mTileset.getSpriteSize().x,
-		0.f * mTileset.getSpriteSize().y
+		0.f * spriteSize.x,
+		0.f * spriteSize.y
 	};
 	square[ 1 ].position =
 	{
-		1.f * mTileset.getSpriteSize().x,
-		0.f * mTileset.getSpriteSize().y
+		1.f * spriteSize.x,
+		0.f * spriteSize.y
 	};
 	square[ 2 ].position =
 	{
-		1.f * mTileset.getSpriteSize().x,
-		1.f * mTileset.getSpriteSize().y
+		1.f * spriteSize.x,
+		1.f * spriteSize.y
 	};
 	square[ 3 ].position =
 	{
-		0.f * mTileset.getSpriteSize().x,
-		1.f * mTileset.getSpriteSize().y
+		0.f * spriteSize.x,
+		1.f * spriteSize.y
 	};
 
 	square[ 0 ].texCoords =
 	{
-		(( float )mTilesetPosition.x + 0.f ) * mTileset.getSpriteSize().x,
-		(( float )mTilesetPosition.y + 0.f ) * mTileset.getSpriteSize().y
+		(( float )mTilesetPosition.x + 0.f ) * spriteSize.x,
+		(( float )mTilesetPosition.y + 0.f ) * spriteSize.y
 	};
 	square[ 1 ].texCoords =
 	{
-		(( float )mTilesetPosition.x + 1.f ) * mTileset.getSpriteSize().x,
-		(( float )mTilesetPosition.y + 0.f ) * mTileset.getSpriteSize().y
+		(( float )mTilesetPosition.x + 1.f ) * spriteSize.x,
+		(( float )mTilesetPosition.y + 0.f ) * spriteSize.y
 	};
 	square[ 2 ].texCoords =
 	{
-		(( float )mTilesetPosition.x + 1.f ) * mTileset.getSpriteSize().x,
-		(( float )mTilesetPosition.y + 1.f ) * mTileset.getSpriteSize().y
+		(( float )mTilesetPosition.x + 1.f ) * spriteSize.x,
+		(( float )mTilesetPosition.y + 1.f ) * spriteSize.y
 	};
 	square[ 3 ].texCoords =
 	{
-		(( float )mTilesetPosition.x + 0.f ) * mTileset.getSpriteSize().x,
-		(( float )mTilesetPosition.y + 1.f ) * mTileset.getSpriteSize().y
+		(( float )mTilesetPosition.x + 0.f ) * spriteSize.x,
+		(( float )mTilesetPosition.y + 1.f ) * spriteSize.y
 	};
 
 	target.draw( square, states );
@@ -74,7 +75,7 @@ void Sprite::draw( sf::RenderTarget &target, sf::RenderStates states ) const
 
 screen::Size const &Sprite::getSize() const noexcept
 {
-	return mTileset.getSpriteSize();
+	return mTileset.getTileSize();
 }
 
 }

@@ -38,7 +38,7 @@ void TileMap::update( Tiles const &tiles )
 		{
 			sf::Vertex *quad = &mVertices[( iY + iX * mSize.x ) * 4 ];
 
-			screen::Size spriteSize = mTileset->getSpriteSize();
+			screen::Size tileSize = mTileset->getTileSize();
 			screen::Point const &tilePosition = tiles[ iY ][ iX ];
 
 			quad[ 0 ].position =
@@ -64,23 +64,23 @@ void TileMap::update( Tiles const &tiles )
 
 			quad[ 0 ].texCoords =
 			{
-				( tilePosition.x + 0 ) * iX * spriteSize.x,
-				( tilePosition.y + 0 ) * iY * spriteSize.y
+				( tilePosition.x + 0 ) * iX * tileSize.x,
+				( tilePosition.y + 0 ) * iY * tileSize.y
 			};
 			quad[ 1 ].texCoords =
 			{
-				( tilePosition.x + 1 ) * iX * spriteSize.x,
-				( tilePosition.y + 0 ) * iY * spriteSize.y
+				( tilePosition.x + 1 ) * iX * tileSize.x,
+				( tilePosition.y + 0 ) * iY * tileSize.y
 			};
 			quad[ 2 ].texCoords =
 			{
-				( tilePosition.x + 1 ) * iX * spriteSize.x,
-				( tilePosition.y + 1 ) * iY * spriteSize.y
+				( tilePosition.x + 1 ) * iX * tileSize.x,
+				( tilePosition.y + 1 ) * iY * tileSize.y
 			};
 			quad[ 3 ].texCoords =
 			{
-				( tilePosition.x + 0 ) * iX * spriteSize.x,
-				( tilePosition.y + 1 ) * iY * spriteSize.y
+				( tilePosition.x + 0 ) * iX * tileSize.x,
+				( tilePosition.y + 1 ) * iY * tileSize.y
 			};
 		}
 	}

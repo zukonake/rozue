@@ -16,12 +16,12 @@ class Tileset : public virtual Loadable
 {
 	public:
 	Tileset( DataMap const &dataMap );
-	Tileset( std::string const &path, screen::Size const &spriteSize );
+	Tileset( std::string const &path, screen::Size const &tileSize );
 
-	screen::Size const &getSpriteSize() const noexcept;
+	screen::Size const &getTileSize() const noexcept;
 	sf::Texture const &getTexture() const noexcept;
 	private:
-	screen::Size mSpriteSize;
+	screen::Size mTileSize;
 
 	sf::Texture mTexture;
 };

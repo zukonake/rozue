@@ -6,20 +6,20 @@ namespace coldline
 {
 
 Tileset::Tileset( DataMap const &dataMap ) :
-	mSpriteSize( dataMap.toVector2< screen::Coordinate >())
+	mTileSize( dataMap.toVector2< screen::Coordinate >())
 {
 	mTexture.loadFromFile( dataMap.getString( "path" ));
 }
 
-Tileset::Tileset( std::string const &path, screen::Size const &spriteSize ) :
-	mSpriteSize( spriteSize )
+Tileset::Tileset( std::string const &path, screen::Size const &tileSize ) :
+	mTileSize( tileSize )
 {
 	mTexture.loadFromFile( path );
 }
 
-screen::Size const &Tileset::getSpriteSize() const noexcept
+screen::Size const &Tileset::getTileSize() const noexcept
 {
-	return mSpriteSize;
+	return mTileSize;
 }
 
 sf::Texture const &Tileset::getTexture() const noexcept
