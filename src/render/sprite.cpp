@@ -30,44 +30,44 @@ void Sprite::draw( sf::RenderTarget &target, sf::RenderStates states ) const
 
 	square[ 0 ].position =
 	{
-		0.f * spriteSize.x,
-		0.f * spriteSize.y
+		0 * spriteSize.x,
+		0 * spriteSize.y
 	};
 	square[ 1 ].position =
 	{
-		1.f * spriteSize.x,
-		0.f * spriteSize.y
+		1 * spriteSize.x,
+		0 * spriteSize.y
 	};
 	square[ 2 ].position =
 	{
-		1.f * spriteSize.x,
-		1.f * spriteSize.y
+		1 * spriteSize.x,
+		1 * spriteSize.y
 	};
 	square[ 3 ].position =
 	{
-		0.f * spriteSize.x,
-		1.f * spriteSize.y
+		0 * spriteSize.x,
+		1 * spriteSize.y
 	};
 
 	square[ 0 ].texCoords =
 	{
-		(( float )mTilesetPosition.x + 0.f ) * spriteSize.x,
-		(( float )mTilesetPosition.y + 0.f ) * spriteSize.y
+		( mTilesetPosition.x + 0 ) * spriteSize.x,
+		( mTilesetPosition.y + 0 ) * spriteSize.y
 	};
 	square[ 1 ].texCoords =
 	{
-		(( float )mTilesetPosition.x + 1.f ) * spriteSize.x,
-		(( float )mTilesetPosition.y + 0.f ) * spriteSize.y
+		( mTilesetPosition.x + 1 ) * spriteSize.x,
+		( mTilesetPosition.y + 0 ) * spriteSize.y
 	};
 	square[ 2 ].texCoords =
 	{
-		(( float )mTilesetPosition.x + 1.f ) * spriteSize.x,
-		(( float )mTilesetPosition.y + 1.f ) * spriteSize.y
+		( mTilesetPosition.x + 1 ) * spriteSize.x,
+		( mTilesetPosition.y + 1 ) * spriteSize.y
 	};
 	square[ 3 ].texCoords =
 	{
-		(( float )mTilesetPosition.x + 0.f ) * spriteSize.x,
-		(( float )mTilesetPosition.y + 1.f ) * spriteSize.y
+		( mTilesetPosition.x + 0 ) * spriteSize.x,
+		( mTilesetPosition.y + 1 ) * spriteSize.y
 	};
 
 	target.draw( square, states );
