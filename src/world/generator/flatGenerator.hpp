@@ -5,6 +5,9 @@
 namespace coldline
 {
 
+namespace world
+{
+
 class Dataset;
 
 class FlatGenerator : public Generator
@@ -16,5 +19,7 @@ class FlatGenerator : public Generator
 	private:
 	Dataset const &mDataset;
 };
+
+}
 
 }

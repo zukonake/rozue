@@ -1,5 +1,7 @@
-#include <world/tile/tileSubtype.hpp>
+#include <world/typedef.hpp>
+#include <world/chunk/typedef.hpp>
 #include <world/tile/tile.hpp>
+#include <world/entity/entitySubtype.hpp>
 #include <world/entity/entity.hpp>
 #include <world/generator/generator.hpp>
 #include "world.hpp"
@@ -8,8 +10,7 @@ namespace coldline
 {
 
 World::World( Generator * const &generator ) :
-	mGenerator( generator ),
-	mMap( *generator )
+	mGenerator( generator )
 {
 
 }
@@ -23,20 +24,24 @@ World::~World()
 
 
 
-Tile &World::operator[]( map::Point3 const &point )
+Tile &World::operator[]( world::Point3 const &point )
 {
-	return mMap[ point ];
+	if( exists( point ))
+	{
+		return loadChunk( toChunkPoint( point ))[ toInternalPoint( point )];
+	}
+	return mChunks[ point ][ toInternalPoint( point )];
 }
 
 
 
-bool World::sees( map::Point3 const &from, map::Point3 const &to )
+bool World::sees( world::Point3 const &from, world::Point3 const &to )
 {
 	if( !exists( to ) || !exists( from ))
 	{
 		return false;
 	}
-	auto plot = map::Line3( from, to ).getPlot();
+	auto plot = world::Line3( from, to ).getPlot();
 	if( plot.empty())
 	{
 		return false;
@@ -58,24 +63,24 @@ bool World::sees( map::Point3 const &from, map::Point3 const &to )
 	return true;
 }
 
-bool World::canMove( map::Point3 const &from, map::Point3 const &to )
+bool World::canMove( world::Point3 const &from, world::Point3 const &to )
 {
 	return sees( from, to ) && operator[]( to ).passable() && !entityOn( to );
 }
 
-bool World::entityOn( map::Point3 const &point ) const
+bool World::entityOn( world::Point3 const &point ) const
 {
 	return mEntitiesMap.count( point );
 }
 
 
 
-Entity const &World::getEntityOn( map::Point3 const &point ) const
+Entity const &World::getEntityOn( world::Point3 const &point ) const
 {
 	return *mEntitiesMap.at( point );
 }
 
-Entity &World::createEntity( map::Point3 const &position, EntitySubtype const &subtype )
+Entity &World::createEntity( world::Point3 const &position, EntitySubtype const &subtype )
 {
 	if( !entityOn( position ))
 	{
@@ -92,7 +97,7 @@ Entity &World::createPlayer( EntitySubtype const &subtype )
 
 
 
-void World::moveEntity( map::Point3 const &from, map::Point3 const &to )
+void World::moveEntity( world::Point3 const &from, world::Point3 const &to )
 {
 	mEntitiesMap[ to ] = mEntitiesMap[ from ];
 	mEntitiesMap.erase( from );
@@ -103,9 +108,57 @@ void World::simulate()
 
 }
 
-bool World::exists( map::Point3 const &point )
+
+
+bool World::exists( world::Point3 const &point )
 {
-	return mMap.exists( point );
+	return mChunks.count( point ) > 0;
+}
+
+Chunk &World::loadChunk( world::chunk::Point const &point )
+{
+	mChunks[ point ] = mGenerator.generate( point );
+}
+
+
+
+world::chunk::Point World::toChunkPoint( world::Point3 const &point )
+{
+	world::chunk::Point output = point;
+	if( output.x < 0 )
+	{
+		output.x -= chunkSize.x - 1;
+	}
+	if( output.y < 0 )
+	{
+		output.y -= chunkSize.y - 1;
+	}
+	if( output.z < 0 )
+	{
+		output.z -= chunkSize.z - 1;
+	}
+	return output;
+}
+
+world::chunk::InternalPoint World::toInternalPoint( world::Point3 const &point )
+{
+	world::Point3 output = point;
+	output.x %= chunkSize.x;
+	output.y %= chunkSize.y;
+	output.z %= chunkSize.z;
+	if( output.x < 0 )
+	{
+		output.x += chunkSize.x;
+	}
+	if( output.y < 0 )
+	{
+		output.y += chunkSize.y;
+	}
+	if( output.z < 0 )
+	{
+		output.z += chunkSize.z;
+	}
+	return output;
 }
 
 }

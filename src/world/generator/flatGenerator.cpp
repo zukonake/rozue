@@ -3,6 +3,9 @@
 namespace coldline
 {
 
+namespace world
+{
+
 FlatGenerator::FlatGenerator( Dataset const &dataset ) :
 	mDataset( dataset )
 {
@@ -11,6 +14,8 @@ FlatGenerator::FlatGenerator( Dataset const &dataset ) :
 
 Chunk FlatGenerator::generate( chunk::Point const &position )
 {
+
+}
 
 }
 

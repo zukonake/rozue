@@ -6,6 +6,9 @@
 namespace coldline
 {
 
+namespace world
+{
+
 class Generator
 {
 	public:
@@ -13,5 +16,7 @@ class Generator
 
 	virtual Chunk generate( chunk::Point const &position ) = 0;
 };
+
+}
 
 }
