@@ -8,7 +8,6 @@
 #include <render/typedef.hpp>
 #include <render/sprite.hpp>
 #include <world/map/typedef.hpp>
-#include <world/typedef.hpp>
 
 namespace coldline
 {
@@ -43,7 +42,7 @@ class Camera
 	Sprite const &mNothing;
 	World &mWorld;
 	std::reference_wrapper< Entity > mEntity;
-	world::Position mPosition;
+	map::Point3 mPosition;
 
 	unsigned short const mFov = 6;
 };

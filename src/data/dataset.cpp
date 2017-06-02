@@ -10,7 +10,6 @@ namespace coldline
 
 Config const config =
 {
-	"testLocation",
 	{ 1024, 768 }
 };
 

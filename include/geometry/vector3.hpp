@@ -42,9 +42,13 @@ struct Vector3
 	constexpr Vector3( T const &x, T const &y, T const &z ) noexcept;
 	constexpr Vector3( Vector2< T > const &xy, T const &z ) noexcept;
 	template< typename U >
+	constexpr Vector3( Vector3< U > const &that ) noexcept;
+	template< typename U >
 	constexpr explicit Vector3( U const &that );
 
-	template< typename U > //TODO from vector3< U >
+	template< typename U >
+	constexpr operator Vector3< U >() noexcept;
+	template< typename U >
 	constexpr explicit operator U() const;
 
 	constexpr Vector3< T > operator*( Vector3< T > const &that ) const noexcept;
@@ -102,7 +106,17 @@ constexpr Vector3< T >::Vector3( Vector2< T > const &xy, T const &z ) noexcept :
 
 template< typename T >
 template< typename U >
-constexpr Vector3< T >::Vector3( U const &that ):
+constexpr Vector3< T >::Vector3( Vector3< U > const &that ) noexcept :
+	x( that.x ),
+	y( that.y ),
+	z( that.z )
+{
+	static_assert( std::is_arithmetic< T >::value, "Vector parameters mus be arithmetic" );
+}
+
+template< typename T >
+template< typename U >
+constexpr Vector3< T >::Vector3( U const &that ) :
 	x( that.x ),
 	y( that.y ),
 	z( that.z )
@@ -111,6 +125,13 @@ constexpr Vector3< T >::Vector3( U const &that ):
 }
 
 
+
+template< typename T >
+template< typename U >
+constexpr Vector3< T >::operator Vector3< U >() noexcept
+{
+	return Vector3< U >( x, y, z );
+}
 
 template< typename T >
 template< typename U >

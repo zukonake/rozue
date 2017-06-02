@@ -3,13 +3,14 @@
 #include <data/config.hpp>
 #include <data/inputData.hpp>
 #include <core/client.hpp>
+#include <world/generator/flatGenerator.hpp>
 #include "server.hpp"
 
 namespace coldline
 {
 
 Server::Server() :
-	mWorld( mDataset.at< Config >( "config" ).startingLocation )
+	mWorld( new FlatGenerator( mDataset ))
 {
 
 }

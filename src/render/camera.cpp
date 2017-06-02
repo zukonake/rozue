@@ -7,6 +7,7 @@
 #include <world/tile/tileSubtype.hpp>
 #include <world/map/map.hpp>
 #include <world/world.hpp>
+#include <world/entity/entity.hpp>
 #include "camera.hpp"
 
 namespace coldline
@@ -29,13 +30,13 @@ bool Camera::move( map::Vector3 const &by )
 	{
 		if( mEntity.get().move( by ))
 		{
-			mPosition.point += by;
+			mPosition += by;
 			return true;
 		}
 	}
 	else
 	{
-		mPosition.point += by;
+		mPosition += by;
 	}
 	return false;
 }
@@ -46,20 +47,20 @@ bool Camera::teleport( map::Point3 const &to )
 	{
 		if( mEntity.get().teleport( to ))
 		{
-			mPosition.point = to;
+			mPosition = to;
 			return true;
 		}
 	}
 	else
 	{
-		mPosition.point = to;
+		mPosition = to;
 	}
 	return false;
 }
 
 void Camera::lock()
 {
-	teleport( mEntity.get().getPoint());
+	teleport( mEntity.get().getPosition());
 	mLocked = true;
 }
 
@@ -131,7 +132,7 @@ void Camera::addDrawable( std::queue< TransformedDrawable > &renderQueue,
 //TODO candidate for deletion
 bool Camera::sees( map::Point3 const &what ) const
 {
-	return mWorld[ mPosition.location ].sees( mEntity.get().getPoint(), what );
+	return mWorld.sees( mEntity.get().getPosition(), what );
 }
 
 }

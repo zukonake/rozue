@@ -3,9 +3,7 @@
 namespace coldline
 {
 
-Config::Config( world::Location const &startingLocation,
-	screen::Size const &screenSize ) :
-	startingLocation( startingLocation ),
+Config::Config( screen::Size const &screenSize ) :
 	screenSize( screenSize )
 {
 
