@@ -1,33 +1,34 @@
 #pragma once
 
-#include <geometry/vector2.hpp>
-#include <geometry/vector3.hpp>
-#include <geometry/rectangle.hpp>
-#include <geometry/cuboid.hpp>
+#include <unordered_map>
 //
 #include <world/map/typedef.hpp>
-#include <world/entity/entityMap.hpp>
+#include <world/map/chunk/typedef.hpp>
+#include <world/map/chunk/chunk.hpp>
 
 namespace coldline
 {
 
 class Tile;
+class Generator;
 
-class Map : public EntityMap
+class Map
 {
 	public:
-	virtual Tile &operator[]( map::Point3 const &point ) = 0;
-	virtual Tile &operator[]( map::Point3 const &point ) const = 0;
+	Map( Generator &generator );
 
-	virtual map::Point3 getFreePosition() = 0;
-	virtual map::Point3 getFreePosition( map::Coordinate const &z ) = 0;
+	Tile &operator[]( map::Point3 const &point );
 
-	virtual bool exists( map::Point3 const &point ) = 0;
+	bool exists( map::Point3 const &point );
+	private:
+	Chunk &loadChunk( chunk::Point const &point );
 
-	bool sees( map::Point3 const &from, map::Point3 const &to );
-	bool canMove( map::Point3 const &from, map::Point3 const &to );
+	static chunk::Point toChunkPoint( map::Point3 const &point );
+	static chunk::InternalPoint toInternalPoint( map::Point3 const &point );
 
-	virtual void simulate();
+	Generator &mGenerator;
+
+	std::unordered_map< chunk::Point, Chunk > mChunks;
 };
 
 }

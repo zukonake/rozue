@@ -1,44 +1,73 @@
 #include <world/tile/tile.hpp>
+#include <world/map/chunk/chunk.hpp>
+#include <world/generator/generator.hpp>
 #include "map.hpp"
-
+//TODO move tile dir to map dir?
 namespace coldline
 {
 
-bool Map::sees( map::Point3 const &from, map::Point3 const &to )
+Map::Map( Generator &generator ) :
+	mGenerator( generator )
 {
-	if( !exists( to ) || !exists( from ))
-	{
-		return false;
-	}
-	auto plot = map::Line3( from, to ).getPlot();
-	if( plot.empty())
-	{
-		return false;
-	}
-	for( unsigned i = 1; i < plot.size() - 1; i++ )
-	{
-		if( !this->operator[]( plot[ i ]).passable())
-		{
-			return false;
-		}
-		if( entityOn( plot[ i ]))
-		{
-			if( getEntityOn( plot[ i ]).passable())
-			{
-				return false;
-			}
-		}
-	}
-	return true;
+
 }
 
-bool Map::canMove( map::Point3 const &from, map::Point3 const &to )
+Tile &Map::operator[]( map::Point3 const &point )
 {
-	if( !exists( from ) || !exists( to ))
+	if( exists( point ))
 	{
-		return false;
+		return loadChunk( toChunkPoint( point ))[ toInternalPoint( point )];
 	}
-	return EntityMap::canMove( to ) && this->operator[]( to ).passable();
+	return mChunks[ point ][ toInternalPoint( point )];
+}
+
+bool Map::exists( map::Point3 const &point )
+{
+	return mChunks.count( point ) > 0;
+}
+
+Chunk &Map::loadChunk( chunk::Point const &point )
+{
+	mChunks[ point ] = mGenerator.generate( point );
+}
+
+chunk::Point Map::toChunkPoint( map::Point3 const &point )
+{
+	chunk::Point output = point;
+	if( output.x < 0 )
+	{
+		output.x -= chunkSize.x - 1;
+	}
+	if( output.y < 0 )
+	{
+		output.y -= chunkSize.y - 1;
+	}
+	if( output.z < 0 )
+	{
+		output.z -= chunkSize.z - 1;
+	}
+	return output;
+}
+
+chunk::InternalPoint Map::toInternalPoint( map::Point3 const &point )
+{
+	map::Point3 output = point;
+	output.x %= chunkSize.x;
+	output.y %= chunkSize.y;
+	output.z %= chunkSize.z;
+	if( output.x < 0 )
+	{
+		output.x += chunkSize.x;
+	}
+	if( output.y < 0 )
+	{
+		output.y += chunkSize.y;
+	}
+	if( output.z < 0 )
+	{
+		output.z += chunkSize.z;
+	}
+	return output;
 }
 
 }
