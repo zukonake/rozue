@@ -13,24 +13,24 @@ class Tileset;
 class TileMap : public sf::Drawable
 {
 	public:
-	typedef std::vector< std::vector< screen::Point > > Tiles;
+	typedef std::vector< std::vector< render::Point > > Tiles;
 
 	TileMap(
-		screen::Size const &tileSize,
-		screen::Size const &screenSize,
+		render::Size const &tileSize,
+		render::Size const &screenSize,
 		Tileset const *tileset );
 
 	virtual void draw( sf::RenderTarget &target, sf::RenderStates states ) const override;
 
 	void update( Tiles const &tiles );
-	void setTileSize( screen::Size const &tileSize );
-	void setScreenSize( screen::Size const &screenSize );
+	void setTileSize( render::Size const &tileSize );
+	void setScreenSize( render::Size const &screenSize );
 	void setTileset( Tileset const *tileset );
 	private:
 	void updateSize();
-	screen::Size mSize;
-	screen::Size mTileSize;
-	screen::Size mScreenSize;
+	render::Size mSize;
+	render::Size mTileSize;
+	render::Size mScreenSize;
 	Tileset const *mTileset;
 
 	sf::VertexArray mVertices;

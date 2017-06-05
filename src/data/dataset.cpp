@@ -1,6 +1,6 @@
 #include <data/config.hpp>
 #include <render/tileset.hpp>
-#include <render/sprite.hpp>
+#include <render/tile.hpp>
 #include <world/tile/tileSubtype.hpp>
 #include <world/entity/entitySubtype.hpp>
 #include "dataset.hpp"
@@ -31,7 +31,7 @@ Tileset const creaturesTileset =
 	{ 16, 16 }
 };
 
-Sprite const nothing =
+render::Tile const nothing =
 {
 	tilesTileset,
 	{ 0, 0 }

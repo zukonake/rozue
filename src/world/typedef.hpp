@@ -17,9 +17,6 @@ class Tile;
 namespace world
 {
 
-namespace map
-{
-
 typedef long long Coordinate;
 typedef unsigned long long Length;
 typedef ::coldline::geometry::Vector2< Coordinate > Point2;
@@ -34,8 +31,6 @@ template< Length width, Length height >
 using Surface = ::coldline::geometry::Map2< Tile, width, height >;
 template< Length width, Length height, Length depth >
 using Space = ::coldline::geometry::Map3< Tile, width, height, depth >;
-
-}
 
 }
 

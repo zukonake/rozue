@@ -1,6 +1,5 @@
 #include <world/typedef.hpp>
-#include <world/chunk/typedef.hpp>
-#include <world/tile/tile.hpp>
+#include <world/chunk/chunk.hpp>
 #include <world/entity/entitySubtype.hpp>
 #include <world/entity/entity.hpp>
 #include <world/generator/generator.hpp>
@@ -115,48 +114,49 @@ bool World::exists( world::Point3 const &point )
 	return mChunks.count( point ) > 0;
 }
 
-Chunk &World::loadChunk( world::chunk::Point const &point )
+Chunk &World::loadChunk( chunk::Point const &point )
 {
-	mChunks[ point ] = mGenerator.generate( point );
+	mChunks[ point ] = mGenerator->generate( point );
+	return mChunks[ point ];
 }
 
 
 
-world::chunk::Point World::toChunkPoint( world::Point3 const &point )
+chunk::Point World::toChunkPoint( world::Point3 const &point )
 {
-	world::chunk::Point output = point;
+	chunk::Point output = point;
 	if( output.x < 0 )
 	{
-		output.x -= chunkSize.x - 1;
+		output.x -= Chunk::size.x - 1;
 	}
 	if( output.y < 0 )
 	{
-		output.y -= chunkSize.y - 1;
+		output.y -= Chunk::size.y - 1;
 	}
 	if( output.z < 0 )
 	{
-		output.z -= chunkSize.z - 1;
+		output.z -= Chunk::size.z - 1;
 	}
 	return output;
 }
 
-world::chunk::InternalPoint World::toInternalPoint( world::Point3 const &point )
+chunk::InternalPoint World::toInternalPoint( world::Point3 const &point )
 {
 	world::Point3 output = point;
-	output.x %= chunkSize.x;
-	output.y %= chunkSize.y;
-	output.z %= chunkSize.z;
+	output.x %= Chunk::size.x;
+	output.y %= Chunk::size.y;
+	output.z %= Chunk::size.z;
 	if( output.x < 0 )
 	{
-		output.x += chunkSize.x;
+		output.x += Chunk::size.x;
 	}
 	if( output.y < 0 )
 	{
-		output.y += chunkSize.y;
+		output.y += Chunk::size.y;
 	}
 	if( output.z < 0 )
 	{
-		output.z += chunkSize.z;
+		output.z += Chunk::size.z;
 	}
 	return output;
 }

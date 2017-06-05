@@ -1,81 +1,85 @@
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/PrimitiveType.hpp>
 //
-#include <data/dataMap.hpp>
-#include <data/dataset.hpp>
 #include <render/tileset.hpp>
+#include <render/tile.hpp>
 #include "sprite.hpp"
 
 namespace coldline
 {
 
-Sprite::Sprite( Dataset const &dataset, DataMap const &dataMap ) :
-	mTileset( dataset.at< Tileset >( dataMap.getString( "tileset" ))),
-	mTilesetPosition( dataMap.toVector2< screen::Coordinate >())
+Sprite::Sprite(
+	render::Surface const &surface,
+	render::Tile const &tile,
+	sf::Color const &color )
 {
-
-}
-
-Sprite::Sprite( Tileset const &tileset, screen::Point const &tilesetPosition ) :
-	mTileset( tileset ),
-	mTilesetPosition( tilesetPosition )
-{
-
+	setTile( tile );
+	setSurface( surface );
+	setColor( color );
 }
 
 void Sprite::draw( sf::RenderTarget &target, sf::RenderStates states ) const
 {
-	states.texture = &mTileset.getTexture();
-	sf::VertexArray square( sf::Quads, 4 );
-	screen::Size spriteSize = mTileset.getTileSize();
-
-	square[ 0 ].position =
-	{
-		0 * spriteSize.x,
-		0 * spriteSize.y
-	};
-	square[ 1 ].position =
-	{
-		1 * spriteSize.x,
-		0 * spriteSize.y
-	};
-	square[ 2 ].position =
-	{
-		1 * spriteSize.x,
-		1 * spriteSize.y
-	};
-	square[ 3 ].position =
-	{
-		0 * spriteSize.x,
-		1 * spriteSize.y
-	};
-
-	square[ 0 ].texCoords =
-	{
-		( mTilesetPosition.x + 0 ) * spriteSize.x,
-		( mTilesetPosition.y + 0 ) * spriteSize.y
-	};
-	square[ 1 ].texCoords =
-	{
-		( mTilesetPosition.x + 1 ) * spriteSize.x,
-		( mTilesetPosition.y + 0 ) * spriteSize.y
-	};
-	square[ 2 ].texCoords =
-	{
-		( mTilesetPosition.x + 1 ) * spriteSize.x,
-		( mTilesetPosition.y + 1 ) * spriteSize.y
-	};
-	square[ 3 ].texCoords =
-	{
-		( mTilesetPosition.x + 0 ) * spriteSize.x,
-		( mTilesetPosition.y + 1 ) * spriteSize.y
-	};
-
-	target.draw( square, states );
+	states.texture = &mTileset->getTexture();
+	target.draw( mVertices, 4, sf::Quads, states );
 }
 
-screen::Size const &Sprite::getSize() const noexcept
+void Sprite::setColor( sf::Color const &color )
 {
-	return mTileset.getTileSize();
+	mVertices[ 0 ].color = color;
+	mVertices[ 1 ].color = color;
+	mVertices[ 2 ].color = color;
+	mVertices[ 3 ].color = color;
+}
+
+void Sprite::setSurface( render::Surface const &surface )
+{
+	mVertices[ 0 ].position =
+	{
+		( 0 * surface.w ) + surface.x,
+		( 0 * surface.h ) + surface.y
+	};
+	mVertices[ 1 ].position =
+	{
+		( 1 * surface.w ) + surface.x,
+		( 0 * surface.h ) + surface.y
+	};
+	mVertices[ 2 ].position =
+	{
+		( 1 * surface.w ) + surface.x,
+		( 1 * surface.h ) + surface.y
+	};
+	mVertices[ 3 ].position =
+	{
+		( 0 * surface.w ) + surface.x,
+		( 1 * surface.h ) + surface.y
+	};
+}
+
+void Sprite::setTile( render::Tile const &tile )
+{
+	mTileset = &tile.tileset;
+	render::Size tileSize = mTileset->getTileSize();
+
+	mVertices[ 0 ].texCoords =
+	{
+		( tile.tilesetPosition.x + 0 ) * tileSize.x,
+		( tile.tilesetPosition.y + 0 ) * tileSize.y
+	};
+	mVertices[ 1 ].texCoords =
+	{
+		( tile.tilesetPosition.x + 1 ) * tileSize.x,
+		( tile.tilesetPosition.y + 0 ) * tileSize.y
+	};
+	mVertices[ 2 ].texCoords =
+	{
+		( tile.tilesetPosition.x + 1 ) * tileSize.x,
+		( tile.tilesetPosition.y + 1 ) * tileSize.y
+	};
+	mVertices[ 3 ].texCoords =
+	{
+		( tile.tilesetPosition.x + 0 ) * tileSize.x,
+		( tile.tilesetPosition.y + 1 ) * tileSize.y
+	};
 }
 
 }

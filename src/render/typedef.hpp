@@ -4,10 +4,7 @@
 #include <geometry/line2.hpp>
 #include <geometry/rectangle.hpp>
 
-namespace coldline
-{
-
-namespace screen
+namespace coldline::render
 {
 
 typedef float Coordinate;
@@ -18,8 +15,6 @@ typedef ::coldline::geometry::Vector2< Coordinate > Size;
 typedef ::coldline::geometry::Vector2< Coordinate > Vector;
 typedef ::coldline::geometry::Line2< Coordinate > Line;
 typedef ::coldline::geometry::Rectangle< Coordinate, Length > Surface;
-
-}
 
 }
 

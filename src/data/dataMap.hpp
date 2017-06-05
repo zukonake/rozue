@@ -20,6 +20,8 @@ class DataMap
 	virtual double getDouble( std::size_t const &index ) const = 0;
 	virtual std::string getString( std::string const &key ) const = 0;
 	virtual std::string getString( std::size_t const &index ) const = 0;
+	virtual DataMap const *getDataMap( std::string const &key ) const = 0;
+	virtual DataMap const *getDataMap( std::size_t const &index ) const = 0;
 
 	template< typename T >
 	geometry::Vector2< T > toVector2() const;

@@ -4,8 +4,7 @@
 int main()
 {
 	coldline::Client client( "rozueClient" );
-	coldline::Server server;
-	client.connect( &server );
+	coldline::Server server( &client );
 	server.loop();
 	return 0;
 }

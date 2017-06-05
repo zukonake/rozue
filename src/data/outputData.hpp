@@ -2,14 +2,14 @@
 
 #include <queue>
 //
-#include <render/transformedDrawable.hpp>
+#include <render/sprite.hpp>
 
 namespace coldline
 {
 
 struct OutputData
 {
-	std::queue< TransformedDrawable > renderQueue;
+	std::queue< Sprite > renderQueue;
 	bool playing = true;
 };
 

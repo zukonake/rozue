@@ -1,13 +1,17 @@
 #pragma once
 
-#include <SFML/Graphics/Drawable.hpp>
-
 namespace coldline
 {
 
-class TileSubtype;
+namespace render
+{
+	class Tile;
+}
 
-class Tile : public sf::Drawable
+class TileSubtype;
+class Entity;
+
+class Tile
 {
 	public:
 	Tile();
@@ -17,7 +21,7 @@ class Tile : public sf::Drawable
 	Tile &operator=( Tile const &that );
 	Tile &operator=( TileSubtype const &that );
 
-	virtual void draw( sf::RenderTarget &target, sf::RenderStates states ) const override;
+	render::Tile const &getRenderTile() const noexcept;
 
 	bool passable() const;
 	private:

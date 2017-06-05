@@ -1,9 +1,8 @@
 #include <data/inputData.hpp>
 #include <data/config.hpp>
-#include <render/sprite.hpp>
+#include <render/tile.hpp>
 #include <data/dataset.hpp>
 #include <world/entity/entitySubtype.hpp>
-#include <world/map/map.hpp>
 #include <world/world.hpp>
 #include "player.hpp"
 
@@ -13,7 +12,7 @@ namespace coldline
 Player::Player( Dataset const &dataset, World& world ) :
 	mDataset( dataset ),
 	mWorld( world ),
-	mCamera( mDataset.at< Sprite >( "nothing" ),
+	mCamera( mDataset.at< render::Tile >( "nothing" ),
 		mWorld,
 		mWorld.createPlayer( mDataset.at< EntitySubtype >( "human" )))
 {

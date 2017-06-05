@@ -1,3 +1,4 @@
+#include <utility>
 #include <stdexcept>
 //
 #include <data/config.hpp>
@@ -9,62 +10,32 @@
 namespace coldline
 {
 
-Server::Server() :
-	mWorld( new FlatGenerator( mDataset ))
+Server::Server( Client *client ) :
+	mWorld( new FlatGenerator( mDataset )),
+	mPlayer( mDataset, mWorld ),
+	mClient( client )
 {
 
 }
 
 Server::~Server()
 {
-	for( auto iPair = mClients.cbegin(); iPair != mClients.cend(); )
-	{
-		iPair->second.second->disconnect();
-	}
+	mClient->disconnect();
 }
 
 void Server::loop()
 {
-	while( !mClients.empty())
+	while( mClient != nullptr )
 	{
 		mWorld.simulate();
-		for( auto iPair = mClients.begin(); iPair != mClients.end(); )
-		{
-			Client *client = iPair->second.second;
-			iPair->second.first.receiveInputData( iPair->second.second->requestInputData() );
-			iPair->second.second->receiveOutputData( iPair->second.first.requestOutputData() );
-			if( !client->isConnected())
-			{
-				break; //TODO works only with one client...
-			}
-		}
+		mPlayer.receiveInputData( mClient->requestInputData());
+		mClient->receiveOutputData( mPlayer.requestOutputData());
 	}
 }
 
-void Server::connect( Client* client )
+void Server::disconnect()
 {
-	mClients.emplace( client->getName(),
-		std::pair< Player, Client * >( Player( mDataset, mWorld ), client ));
-}
-
-void Server::disconnect( Client* client )
-{
-	mClients.erase( client->getName());
-}
-
-void Server::cleanClients()
-{
-	for( auto iPair = mClients.cbegin(); iPair != mClients.cend(); )
-	{
-		if( !iPair->second.second->isConnected())
-		{
-			iPair = mClients.erase( iPair );
-		}
-		else
-		{
-			++iPair;
-		}
-	}
+	mClient = nullptr;
 }
 
 }

@@ -1,9 +1,7 @@
+#include <world/chunk/chunk.hpp>
 #include "flatGenerator.hpp"
 
 namespace coldline
-{
-
-namespace world
 {
 
 FlatGenerator::FlatGenerator( Dataset const &dataset ) :
@@ -14,9 +12,8 @@ FlatGenerator::FlatGenerator( Dataset const &dataset ) :
 
 Chunk FlatGenerator::generate( chunk::Point const &position )
 {
-
-}
-
+	(void)position; //TODO
+	return Chunk();
 }
 
 }

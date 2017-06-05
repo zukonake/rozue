@@ -21,7 +21,7 @@ public:
 	void update() noexcept;
 	void draw( sf::Drawable const &drawable, sf::RenderStates states = sf::RenderStates::Default );
 
-	void openWindow( screen::Size const &windowSize,
+	void openWindow( render::Size const &windowSize,
 		std::string const &windowTitle,
 		unsigned short fpsLimit = 0,
 		bool vsync = false,
@@ -33,7 +33,7 @@ public:
 	std::vector< sf::Event > getEvents() noexcept;
 	sf::RenderWindow& getWindow() noexcept;
 	sf::View& getView() noexcept;
-	screen::Size getWindowSize() const noexcept;
+	render::Size getWindowSize() const noexcept;
 private:
 	sf::View mView;
 	sf::ContextSettings mSettings;

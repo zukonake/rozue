@@ -1,9 +1,7 @@
 #pragma once
 
-#include <SFML/Graphics/Drawable.hpp>
-//
 #include <data/loadable.hpp>
-#include <render/sprite.hpp>
+#include <render/tile.hpp>
 
 namespace coldline
 {
@@ -11,14 +9,13 @@ namespace coldline
 class Dataset;
 class DataMap;
 
-class EntitySubtype : public virtual Loadable, public Sprite
+class EntitySubtype : public virtual Loadable
 {
-	friend class Entity;
 	public:
 	EntitySubtype( Dataset const &dataset, DataMap const &dataMap );
-	EntitySubtype( Sprite const &sprite, bool const &solid );
+	EntitySubtype( render::Tile const &renderTile, bool const &solid );
 
-	private:
+	render::Tile mTile;
 	bool mSolid;
 };
 

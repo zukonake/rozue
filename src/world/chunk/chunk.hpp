@@ -1,20 +1,22 @@
 #pragma once
 
 #include <geometry/map3.hpp>
-#include <world/map/chunk/typedef.hpp>
-#include <world/map/tile/tile.hpp>
+//
+#include <world/chunk/typedef.hpp>
+#include <world/tile/tile.hpp>
 
-namespace coldline::world::map
+namespace coldline
 {
 
-template< chunk::Length width, chunk::Length height, chunk::Length depth  >
 class Chunk
 {
-	typedef ::coldline::geometryMap3< Tile, width, height, depth > ChunkValue;
 	public:
-	constexpr chunk::Size getSize() const noexcept;
-	private:
-	ChunkValue
+	Tile &operator[]( chunk::InternalPoint const &point );
+	Tile const &operator[]( chunk::InternalPoint const &point ) const;
+
+	static chunk::Size constexpr size = { 32, 32, 1 };
+	private://TODO entity vector
+	geometry::Map3< Tile, size.x, size.y, size.z > mValue;
 };
 
 }

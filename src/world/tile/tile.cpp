@@ -1,6 +1,5 @@
-#include <SFML/Graphics/RenderTarget.hpp>
-//
 #include <world/tile/tileSubtype.hpp>
+#include <render/tile.hpp>
 #include "tile.hpp"
 
 namespace coldline
@@ -36,9 +35,9 @@ Tile &Tile::operator=( TileSubtype const &that )
 	return *this;
 }
 
-void Tile::draw( sf::RenderTarget &target, sf::RenderStates states ) const
+render::Tile const &Tile::getRenderTile() const noexcept
 {
-	target.draw( *mSubtype, states );
+	return mSubtype->mTile;
 }
 
 bool Tile::passable() const

@@ -55,20 +55,11 @@ void Client::receiveOutputData( OutputData outputData ) noexcept
 	}
 }
 
-void Client::connect( Server* server )
-{
-	if( !isConnected())
-	{
-		mServer = server;
-		mServer->connect( this );
-	}
-}
-
 void Client::disconnect()
 {
 	if( isConnected())
 	{
-		mServer->disconnect( this );
+		mServer->disconnect();
 		mServer = nullptr;
 	}
 }

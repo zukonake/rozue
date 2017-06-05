@@ -1,16 +1,15 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 //
-#include <world/map/typedef.hpp>
+#include <world/typedef.hpp>
 #include <world/tile/tileSubtype.hpp>
 #include <world/entity/entitySubtype.hpp>
-#include <world/map/map.hpp>
 #include <world/world.hpp>
 #include "entity.hpp"
 
 namespace coldline
 {
 
-Entity::Entity( World &world, map::Point3 const &position, EntitySubtype const &subtype ) :
+Entity::Entity( World &world, world::Point3 const &position, EntitySubtype const &subtype ) :
 	mWorld( world ),
 	mSubtype( subtype ),
 	mPosition( position )
@@ -18,15 +17,10 @@ Entity::Entity( World &world, map::Point3 const &position, EntitySubtype const &
 
 }
 
-void Entity::draw( sf::RenderTarget &target, sf::RenderStates states ) const
+bool Entity::move( world::Vector3 const &by )
 {
-	target.draw( mSubtype, states );
-}
-
-bool Entity::move( map::Vector3 const &by )
-{
-	map::Point3 newPosition = mPosition + ( map::Point3 )by;
-	if( canMove( newPosition ))
+	world::Point3 newPosition = mPosition + ( world::Point3 )by;
+	if( canMove( newPosition )) //TODO move entites to chunk as a vector
 	{
 		mWorld.moveEntity( mPosition, newPosition );
 		mPosition = newPosition; //TODO check with pathfind
@@ -38,7 +32,7 @@ bool Entity::move( map::Vector3 const &by )
 	}
 }
 
-bool Entity::teleport( map::Point3 const &to )
+bool Entity::teleport( world::Point3 const &to )
 {
 	if( canMove( to ))
 	{
@@ -52,7 +46,7 @@ bool Entity::teleport( map::Point3 const &to )
 	}
 }
 
-map::Point3 const &Entity::getPosition() const noexcept
+world::Point3 const &Entity::getPosition() const noexcept
 {
 	return mPosition;
 }
@@ -62,7 +56,7 @@ bool Entity::passable() const noexcept
 	return !mSubtype.mSolid;
 }
 
-bool Entity::canMove( map::Point3 const &to )
+bool Entity::canMove( world::Point3 const &to )
 {
 	return mWorld.canMove( mPosition, to );
 }

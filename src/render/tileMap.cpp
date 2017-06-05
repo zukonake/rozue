@@ -9,8 +9,8 @@ namespace coldline
 {
 
 TileMap::TileMap(
-	screen::Size const &tileSize,
-	screen::Size const &screenSize,
+	render::Size const &tileSize,
+	render::Size const &screenSize,
 	Tileset const *tileset ) :
 		mTileSize( tileSize ),
 		mScreenSize( screenSize ),
@@ -38,8 +38,8 @@ void TileMap::update( Tiles const &tiles )
 		{
 			sf::Vertex *quad = &mVertices[( iY + iX * mSize.x ) * 4 ];
 
-			screen::Size tileSize = mTileset->getTileSize();
-			screen::Point const &tilePosition = tiles[ iY ][ iX ];
+			render::Size tileSize = mTileset->getTileSize();
+			render::Point const &tilePosition = tiles[ iY ][ iX ];
 
 			quad[ 0 ].position =
 			{
@@ -88,13 +88,13 @@ void TileMap::update( Tiles const &tiles )
 
 
 
-void TileMap::setTileSize( screen::Size const &tileSize )
+void TileMap::setTileSize( render::Size const &tileSize )
 {
 	mTileSize = tileSize;
 	updateSize();
 }
 
-void TileMap::setScreenSize( screen::Size const &screenSize )
+void TileMap::setScreenSize( render::Size const &screenSize )
 {
 	mScreenSize = screenSize;
 	updateSize();

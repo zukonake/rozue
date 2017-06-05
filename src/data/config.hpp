@@ -12,9 +12,9 @@ class DataMap;
 
 struct Config : public Loadable
 {
-	Config( screen::Size const &screenSize );
+	Config( render::Size const &screenSize );
 	Config( DataMap const &dataMap );
-	screen::Size screenSize;
+	render::Size screenSize;
 };
 
 }

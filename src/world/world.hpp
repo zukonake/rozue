@@ -10,6 +10,7 @@
 namespace coldline
 {
 
+class Tile;
 class Entity;
 class EntitySubtype;
 class Generator;
@@ -18,10 +19,12 @@ class World
 {
 	public:
 	World( Generator * const &generator );
+	World( World const &that ) = delete;
 
 	~World();
 
 	Tile &operator[]( world::Point3 const &point );
+	World &operator=( World const &that ) = delete;
 
 	bool sees( world::Point3 const &from, world::Point3 const &to );
 	bool canMove( world::Point3 const &from, world::Point3 const &to );
@@ -44,8 +47,6 @@ class World
 	std::list< Entity > mEntities;
 	std::unordered_map< world::Point3, Entity * > mEntitiesMap; //TODO ref wrapper?
 	std::unordered_map< chunk::Point, Chunk > mChunks;
-
-	Map mMap;
 };
 
 }

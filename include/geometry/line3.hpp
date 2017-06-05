@@ -34,8 +34,8 @@ struct Line3
 	template< typename TTCoordinate >
 	constexpr operator Line3< TTCoordinate >() const noexcept;
 
-	constexpr Line3< TCoordinate > &operator+( Line3< TCoordinate > const &that );
-	constexpr Line3< TCoordinate > &operator-( Line3< TCoordinate > const &that );
+	constexpr Line3< TCoordinate > operator+( Line3< TCoordinate > const &that );
+	constexpr Line3< TCoordinate > operator-( Line3< TCoordinate > const &that );
 
 	constexpr Line3< TCoordinate > &operator+=( Line3< TCoordinate > const &that );
 	constexpr Line3< TCoordinate > &operator-=( Line3< TCoordinate > const &that );
@@ -87,13 +87,13 @@ constexpr Line3< TCoordinate >::operator Line3< TTCoordinate >() const noexcept
 
 
 template< typename TCoordinate >
-constexpr Line3< TCoordinate > &Line3< TCoordinate >::operator+( Line3< TCoordinate > const &that )
+constexpr Line3< TCoordinate > Line3< TCoordinate >::operator+( Line3< TCoordinate > const &that )
 {
 	return Line3< TCoordinate >( from + that.from, to + that.to );
 }
 
 template< typename TCoordinate >
-constexpr Line3< TCoordinate > &Line3< TCoordinate >::operator-( Line3< TCoordinate > const &that )
+constexpr Line3< TCoordinate > Line3< TCoordinate >::operator-( Line3< TCoordinate > const &that )
 {
 	return Line3< TCoordinate >( from - that.from, to - that.to );
 }

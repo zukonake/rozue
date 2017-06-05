@@ -1,30 +1,37 @@
 #pragma once
 
+#include <SFML/Graphics/Vertex.hpp>
 #include <SFML/Graphics/Drawable.hpp>
+#include <SFML/Graphics/Color.hpp>
 //
 #include <render/typedef.hpp>
-#include <data/loadable.hpp>
 
 namespace coldline
 {
 
+namespace render
+{
+	class Tile;
+}
+
 class Tileset;
 
-class DataMap;
-class Dataset;
-
-class Sprite : public virtual Loadable, public virtual sf::Drawable
+class Sprite : public sf::Drawable
 {
 	public:
-	Sprite( Dataset const &dataset, DataMap const &dataMap );
-	Sprite( Tileset const &tileset, screen::Point const &tilesetPosition );
+	Sprite(
+		render::Surface const &surface,
+		render::Tile const &tile,
+		sf::Color const &color = sf::Color::White );
 
 	virtual void draw( sf::RenderTarget &target, sf::RenderStates states ) const override;
 
-	screen::Size const &getSize() const noexcept;
+	void setColor( sf::Color const &color );
+	void setSurface( render::Surface const &surface );
+	void setTile( render::Tile const &tile );
 	private:
-	Tileset const &mTileset;
-	screen::Point mTilesetPosition;
+	sf::Vertex mVertices[ 4 ];
+	Tileset const *mTileset;
 };
 
 }

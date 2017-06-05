@@ -12,7 +12,7 @@ CPP_FILES = $(shell find $(SOURCE_DIR) -type f -name "*.cpp" -printf '%p ')
 OBJ_FILES = $(addprefix $(OBJ_DIR)/,$(patsubst %.cpp,%.o,$(subst $(SOURCE_DIR)/,,$(CPP_FILES))))
 
 DEBUG_FLAGS = -g -O0 -DDEBUG
-WARNING_FLAGS = -Wall -Wextra -fmax-errors=3
+WARNING_FLAGS = -Werror -Wall -Wextra -fmax-errors=3
 STD = -std=c++1z -pedantic
 INCLUDES = -I $(SOURCE_DIR) -I $(INCLUDE_DIR)
 LDLIBS = -lsfml-graphics -lsfml-window -lsfml-system
@@ -29,8 +29,8 @@ $(OBJ_DIR)/%.o : $(SOURCE_DIR)/%.cpp
 	@mkdir -p $(dir $@)
 	@mkdir -p $(subst $(OBJ_DIR),$(DEPEND_DIR),$(dir $@))
 	$(CXX) $(CXXFLAGS) -c $< -o $@
-	$(CXX) $(CXXFLAGS) -MM $< > $(subst $(OBJ_DIR),$(DEPEND_DIR),$*.d)
-	@sed -i '1s/^/$(OBJ_DIR)\//' $(subst $(OBJ_DIR),$(DEPEND_DIR),$*.d)
+	$(CXX) $(CXXFLAGS) -MM $< > $(DEPEND_DIR)/$*.d
+	@sed -i '1s/^/$(OBJ_DIR)\//' $(DEPEND_DIR)/$*.d
 
 clean :
 	$(RM) -r $(OBJ_DIR) $(DEPEND_DIR) $(TARGET)

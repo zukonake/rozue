@@ -18,6 +18,7 @@ class Player
 {
 	public:
 	Player( Dataset const &dataset, World &world );
+	Player( Player const &that );
 
 	OutputData requestOutputData() noexcept;
 	void receiveInputData( InputData const &inputData ) noexcept;

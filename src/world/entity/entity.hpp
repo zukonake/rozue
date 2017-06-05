@@ -1,8 +1,6 @@
 #pragma once
 
-#include <SFML/Graphics/Drawable.hpp>
-//
-#include <world/map/typedef.hpp>
+#include <world/typedef.hpp>
 
 namespace coldline
 {
@@ -10,25 +8,24 @@ namespace coldline
 class World;
 class EntitySubtype;
 
-class Entity : public sf::Drawable
+class Entity
 {
 	public:
-	Entity( World &mWorld, map::Point3 const &position, EntitySubtype const &subtype );
+	Entity( World &mWorld, world::Point3 const &position, EntitySubtype const &subtype );
 
-	virtual void draw( sf::RenderTarget &target, sf::RenderStates states ) const override;
+	virtual bool move( world::Vector3 const &by );
+	virtual bool teleport( world::Point3 const &to );
 
-	virtual bool move( map::Vector3 const &by );
-	virtual bool teleport( map::Point3 const &to );
-
-	map::Point3 const &getPosition() const noexcept;
+	render::Tile const &getRenderTile() const noexcept;
+	world::Point3 const &getPosition() const noexcept;
 
 	bool passable() const noexcept;
 	private:
-	bool canMove( map::Point3 const &to );
+	bool canMove( world::Point3 const &to );
 
 	World &mWorld;
 	EntitySubtype const &mSubtype;
-	map::Point3 mPosition;
+	world::Point3 mPosition;
 };
 
 }

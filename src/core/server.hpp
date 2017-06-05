@@ -12,24 +12,21 @@ namespace coldline
 {
 
 class Client;
-
+//TODO handles only one client now
 class Server
 {
 	public:
-	Server();
+	Server( Client *client );
 	~Server();
 
 	void loop();
 
-	void connect( Client *client );
-	void disconnect( Client *client );
+	void disconnect();
 	private:
-	void cleanClients();
-
-	std::map< std::string, std::pair< Player, Client * > > mClients;
-
 	Dataset mDataset;
 	World mWorld;
+	Player mPlayer;
+	Client *mClient;
 };
 
 }

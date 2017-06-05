@@ -1,13 +1,11 @@
 #pragma once
 
-#include <world/map/chunk/typedef.hpp>
-#include <world/map/chunk/chunk.hpp>
+#include <world/chunk/typedef.hpp>
 
 namespace coldline
 {
 
-namespace world
-{
+class Chunk;
 
 class Generator
 {
@@ -16,7 +14,5 @@ class Generator
 
 	virtual Chunk generate( chunk::Point const &position ) = 0;
 };
-
-}
 
 }

@@ -3,46 +3,48 @@
 #include <SFML/Graphics/Drawable.hpp>
 //
 #include <queue>
-#include <functional>
 //
-#include <render/typedef.hpp>
-#include <render/sprite.hpp>
-#include <world/map/typedef.hpp>
+#include <world/typedef.hpp>
 
 namespace coldline
 {
 
-class Map;
-class Renderable;
-class TransformedSprite;
+namespace render
+{
+
+class Tile;
+
+}
+
+class Sprite;
 class Entity;
+class World;
 
 class Camera
 {
 	public:
-	Camera( Sprite const &nothing, World &world, Entity &entity );
+	Camera( Camera const &that ) = delete;
+	Camera( render::Tile const &nothing, World &world, Entity &entity );
 
-	bool move( map::Vector3 const &by );
-	bool teleport( map::Point3 const &to );
+	Camera &operator=( Camera const &that ) = delete;
+
+	bool move( world::Vector3 const &by );
+	bool teleport( world::Point3 const &to );
 
 	void lock();
 	void unlock();
-	void setScale( screen::Scale const &scale );
-	void changeScale( screen::Scale const &scale );
-	std::queue< TransformedDrawable > getRenderQueue() const;
+	void setScale( render::Scale const &scale );
+	void changeScale( render::Scale const &scale );
+	std::queue< Sprite > getRenderQueue() const;
 	private:
-	static void addDrawable( std::queue< TransformedDrawable > &renderQueue,
-		sf::Drawable const &drawable,
-		screen::Point const &point,
-		screen::Scale const &scale );
-	bool sees( map::Point3 const &what ) const;
+	bool sees( world::Point3 const &what ) const;
 
 	bool mLocked;
-	screen::Scale mScale;
-	Sprite const &mNothing;
+	render::Scale mScale;
+	render::Tile const &mNothing;
 	World &mWorld;
-	std::reference_wrapper< Entity > mEntity;
-	map::Point3 mPosition;
+	Entity *mEntity;
+	world::Point3 mPosition;
 
 	unsigned short const mFov = 6;
 };

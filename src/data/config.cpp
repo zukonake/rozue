@@ -3,7 +3,7 @@
 namespace coldline
 {
 
-Config::Config( screen::Size const &screenSize ) :
+Config::Config( render::Size const &screenSize ) :
 	screenSize( screenSize )
 {
 
