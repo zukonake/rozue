@@ -34,4 +34,4 @@ $(OBJ_DIR)/%.o : $(SOURCE_DIR)/%.cpp
 clean :
 	$(RM) -r $(OBJ_DIR) $(DEPEND_DIR) $(TARGET)
 
-include $(subst $(OBJ_DIR),$(DEPEND_DIR),$(patsubst %.o,%.d,$(OBJ_FILES)))
+-include $(subst $(OBJ_DIR),$(DEPEND_DIR),$(patsubst %.o,%.d,$(OBJ_FILES)))
