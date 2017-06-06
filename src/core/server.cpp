@@ -4,14 +4,14 @@
 #include <data/config.hpp>
 #include <data/inputData.hpp>
 #include <core/client.hpp>
-#include <world/generator/flatGenerator.hpp>
+#include <world/generator/wallGenerator.hpp>
 #include "server.hpp"
 
 namespace coldline
 {
 
 Server::Server( Client *client ) :
-	mWorld( new FlatGenerator( mDataset )),
+	mWorld( new WallGenerator( mDataset )),
 	mPlayer( mDataset, mWorld ),
 	mClient( client )
 {
