@@ -36,10 +36,6 @@ Tile &World::operator[]( world::Point3 const &point )
 
 bool World::sees( world::Point3 const &from, world::Point3 const &to )
 {
-	if( !exists( to ) || !exists( from ))
-	{
-		return false;
-	}
 	auto plot = world::Line3( from, to ).getPlot();
 	if( plot.empty())
 	{
@@ -47,13 +43,13 @@ bool World::sees( world::Point3 const &from, world::Point3 const &to )
 	}
 	for( unsigned i = 1; i < plot.size() - 1; i++ )
 	{
-		if( operator[]( plot[ i ]).passable())
+		if( !operator[]( plot[ i ]).passable())
 		{
 			return false;
 		}
 		if( entityOn( plot[ i ]))
 		{
-			if( getEntityOn( plot[ i ]).passable())
+			if( !getEntityOn( plot[ i ]).passable())
 			{
 				return false;
 			}
