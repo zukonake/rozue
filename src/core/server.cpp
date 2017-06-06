@@ -20,7 +20,7 @@ Server::Server( Client *client ) :
 
 Server::~Server()
 {
-	mClient->disconnect();
+
 }
 
 void Server::loop()
