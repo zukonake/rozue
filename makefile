@@ -13,7 +13,7 @@ OBJ_FILES = $(addprefix $(OBJ_DIR)/,$(patsubst %.cpp,%.o,$(subst $(SOURCE_DIR)/,
 
 CXX = clang++
 DEBUG_FLAGS = -g -O0 -DDEBUG
-WARNING_FLAGS = -Werror -Wall -Wextra -ferror-limit=3
+WARNING_FLAGS = -Wall -Wextra -ferror-limit=5 #-Werror
 STD = -std=c++14 -pedantic
 INCLUDES = -I $(SOURCE_DIR) -I $(INCLUDE_DIR)
 LDLIBS = -lsfml-graphics -lsfml-window -lsfml-system
