@@ -4,7 +4,6 @@
 #include <world/typedef.hpp>
 #include <render/typedef.hpp>
 #include <render/tile.hpp>
-#include <render/tileMap.hpp>
 #include <render/sprite.hpp>
 #include <world/tile/tileSubtype.hpp>
 #include <world/world.hpp>
