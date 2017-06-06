@@ -4,6 +4,8 @@
 namespace coldline
 {
 
+chunk::Size constexpr Chunk::size;
+
 Tile &Chunk::operator[]( chunk::InternalPoint const &point )
 {
 	return mValue[ point ];
