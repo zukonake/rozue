@@ -19,6 +19,4 @@ class Chunk
 	geometry::Map3< Tile, size.x, size.y, size.z > mValue;
 };
 
-chunk::Size constexpr Chunk::size;
-
 }
