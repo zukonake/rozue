@@ -4,8 +4,6 @@ DEPEND_DIR = depend
 INCLUDE_DIR = include
 LIB_DIR = lib
 
-TEST_DIR = test
-
 TARGET = rozue
 
 CPP_FILES = $(shell find $(SOURCE_DIR) -type f -name "*.cpp" -printf '%p ')
@@ -20,7 +18,7 @@ LDLIBS = -lsfml-graphics -lsfml-window -lsfml-system
 LDFLAGS = $(INCLUDES) $(STD) $(WARNING_FLAGS) $(DEBUG_FLAGS) -L $(LIB_DIR) $(LDLIBS)
 CXXFLAGS = $(INCLUDES) $(STD) $(WARNING_FLAGS) $(DEBUG_FLAGS)
 
-.PHONY : clean test
+.PHONY : clean
 
 $(TARGET) : $(OBJ_FILES)
 	$(CXX) $(LDFLAGS) $(OBJ_FILES) -o $@
@@ -35,11 +33,5 @@ $(OBJ_DIR)/%.o : $(SOURCE_DIR)/%.cpp
 
 clean :
 	$(RM) -r $(OBJ_DIR) $(DEPEND_DIR) $(TARGET)
-	$(MAKE) -C ./$(TEST_DIR) clean
 
-test : $(OBJ_FILES)
-	$(MAKE) -C ./$(TEST_DIR)
-
-ifneq ("$(wildcard $(DEPEND_DIR))","")
-	include $(subst $(OBJ_DIR),$(DEPEND_DIR),$(patsubst %.o,%.d,$(OBJ_FILES)))
-endif
+include $(subst $(OBJ_DIR),$(DEPEND_DIR),$(patsubst %.o,%.d,$(OBJ_FILES)))
