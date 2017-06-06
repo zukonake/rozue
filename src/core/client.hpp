@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 //
+#include <render/typedef.hpp>
 #include <render/SFMLClient.hpp>
 #include <data/dataset.hpp>
 
@@ -37,9 +38,10 @@ public:
 private:
 	void render( OutputData const &outputData );
 
-	std::string mName;
-	Dataset mDataset;
 	Server* mServer;
+	Dataset mDataset;
+	render::Size mScreenSize;
+	std::string mName;
 };
 
 }

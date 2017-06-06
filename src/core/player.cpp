@@ -16,8 +16,8 @@ Player::Player( Dataset const &dataset, World& world ) :
 	mCamera( mDataset.at< render::Tile >( "nothing" ),
 		mWorld,
 		mWorld.createPlayer( mDataset.at< EntitySubtype >( "human" )),
-		{ 1024, 768 },
-		{ 64, 64 })
+		mDataset.at< Config >( "config" ).screenSize,
+		mDataset.at< Config >( "config" ).spriteSize )
 {
 
 }

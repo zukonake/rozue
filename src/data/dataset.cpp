@@ -10,7 +10,8 @@ namespace coldline
 
 Config const config =
 {
-	{ 1024, 768 }
+	{ 1600, 900 },
+	{ 64, 64 }
 };
 
 Tileset const tilesTileset =

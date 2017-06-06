@@ -29,6 +29,7 @@ Camera::Camera(
 		mEntity( &entity ),
 		mPosition( mEntity->getPosition())
 {
+	updateFov();
 	lock();
 }
 
@@ -38,7 +39,7 @@ bool Camera::move( world::Vector3 const &by )
 	{
 		if( mEntity->move( by ))
 		{
-			mPosition += by;
+			mPosition = mEntity->getPosition();
 			return true;
 		}
 	}
@@ -55,7 +56,7 @@ bool Camera::teleport( world::Point3 const &to )
 	{
 		if( mEntity->teleport( to ))
 		{
-			mPosition = to;
+			mPosition = mEntity->getPosition();
 			return true;
 		}
 	}
@@ -80,13 +81,14 @@ void Camera::unlock()
 void Camera::setScale( render::Scale const &scale )
 {
 	mScale = scale;
+	updateFov();
 }
 
 void Camera::changeScale( render::Scale const &scale )
 {
 	if( scale.x > -mScale.x && scale.y > -mScale.y )
 	{
-		mScale += scale;
+		setScale( mScale + scale );
 	}
 }
 
@@ -96,12 +98,12 @@ std::queue< Sprite > Camera::getRenderQueue()
 	world::Point3 worldPosition;
 	render::Point spritePosition;
 	worldPosition.z = mPosition.z;
-	for( worldPosition.y = mPosition.y - mFov, spritePosition.y = 0;
-		worldPosition.y < mPosition.y + mFov;
+	for( worldPosition.y = mPosition.y - mFov.y, spritePosition.y = 0;
+		worldPosition.y < mPosition.y + mFov.y;
 		worldPosition.y++, spritePosition.x = 0, spritePosition.y += mSpriteSize.y * mScale.y )
 	{
-		for( worldPosition.x = mPosition.x - mFov;
-			worldPosition.x < mPosition.x + mFov;
+		for( worldPosition.x = mPosition.x - mFov.x;
+			worldPosition.x < mPosition.x + mFov.x;
 			worldPosition.x++, spritePosition.x += mSpriteSize.x * mScale.x )
 		{
 			render::Surface surface( spritePosition, { mSpriteSize * mScale });
@@ -132,6 +134,11 @@ std::queue< Sprite > Camera::getRenderQueue()
 bool Camera::sees( world::Point3 const &what ) const
 {
 	return mWorld.sees( mEntity->getPosition(), what );
+}
+
+void Camera::updateFov()
+{
+	mFov = (( mScreenSize / ( mSpriteSize * mScale ))) / render::Size( 2, 2 );
 }
 
 }

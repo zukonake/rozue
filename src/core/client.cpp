@@ -1,4 +1,5 @@
 #include <core/server.hpp>
+#include <data/config.hpp>
 #include <data/outputData.hpp>
 #include <data/inputData.hpp>
 #include "client.hpp"
@@ -7,8 +8,9 @@ namespace coldline
 {
 
 Client::Client( std::string const &name ) :
-	mName( name ),
-	mServer( nullptr )
+	mServer( nullptr ),
+	mScreenSize( mDataset.at< Config >( "config" ).screenSize ),
+	mName( name )
 {
 
 }
@@ -44,7 +46,7 @@ void Client::receiveOutputData( OutputData outputData ) noexcept
 		if( !SFMLClient::isRunning())
 		{
 			SFMLClient::openWindow(
-				{ 1024, 768 },
+				mScreenSize,
 				"Rozue",
 				60,
 				true,

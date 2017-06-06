@@ -42,6 +42,7 @@ class Camera
 	std::queue< Sprite > getRenderQueue();
 	private:
 	bool sees( world::Point3 const &what ) const;
+	void updateFov();
 
 	bool mLocked;
 	render::Scale mScale;
@@ -52,7 +53,7 @@ class Camera
 	Entity *mEntity;
 	world::Point3 mPosition;
 
-	unsigned short const mFov = 6;
+	render::Size mFov;
 };
 
 }
