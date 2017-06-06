@@ -46,6 +46,11 @@ bool Entity::teleport( world::Point3 const &to )
 	}
 }
 
+render::Tile const &Entity::getRenderTile() const noexcept
+{
+	return mSubtype.mTile;
+}
+
 world::Point3 const &Entity::getPosition() const noexcept
 {
 	return mPosition;

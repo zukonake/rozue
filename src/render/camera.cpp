@@ -105,9 +105,24 @@ std::queue< Sprite > Camera::getRenderQueue()
 			worldPosition.x++, spritePosition.x += mSpriteSize.x * mScale.x )
 		{
 			render::Surface surface( spritePosition, { mSpriteSize * mScale });
-			renderQueue.emplace(
+			if( !sees( worldPosition ))
+			{
+				renderQueue.emplace(
 				surface,
-				mWorld[ worldPosition ].getRenderTile());
+					mNothing );
+			}
+			else
+			{
+				renderQueue.emplace(
+					surface,
+					mWorld[ worldPosition ].getRenderTile());
+				if( mWorld.entityOn( worldPosition ))
+				{
+					renderQueue.emplace(
+						surface,
+						mWorld.getEntityOn( worldPosition ).getRenderTile());
+				}
+			}
 		}
 	}
 	return renderQueue;
