@@ -1,6 +1,7 @@
 #include <data/inputData.hpp>
 #include <data/config.hpp>
 #include <render/tile.hpp>
+#include <render/tileset.hpp>
 #include <data/dataset.hpp>
 #include <world/entity/entitySubtype.hpp>
 #include <world/world.hpp>
@@ -14,7 +15,9 @@ Player::Player( Dataset const &dataset, World& world ) :
 	mWorld( world ),
 	mCamera( mDataset.at< render::Tile >( "nothing" ),
 		mWorld,
-		mWorld.createPlayer( mDataset.at< EntitySubtype >( "human" )))
+		mWorld.createPlayer( mDataset.at< EntitySubtype >( "human" )),
+		{ 1024, 768 },
+		{ 64, 64 })
 {
 
 }

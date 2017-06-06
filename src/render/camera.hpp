@@ -24,8 +24,12 @@ class Camera
 {
 	public:
 	Camera( Camera const &that ) = delete;
-	Camera( render::Tile const &nothing, World &world, Entity &entity );
-
+	Camera(
+		render::Tile const &nothing,
+		World &world,
+		Entity &entity,
+		render::Size screenSize,
+		render::Size spriteSize );
 	Camera &operator=( Camera const &that ) = delete;
 
 	bool move( world::Vector3 const &by );
@@ -35,12 +39,14 @@ class Camera
 	void unlock();
 	void setScale( render::Scale const &scale );
 	void changeScale( render::Scale const &scale );
-	std::queue< Sprite > getRenderQueue() const;
+	std::queue< Sprite > getRenderQueue();
 	private:
 	bool sees( world::Point3 const &what ) const;
 
 	bool mLocked;
 	render::Scale mScale;
+	render::Size mScreenSize;
+	render::Size mSpriteSize;
 	render::Tile const &mNothing;
 	World &mWorld;
 	Entity *mEntity;

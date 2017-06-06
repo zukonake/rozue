@@ -25,7 +25,7 @@ World::~World()
 
 Tile &World::operator[]( world::Point3 const &point )
 {
-	if( exists( point ))
+	if( !exists( point ))
 	{
 		return loadChunk( toChunkPoint( point ))[ toInternalPoint( point )];
 	}

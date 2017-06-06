@@ -15,7 +15,7 @@ Server::Server( Client *client ) :
 	mPlayer( mDataset, mWorld ),
 	mClient( client )
 {
-
+	mClient->connect( this );
 }
 
 Server::~Server()

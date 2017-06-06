@@ -85,6 +85,7 @@ EntitySubtype const door =
 Dataset::Dataset()
 {
 	mObjects[ "config" ] = &config;
+	mObjects[ "tilesTileset" ] = &tilesTileset;
 	mObjects[ "nothing" ] = &nothing;
 	mObjects[ "stoneFloor" ] = &stoneFloor;
 	mObjects[ "stoneWall" ] = &stoneWall;
