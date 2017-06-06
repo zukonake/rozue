@@ -29,7 +29,7 @@ Tile &World::operator[]( world::Point3 const &point )
 	{
 		return loadChunk( toChunkPoint( point ))[ toInternalPoint( point )];
 	}
-	return mChunks[ point ][ toInternalPoint( point )];
+	return mChunks[ toChunkPoint( point )][ toInternalPoint( point )];
 }
 
 
@@ -107,7 +107,7 @@ void World::simulate()
 
 bool World::exists( world::Point3 const &point )
 {
-	return mChunks.count( point ) > 0;
+	return mChunks.count( toChunkPoint( point )) > 0;
 }
 
 Chunk &World::loadChunk( chunk::Point const &point )
