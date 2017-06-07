@@ -74,11 +74,11 @@ void Player::handleKeys( sf::Event event )
 			break;
 
 		case sf::Keyboard::Q:
-			mCamera.changeScale({ 0.25f, 0.25f });
+			mCamera.changeScale({ 0.15f, 0.15f });
 			break;
 
 		case sf::Keyboard::E:
-			mCamera.changeScale({ -0.25f, -0.25f });
+			mCamera.changeScale({ -0.15f, -0.15f });
 			break;
 
 		default:
