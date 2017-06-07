@@ -10,7 +10,7 @@ CPP_FILES = $(shell find $(SOURCE_DIR) -type f -name "*.cpp" -printf '%p ')
 OBJ_FILES = $(addprefix $(OBJ_DIR)/,$(patsubst %.cpp,%.o,$(subst $(SOURCE_DIR)/,,$(CPP_FILES))))
 
 CXX = clang++
-DEBUG_FLAGS = -g -O0 -DDEBUG
+DEBUG_FLAGS = -g -O0
 WARNING_FLAGS = -Wall -Wextra -ferror-limit=5 -Werror
 STD = -std=c++14 -pedantic
 INCLUDES = -I $(SOURCE_DIR) -I $(INCLUDE_DIR)
