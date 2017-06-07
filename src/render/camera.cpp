@@ -1,6 +1,8 @@
 #include <cstdint>
 #include <cmath>
+#include <string>
 //
+#include <utility/logger.hpp>
 #include <world/typedef.hpp>
 #include <render/typedef.hpp>
 #include <render/tile.hpp>
@@ -39,6 +41,11 @@ bool Camera::move( world::Vector3 const &by )
 		if( mEntity->move( by ))
 		{
 			mPosition = mEntity->getPosition();
+			globalLogger.log( Logger::TRACE,
+				"Camera moved to: " +
+				std::to_string( mPosition.x ) + ", " +
+				std::to_string( mPosition.y ) + ", " +
+				std::to_string( mPosition.z ));
 			return true;
 		}
 	}
@@ -56,6 +63,11 @@ bool Camera::teleport( world::Point3 const &to )
 		if( mEntity->teleport( to ))
 		{
 			mPosition = mEntity->getPosition();
+			globalLogger.log( Logger::TRACE,
+				"Camera teleported to: " +
+				std::to_string( mPosition.x ) + ", " +
+				std::to_string( mPosition.y ) + ", " +
+				std::to_string( mPosition.z ));
 			return true;
 		}
 	}

@@ -1,3 +1,6 @@
+#include <string>
+//
+#include <utility/logger.hpp>
 #include <world/typedef.hpp>
 #include <world/chunk/chunk.hpp>
 #include <world/entity/entitySubtype.hpp>
@@ -112,6 +115,11 @@ bool World::exists( world::Point3 const &point )
 
 Chunk &World::loadChunk( chunk::Point const &point )
 {
+	globalLogger.log( Logger::DEBUG,
+		"Loaded chunk: " +
+		std::to_string( point.x ) + ", " +
+		std::to_string( point.y ) + ", " +
+		std::to_string( point.z ));
 	mChunks[ point ] = mGenerator->generate( point );
 	return mChunks[ point ];
 }
