@@ -30,9 +30,9 @@ Tile &World::operator[]( world::Point3 const &point )
 {
 	if( !exists( point ))
 	{
-		return loadChunk( toChunkPoint( point ))[ toInternalPoint( point )];
+		return loadChunk( Chunk::toChunkPoint( point ))[ Chunk::toInternalPoint( point )];
 	}
-	return mChunks[ toChunkPoint( point )][ toInternalPoint( point )];
+	return mChunks[ Chunk::toChunkPoint( point )][ Chunk::toInternalPoint( point )];
 }
 
 
@@ -110,7 +110,7 @@ void World::simulate()
 
 bool World::exists( world::Point3 const &point )
 {
-	return mChunks.count( toChunkPoint( point )) > 0;
+	return mChunks.count( Chunk::toChunkPoint( point )) > 0;
 }
 
 Chunk &World::loadChunk( chunk::Point const &point )
@@ -122,47 +122,6 @@ Chunk &World::loadChunk( chunk::Point const &point )
 		std::to_string( point.z ));
 	mChunks[ point ] = mGenerator->generate( point );
 	return mChunks[ point ];
-}
-
-
-
-chunk::Point World::toChunkPoint( world::Point3 const &point )
-{
-	chunk::Point output = point;
-	if( output.x < 0 )
-	{
-		output.x -= Chunk::size.x - 1;
-	}
-	if( output.y < 0 )
-	{
-		output.y -= Chunk::size.y - 1;
-	}
-	if( output.z < 0 )
-	{
-		output.z -= Chunk::size.z - 1;
-	}
-	return output / Chunk::size;
-}
-
-chunk::InternalPoint World::toInternalPoint( world::Point3 const &point )
-{
-	world::Point3 output = point;
-	output.x %= Chunk::size.x;
-	output.y %= Chunk::size.y;
-	output.z %= Chunk::size.z;
-	if( output.x < 0 )
-	{
-		output.x += Chunk::size.x;
-	}
-	if( output.y < 0 )
-	{
-		output.y += Chunk::size.y;
-	}
-	if( output.z < 0 )
-	{
-		output.z += Chunk::size.z;
-	}
-	return output;
 }
 
 }
