@@ -37,6 +37,10 @@ Chunk WallGenerator::generate( chunk::Point const &position )
 			}
 		}
 	}
+	if( position == Chunk::toChunkPoint({ 0, 0, 0 }))
+	{
+		chunk[ Chunk::toInternalPoint({ 0, 0, 0 })] = mDataset.at< TileSubtype >( "stoneFloor" );
+	}
 	return chunk;
 }
 
