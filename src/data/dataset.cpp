@@ -10,7 +10,7 @@ namespace coldline
 
 Config const config =
 {
-	{ 1600, 900 },
+	{ 1024, 768 },
 	{ 64, 64 }
 };
 
