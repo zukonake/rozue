@@ -141,7 +141,7 @@ chunk::Point World::toChunkPoint( world::Point3 const &point )
 	{
 		output.z -= Chunk::size.z - 1;
 	}
-	return output;
+	return output / Chunk::size;
 }
 
 chunk::InternalPoint World::toInternalPoint( world::Point3 const &point )
