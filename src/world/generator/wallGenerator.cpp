@@ -1,7 +1,4 @@
-#include <cstdlib>
-#include <cstdlib>
-#include <ctime>
-//
+#include <utility/random.hpp>
 #include <data/dataset.hpp>
 #include <world/tile/tileSubtype.hpp>
 #include <world/chunk/chunk.hpp>
@@ -14,7 +11,7 @@ WallGenerator::WallGenerator( Dataset const &dataset ) :
 	mWall( dataset.at< TileSubtype >( "stoneWall" )),
 	mFloor( dataset.at< TileSubtype >( "stoneFloor" ))
 {
-	srand( time( NULL ));
+
 }
 
 Chunk WallGenerator::generate( chunk::Point const &position )
@@ -27,7 +24,7 @@ Chunk WallGenerator::generate( chunk::Point const &position )
 		{
 			for( unsigned iX = 0; iX < Chunk::size.x; iX++ )
 			{
-				if( rand() % 10 == 0 )
+				if( globalNumberGenerator() % 10 == 0 )
 				{
 					chunk[{ iX, iY, iZ }] = mWall;
 				}
