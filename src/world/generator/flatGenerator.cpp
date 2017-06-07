@@ -7,7 +7,7 @@ namespace coldline
 {
 
 FlatGenerator::FlatGenerator( Dataset const &dataset ) :
-	mDataset( dataset )
+	mFloor( dataset.at< TileSubtype >( "stoneFloor" ))
 {
 
 }
@@ -22,7 +22,7 @@ Chunk FlatGenerator::generate( chunk::Point const &position )
 		{
 			for( unsigned iX = 0; iX < Chunk::size.x; iX++ )
 			{
-				chunk[{ iX, iY, iZ }] = mDataset.at< TileSubtype >( "stoneFloor" );
+				chunk[{ iX, iY, iZ }] = mFloor;
 			}
 		}
 	}

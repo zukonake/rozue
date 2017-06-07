@@ -5,6 +5,7 @@
 namespace coldline
 {
 
+class TileSubtype;
 class Dataset;
 
 class WallGenerator : public Generator
@@ -14,7 +15,8 @@ class WallGenerator : public Generator
 
 	virtual Chunk generate( chunk::Point const &position ) override;
 	private:
-	Dataset const &mDataset;
+	TileSubtype const &mWall;
+	TileSubtype const &mFloor;
 };
 
 }
