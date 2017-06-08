@@ -41,13 +41,14 @@ CXXFLAGS = $(INCLUDES) $(STD) $(WARNING_FLAGS) $(DEBUG_FLAGS)
 $(TARGET) : $(OBJ_FILES)
 	$(CXX) $(LDFLAGS) $(OBJ_FILES) -o $@
 
-.SECONDEXPANSION:
-$(OBJ_DIR)/%.o : $(SOURCE_DIR)/%.cpp
+$(OBJ_DIR)/%.o : $(SOURCE_DIR)/%.cpp $(DEPEND_DIR)/%.d
 	@mkdir -p $(dir $@)
-	@mkdir -p $(subst $(OBJ_DIR),$(DEPEND_DIR),$(dir $@))
-	$(CXX) $(CXXFLAGS) -MM $< > $(DEPEND_DIR)/$*.d
-	@sed -i "1s~^~$(dir $@)~" $(DEPEND_DIR)/$*.d
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) -c $(SOURCE_DIR)/$*.cpp -o $@
+
+$(DEPEND_DIR)/%.d : $(SOURCE_DIR)/%.cpp
+	@mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS) -MM $< > $@
+	@sed -i "1s~^~$(subst $(DEPEND_DIR),$(OBJ_DIR),$(dir $@))~" $@
 
 clean :
 	$(RM) -r $(OBJ_DIR) $(DEPEND_DIR) $(TARGET)
