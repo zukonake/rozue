@@ -9,7 +9,12 @@ namespace coldline
 Logger::Logger( Level const &level ) :
 	mLevel( level )
 {
+	log( TRACE, "Created Logger" );
+}
 
+Logger::~Logger()
+{
+	log( TRACE, "Destroyed Logger" );
 }
 
 void Logger::log( Level const &level, std::string const &message )

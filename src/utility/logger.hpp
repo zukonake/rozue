@@ -22,6 +22,7 @@ class Logger
 	};
 
 	Logger( Level const &level );
+	~Logger();
 
 	void log( Level const &level, std::string const &message );
 	private:
