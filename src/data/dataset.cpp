@@ -83,7 +83,7 @@ EntitySubtype const door =
 	true
 };
 
-Dataset::Dataset()
+Dataset::Dataset() noexcept
 {
 	mObjects[ "config" ] = &config;
 	mObjects[ "tilesTileset" ] = &tilesTileset;

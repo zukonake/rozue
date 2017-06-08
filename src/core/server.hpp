@@ -1,9 +1,5 @@
 #pragma once
 
-#include <utility>
-#include <map>
-#include <string>
-//
 #include <data/dataset.hpp>
 #include <world/world.hpp>
 #include <core/player.hpp>
@@ -17,7 +13,6 @@ class Server
 {
 	public:
 	Server( Client *client );
-	~Server();
 
 	void loop();
 

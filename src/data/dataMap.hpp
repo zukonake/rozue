@@ -12,6 +12,8 @@ namespace coldline
 class DataMap
 {
 	public:
+	virtual ~DataMap() = default;
+
 	virtual bool getBool( std::string const &key ) const = 0;
 	virtual bool getBool( std::size_t const &index ) const = 0;
 	virtual int getInt( std::string const &key ) const = 0;

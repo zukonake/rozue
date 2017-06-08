@@ -1,4 +1,3 @@
-#include <world/tile/tile.hpp>
 #include <world/entity/entity.hpp>
 #include "chunk.hpp"
 
@@ -7,12 +6,19 @@ namespace coldline
 
 chunk::Size constexpr Chunk::size;
 
-Tile &Chunk::operator[]( chunk::InternalPoint const &point )
+Chunk::Chunk() noexcept
+{
+	static_assert( size.x > 0, "Chunk size cannot be 0" );
+	static_assert( size.y > 0, "Chunk size cannot be 0" );
+	static_assert( size.z > 0, "Chunk size cannot be 0" );
+}
+
+Tile &Chunk::operator[]( chunk::InternalPoint const &point ) noexcept
 {
 	return mValue[ point ];
 }
 
-Tile const &Chunk::operator[]( chunk::InternalPoint const &point ) const
+Tile const &Chunk::operator[]( chunk::InternalPoint const &point ) const noexcept
 {
 	return mValue[ point ];
 }
@@ -35,7 +41,7 @@ Entity &Chunk::getEntityOn( chunk::InternalPoint const &point )
 	return *mEntities[ 0 ];
 }
 
-chunk::Point Chunk::toChunkPoint( world::Point3 const &point )
+chunk::Point Chunk::toChunkPoint( world::Point3 const &point ) noexcept
 {
 	chunk::Point output = point;
 	if( output.x < 0 )
@@ -53,7 +59,7 @@ chunk::Point Chunk::toChunkPoint( world::Point3 const &point )
 	return output / size;
 }
 
-chunk::InternalPoint Chunk::toInternalPoint( world::Point3 const &point )
+chunk::InternalPoint Chunk::toInternalPoint( world::Point3 const &point ) noexcept
 {
 	world::Point3 output = point;
 	output.x %= size.x;

@@ -9,21 +9,20 @@ namespace render
 }
 
 class TileSubtype;
-class Entity;
 
 class Tile
 {
 	public:
-	Tile();
-	Tile( Tile const &that );
-	Tile( TileSubtype const &subtype );
+	Tile() = default;
+	Tile( Tile const &that ) noexcept;
+	Tile( TileSubtype const &subtype ) noexcept;
 
-	Tile &operator=( Tile const &that );
-	Tile &operator=( TileSubtype const &that );
+	Tile &operator=( Tile const &that ) noexcept;
+	Tile &operator=( TileSubtype const &that ) noexcept;
 
 	render::Tile const &getRenderTile() const noexcept;
 
-	bool passable() const;
+	bool passable() const noexcept;
 	private:
 	TileSubtype const *mSubtype;
 };

@@ -18,11 +18,6 @@ Server::Server( Client *client ) :
 	mClient->connect( this );
 }
 
-Server::~Server()
-{
-
-}
-
 void Server::loop()
 {
 	while( mClient != nullptr )

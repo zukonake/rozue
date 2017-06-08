@@ -1,10 +1,5 @@
 #pragma once
 
-#include <SFML/Graphics/Color.hpp>
-#include <SFML/Graphics/Vertex.hpp>
-#include <SFML/Graphics/RenderStates.hpp>
-#include <SFML/Graphics/RenderTarget.hpp>
-//
 #include <render/typedef.hpp>
 #include <data/loadable.hpp>
 
@@ -19,11 +14,11 @@ namespace render
 {
 
 
-class Tile : public virtual Loadable
+class Tile : public Loadable
 {
 	public:
 	Tile( Dataset const &dataset, DataMap const &dataMap );
-	Tile( Tileset const &tileset, Point const &tilesetPosition );
+	Tile( Tileset const &tileset, Point const &tilesetPosition ) noexcept;
 	
 	Tileset const &tileset;
 	Point tilesetPosition;

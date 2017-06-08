@@ -22,16 +22,15 @@ class Map3
 {
 public:
 	Map3() = default;
+	Map3( Map3< T, width, height, depth > const &that ) = default;
+	Map3( Map3< T, width, height, depth > &&that ) = default;
 	Map3( T const &fill );
-	Map3( Map3< T, width, height, depth > const &that );
-	Map3( Map3< T, width, height, depth > &&that );
 
-	Map3 &operator=( T const &fill );
-	Map3 &operator=( Map3< T, width, height, depth > const &that );
-	Map3 &operator=( Map3< T, width, height, depth > &&that );
+	Map3 &operator=( Map3< T, width, height, depth > const &that ) = default;
+	Map3 &operator=( Map3< T, width, height, depth > &&that ) = default;
 
-	T &operator[]( Vector3ull const &index );
-	T const &operator[]( Vector3ull const &index ) const;
+	T &operator[]( Vector3ull const &index ) noexcept;
+	T const &operator[]( Vector3ull const &index ) const noexcept;
 
 	T &at( Vector3ull const &index );
 	T const &at( Vector3ull const &index ) const;
@@ -55,56 +54,13 @@ Map3< T, width, height, depth >::Map3( T const &fill )
 }
 
 template< typename T, unsigned long long width, unsigned long long height, unsigned long long depth >
-Map3< T, width, height, depth >::Map3( Map3< T, width, height, depth > const &that )
-{
-	mValue = that.mValue;
-}
-
-template< typename T, unsigned long long width, unsigned long long height, unsigned long long depth >
-Map3< T, width, height, depth >::Map3( Map3< T, width, height, depth > &&that ) :
-	mValue( std::move( that.mValue ))
-{
-
-}
-
-template< typename T, unsigned long long width, unsigned long long height, unsigned long long depth >
-Map3< T, width, height, depth > &Map3< T, width, height, depth >::operator=( T const &fill )
-{
-	for( unsigned long long iZ = 0; iZ < depth; iZ++ )
-	{
-		for( unsigned long long iY = 0; iY < height; iY++ )
-		{
-			for( unsigned long long iX = 0; iX < width; iX++ )
-			{
-				mValue[ iZ ][ iY ][ iX ] = fill;
-			}
-		}
-	}
-	return *this;
-}
-
-template< typename T, unsigned long long width, unsigned long long height, unsigned long long depth >
-Map3< T, width, height, depth > &Map3< T, width, height, depth >::operator=( Map3< T, width, height, depth > const &that )
-{
-	mValue = that.mValue;
-	return *this;
-}
-
-template< typename T, unsigned long long width, unsigned long long height, unsigned long long depth >
-Map3< T, width, height, depth > &Map3< T, width, height, depth >::operator=( Map3< T, width, height, depth > &&that )
-{
-	mValue.swap( that.mValue );
-	return *this;
-}
-
-template< typename T, unsigned long long width, unsigned long long height, unsigned long long depth >
-T &Map3< T, width, height, depth >::operator[]( Vector3ull const &index )
+T &Map3< T, width, height, depth >::operator[]( Vector3ull const &index ) noexcept
 {
 	return mValue[ index.z ][ index.y ][ index.x ];
 }
 
 template< typename T, unsigned long long width, unsigned long long height, unsigned long long depth >
-T const &Map3< T, width, height, depth >::operator[]( Vector3ull const &index ) const
+T const &Map3< T, width, height, depth >::operator[]( Vector3ull const &index ) const noexcept
 {
 	return mValue[ index.z ][ index.y ][ index.x ];
 }
@@ -112,13 +68,13 @@ T const &Map3< T, width, height, depth >::operator[]( Vector3ull const &index ) 
 template< typename T, unsigned long long width, unsigned long long height, unsigned long long depth >
 T &Map3< T, width, height, depth >::at( Vector3ull const &index )
 {
-	return mValue[ index.z ][ index.y ][ index.x ];
+	return mValue.at( index.z ).at( index.y ).at( index.x );
 }
 
 template< typename T, unsigned long long width, unsigned long long height, unsigned long long depth >
 T const &Map3< T, width, height, depth >::at( Vector3ull const &index ) const
 {
-	return mValue[ index.z ][ index.y ][ index.x ];
+	return mValue.at( index.z ).at( index.y ).at( index.x );
 }
 
 }

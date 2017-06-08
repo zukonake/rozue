@@ -1,22 +1,24 @@
 #pragma once
 
 #include <string>
+#include <vector>
 //
-#include <SFML/System.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/Graphics.hpp>
+#include <SFML/Window/Keyboard.hpp>
+#include <SFML/Window/Event.hpp>
+#include <SFML/Window/ContextSettings.hpp>
+#include <SFML/Graphics/Drawable.hpp>
+#include <SFML/Graphics/RenderStates.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
 //
 #include <render/typedef.hpp>
 
 namespace coldline
 {
 
-class SFMLClient : public sf::Transformable
+class SFMLClient
 {
 public:
-	SFMLClient() = default;
-
-	virtual ~SFMLClient() noexcept;
+	virtual ~SFMLClient();
 
 	void update() noexcept;
 	void draw( sf::Drawable const &drawable, sf::RenderStates states = sf::RenderStates::Default );
@@ -32,10 +34,8 @@ public:
 
 	std::vector< sf::Event > getEvents() noexcept;
 	sf::RenderWindow& getWindow() noexcept;
-	sf::View& getView() noexcept;
 	render::Size getWindowSize() const noexcept;
 private:
-	sf::View mView;
 	sf::ContextSettings mSettings;
 	sf::RenderWindow mWindow;
 	sf::Event mEvent;

@@ -248,9 +248,9 @@ constexpr double Vector3< T >::getDistance( Vector3< T > const &to ) const noexc
 	if( std::is_unsigned< T >::value )
 	{
 		typedef std::make_signed< T > TSigned;
-		TSigned deltaX = std::abs(( TSigned )x - ( TSigned )to.x );
-		TSigned deltaY = std::abs(( TSigned )y - ( TSigned )to.y );
-		TSigned deltaZ = std::abs(( TSigned )z - ( TSigned )to.z );
+		TSigned deltaX = std::abs( static_cast< TSigned >( x ) - static_cast< TSigned >( to.x ));
+		TSigned deltaY = std::abs( static_cast< TSigned >( y ) - static_cast< TSigned >( to.y ));
+		TSigned deltaZ = std::abs( static_cast< TSigned >( z ) - static_cast< TSigned >( to.z ));
 		return std::sqrt( std::pow( deltaX, 2 ) + std::pow( deltaY, 2 ) + std::pow( deltaZ, 2 ));
 	}
 	else

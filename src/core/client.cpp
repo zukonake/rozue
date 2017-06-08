@@ -9,10 +9,14 @@ namespace coldline
 
 Client::Client( std::string const &name ) :
 	mServer( nullptr ),
-	mScreenSize( mDataset.at< Config >( "config" ).screenSize ),
 	mName( name )
 {
-
+	SFMLClient::openWindow(
+		mDataset.at< Config >( "config" ).screenSize,
+		"Rozue",
+		60,
+		true,
+		0 );
 }
 
 Client::~Client()
@@ -42,15 +46,6 @@ void Client::receiveOutputData( OutputData outputData ) noexcept
 		{
 			disconnect();
 			return;
-		}
-		if( !SFMLClient::isRunning())
-		{
-			SFMLClient::openWindow(
-				mScreenSize,
-				"Rozue",
-				60,
-				true,
-				0 );
 		}
 		render( outputData );
 		update();

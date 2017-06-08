@@ -1,7 +1,5 @@
 #pragma once
 
-#include <string>
-//
 #include <SFML/Window/Event.hpp>
 //
 #include <data/outputData.hpp>

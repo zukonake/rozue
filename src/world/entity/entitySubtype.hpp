@@ -9,13 +9,13 @@ namespace coldline
 class Dataset;
 class DataMap;
 
-class EntitySubtype : public virtual Loadable
+class EntitySubtype : public Loadable
 {
 	public:
 	EntitySubtype( Dataset const &dataset, DataMap const &dataMap );
-	EntitySubtype( render::Tile const &renderTile, bool const &solid );
+	EntitySubtype( render::Tile const &renderTile, bool const &solid ) noexcept;
 
-	render::Tile mTile;
+	render::Tile mRenderTile;
 	bool mSolid;
 };
 

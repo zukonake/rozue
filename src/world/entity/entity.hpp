@@ -5,16 +5,23 @@
 namespace coldline
 {
 
-class World;
+namespace render
+{
+
+class Tile;
+
+}
+
 class EntitySubtype;
+class World;
 
 class Entity
 {
 	public:
-	Entity( World &mWorld, world::Point3 const &position, EntitySubtype const &subtype );
+	Entity( World &mWorld, world::Point3 const &position, EntitySubtype const &subtype ) noexcept;
 
-	virtual bool move( world::Vector3 const &by );
-	virtual bool teleport( world::Point3 const &to );
+	bool move( world::Vector3 const &by );
+	bool teleport( world::Point3 const &to );
 
 	render::Tile const &getRenderTile() const noexcept;
 	world::Point3 const &getPosition() const noexcept;

@@ -72,8 +72,8 @@ constexpr Cuboid< TCoordinate, TLength > Cuboid< TCoordinate, TLength >::operato
 template< typename TCoordinate, typename TLength >
 template< typename TTCoordinate, typename TTLength >
 constexpr Cuboid< TCoordinate, TLength >::Cuboid( Cuboid< TTCoordinate, TTLength > const &that ) noexcept :
-	pos(( Point )that.pos ),
-	size(( Size )that.size )
+	pos( static_cast< Point >( that.pos )),
+	size( static_cast< Size >( that.size ))
 {
 	
 }

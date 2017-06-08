@@ -12,7 +12,7 @@ namespace coldline
 class Dataset
 {
 	public:
-	Dataset();
+	Dataset() noexcept;
 
 	template< typename T >
 	T const &at( std::string const &key ) const;

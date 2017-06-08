@@ -1,9 +1,7 @@
 #pragma once
 
 #include <string>
-#include <vector>
 //
-#include <render/typedef.hpp>
 #include <render/SFMLClient.hpp>
 #include <data/dataset.hpp>
 
@@ -40,7 +38,6 @@ private:
 
 	Server* mServer;
 	Dataset mDataset;
-	render::Size mScreenSize;
 	std::string mName;
 };
 

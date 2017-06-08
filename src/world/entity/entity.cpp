@@ -1,7 +1,4 @@
-#include <SFML/Graphics/RenderTarget.hpp>
-//
 #include <world/typedef.hpp>
-#include <world/tile/tileSubtype.hpp>
 #include <world/entity/entitySubtype.hpp>
 #include <world/world.hpp>
 #include "entity.hpp"
@@ -9,7 +6,7 @@
 namespace coldline
 {
 
-Entity::Entity( World &world, world::Point3 const &position, EntitySubtype const &subtype ) :
+Entity::Entity( World &world, world::Point3 const &position, EntitySubtype const &subtype ) noexcept :
 	mWorld( world ),
 	mSubtype( subtype ),
 	mPosition( position )
@@ -19,7 +16,7 @@ Entity::Entity( World &world, world::Point3 const &position, EntitySubtype const
 
 bool Entity::move( world::Vector3 const &by )
 {
-	world::Point3 newPosition = mPosition + ( world::Point3 )by;
+	world::Point3 newPosition = mPosition + by;
 	if( canMove( newPosition )) //TODO move entites to chunk as a vector
 	{
 		mWorld.moveEntity( mPosition, newPosition );
@@ -48,7 +45,7 @@ bool Entity::teleport( world::Point3 const &to )
 
 render::Tile const &Entity::getRenderTile() const noexcept
 {
-	return mSubtype.mTile;
+	return mSubtype.mRenderTile;
 }
 
 world::Point3 const &Entity::getPosition() const noexcept

@@ -5,14 +5,14 @@ namespace coldline
 {
 
 TileSubtype::TileSubtype( Dataset const &dataset, DataMap const &dataMap ) :
-	mTile( dataset, dataMap ),
+	mRenderTile( dataset, dataMap ),
 	mSolid( dataMap.getBool( "solid" ))
 {
 
 }
 
-TileSubtype::TileSubtype( render::Tile const &renderTile, bool const &solid ) :
-	mTile( renderTile ),
+TileSubtype::TileSubtype( render::Tile const &renderTile, bool const &solid ) noexcept :
+	mRenderTile( renderTile ),
 	mSolid( solid )
 {
 

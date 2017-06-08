@@ -5,6 +5,7 @@
 #include <queue>
 //
 #include <world/typedef.hpp>
+#include <render/typedef.hpp>
 
 namespace coldline
 {

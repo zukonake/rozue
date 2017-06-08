@@ -1,10 +1,19 @@
 #include <stdexcept>
+//
+#include <SFML/Window/Keyboard.hpp>
+#include <SFML/Window/Event.hpp>
+#include <SFML/Window/ContextSettings.hpp>
+#include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/Transform.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
+//
+#include <render/typedef.hpp>
 #include "SFMLClient.hpp"
 
 namespace coldline
 {
 
-SFMLClient::~SFMLClient() noexcept
+SFMLClient::~SFMLClient()
 {
 	mWindow.close();
 }
@@ -17,8 +26,6 @@ void SFMLClient::update() noexcept
 
 void SFMLClient::draw( sf::Drawable const &drawable, sf::RenderStates states )
 {
-	mWindow.setView( mView );
-	states.transform.combine( this->getTransform());
 	mWindow.draw( drawable, states );
 }
 
@@ -41,7 +48,6 @@ void SFMLClient::openWindow( render::Size const &windowSize,
 	mWindow.clear( sf::Color( 0, 0, 0 ) );
 	mWindow.setVerticalSyncEnabled( vsync );
 	mWindow.setFramerateLimit( fpsLimit );
-	mView.setSize( windowSize.x ,windowSize.y );
 }
 
 bool SFMLClient::isRunning() const noexcept
@@ -69,14 +75,9 @@ sf::RenderWindow& SFMLClient::getWindow() noexcept
 	return mWindow;
 }
 
-sf::View& SFMLClient::getView() noexcept
-{
-	return mView;
-}
-
 render::Size SFMLClient::getWindowSize() const noexcept
 {
-	return ( render::Size )mWindow.getSize();
+	return static_cast< render::Size >( mWindow.getSize());
 }
 
 }

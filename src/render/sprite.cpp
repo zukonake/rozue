@@ -1,3 +1,4 @@
+#include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/PrimitiveType.hpp>
 //
 #include <render/tileset.hpp>

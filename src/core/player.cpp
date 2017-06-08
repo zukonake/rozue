@@ -1,10 +1,14 @@
+#include <SFML/Window/Keyboard.hpp>
+//
 #include <data/inputData.hpp>
+#include <data/outputData.hpp>
 #include <data/config.hpp>
 #include <render/tile.hpp>
 #include <render/tileset.hpp>
 #include <data/dataset.hpp>
 #include <world/entity/entitySubtype.hpp>
 #include <world/world.hpp>
+#include <render/camera.hpp>
 #include "player.hpp"
 
 namespace coldline

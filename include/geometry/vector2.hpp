@@ -92,8 +92,8 @@ constexpr Vector2< T >::Vector2( T const &x, T const &y ) noexcept :
 template< typename T >
 template< typename U >
 constexpr Vector2< T >::Vector2( Vector2< U > const &that ) noexcept :
-	x(( T )that.x ),
-	y(( T )that.y )
+	x( that.x ),
+	y( that.y )
 {
 	static_assert( std::is_arithmetic< T >::value, "Vector parameters mus be arithmetic" );
 	static_assert( std::is_arithmetic< U >::value, "Vector parameters mus be arithmetic" );
@@ -103,8 +103,8 @@ constexpr Vector2< T >::Vector2( Vector2< U > const &that ) noexcept :
 template< typename T >
 template< typename U >
 constexpr Vector2< T >::Vector2( U const &that ) :
-	x(( T )that.x ),
-	y(( T )that.y )
+	x( that.x ),
+	y( that.y )
 {
 	static_assert( std::is_arithmetic< T >::value, "Vector parameters mus be arithmetic" );
 }
@@ -229,8 +229,8 @@ constexpr double Vector2< T >::getDistance( Vector2< T > const &to ) const noexc
 	if( std::is_unsigned< T >::value )
 	{
 		typedef std::make_signed< T > TSigned;
-		TSigned deltaX = std::abs(( TSigned )x - ( TSigned )to.x );
-		TSigned deltaY = std::abs(( TSigned )y - ( TSigned )to.y );
+		TSigned deltaX = std::abs( static_cast< TSigned >( x ) - static_cast< TSigned >( to.x ));
+		TSigned deltaY = std::abs( static_cast< TSigned >( y ) - static_cast< TSigned >( to.y ));
 		return std::sqrt( std::pow( deltaX, 2 ) + std::pow( deltaY, 2 ));
 	}
 	else

@@ -1,5 +1,3 @@
-#include <cstdint>
-#include <cmath>
 #include <string>
 //
 #include <utility/logger.hpp>
@@ -7,7 +5,6 @@
 #include <render/typedef.hpp>
 #include <render/tile.hpp>
 #include <render/sprite.hpp>
-#include <world/tile/tileSubtype.hpp>
 #include <world/world.hpp>
 #include <world/entity/entity.hpp>
 #include "camera.hpp"

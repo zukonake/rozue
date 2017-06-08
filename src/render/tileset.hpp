@@ -12,7 +12,7 @@ namespace coldline
 
 class DataMap;
 
-class Tileset : public virtual Loadable
+class Tileset : public Loadable
 {
 	public:
 	Tileset( DataMap const &dataMap );
