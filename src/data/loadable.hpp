@@ -1,6 +1,7 @@
 #pragma once
 
-struct Loadable
+class Loadable
 {
+	public:
 	virtual ~Loadable() = default;
 };
