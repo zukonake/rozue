@@ -12,7 +12,7 @@ class Generator
 	public:
 	virtual ~Generator() = default;
 
-	virtual Chunk generate( chunk::Point const &position ) = 0;
+	virtual Chunk generate( ChunkPoint const &position ) = 0;
 };
 
 }

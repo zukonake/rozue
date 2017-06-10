@@ -28,7 +28,7 @@ Tile &Tile::operator=( TileSubtype const &that ) noexcept
 	return *this;
 }
 
-render::Tile const &Tile::getRenderTile() const noexcept
+RenderTile const &Tile::getRenderTile() const noexcept
 {
 	return mSubtype->mRenderTile;
 }

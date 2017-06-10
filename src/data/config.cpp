@@ -3,7 +3,7 @@
 namespace coldline
 {
 
-Config::Config( render::Size const &screenSize, render::Size const &spriteSize ) noexcept :
+Config::Config( RenderSize const &screenSize, RenderSize const &spriteSize ) noexcept :
 	screenSize( screenSize ),
 	spriteSize( spriteSize )
 {

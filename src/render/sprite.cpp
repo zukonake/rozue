@@ -2,18 +2,18 @@
 #include <SFML/Graphics/PrimitiveType.hpp>
 //
 #include <render/tileset.hpp>
-#include <render/tile.hpp>
+#include <render/renderTile.hpp>
 #include "sprite.hpp"
 
 namespace coldline
 {
 
 Sprite::Sprite(
-	render::Surface const &surface,
-	render::Tile const &tile,
+	RenderSurface const &surface,
+	RenderTile const &renderTile,
 	sf::Color const &color )
 {
-	setTile( tile );
+	setRenderTile( renderTile );
 	setSurface( surface );
 	setColor( color );
 }
@@ -32,7 +32,7 @@ void Sprite::setColor( sf::Color const &color )
 	mVertices[ 3 ].color = color;
 }
 
-void Sprite::setSurface( render::Surface const &surface )
+void Sprite::setSurface( RenderSurface const &surface )
 {
 	mVertices[ 0 ].position =
 	{
@@ -56,30 +56,30 @@ void Sprite::setSurface( render::Surface const &surface )
 	};
 }
 
-void Sprite::setTile( render::Tile const &tile )
+void Sprite::setRenderTile( RenderTile const &renderTile )
 {
-	mTileset = &tile.tileset;
-	render::Size tileSize = mTileset->getTileSize();
+	mTileset = &renderTile.tileset;
+	RenderSize tileSize = mTileset->getTileSize();
 
 	mVertices[ 0 ].texCoords =
 	{
-		( tile.tilesetPosition.x + 0 ) * tileSize.x,
-		( tile.tilesetPosition.y + 0 ) * tileSize.y
+		( renderTile.tilesetPosition.x + 0 ) * tileSize.x,
+		( renderTile.tilesetPosition.y + 0 ) * tileSize.y
 	};
 	mVertices[ 1 ].texCoords =
 	{
-		( tile.tilesetPosition.x + 1 ) * tileSize.x,
-		( tile.tilesetPosition.y + 0 ) * tileSize.y
+		( renderTile.tilesetPosition.x + 1 ) * tileSize.x,
+		( renderTile.tilesetPosition.y + 0 ) * tileSize.y
 	};
 	mVertices[ 2 ].texCoords =
 	{
-		( tile.tilesetPosition.x + 1 ) * tileSize.x,
-		( tile.tilesetPosition.y + 1 ) * tileSize.y
+		( renderTile.tilesetPosition.x + 1 ) * tileSize.x,
+		( renderTile.tilesetPosition.y + 1 ) * tileSize.y
 	};
 	mVertices[ 3 ].texCoords =
 	{
-		( tile.tilesetPosition.x + 0 ) * tileSize.x,
-		( tile.tilesetPosition.y + 1 ) * tileSize.y
+		( renderTile.tilesetPosition.x + 0 ) * tileSize.x,
+		( renderTile.tilesetPosition.y + 1 ) * tileSize.y
 	};
 }
 

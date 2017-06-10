@@ -13,7 +13,7 @@ class FlatGenerator : public Generator
 	public:
 	FlatGenerator( Dataset const &dataset );
 
-	virtual Chunk generate( chunk::Point const &position ) override;
+	virtual Chunk generate( ChunkPoint const &position ) override;
 	private:
 	TileSubtype const &mFloor;
 };

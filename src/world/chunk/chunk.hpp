@@ -18,15 +18,15 @@ class Chunk
 	public:
 	Chunk() noexcept;
 
-	Tile &operator[]( chunk::InternalPoint const &point ) noexcept;
-	Tile const &operator[]( chunk::InternalPoint const &point ) const noexcept;
+	Tile &operator[]( ChunkInternalPoint const &point ) noexcept;
+	Tile const &operator[]( ChunkInternalPoint const &point ) const noexcept;
 
-	static chunk::Point toChunkPoint( world::Point3 const &point ) noexcept;
-	static chunk::InternalPoint toInternalPoint( world::Point3 const &point ) noexcept;
-	static chunk::Size constexpr size = { 24, 24, 1 };
+	static ChunkPoint toChunkPoint( WorldPoint3 const &point ) noexcept;
+	static ChunkInternalPoint toInternalPoint( WorldPoint3 const &point ) noexcept;
+	static ChunkSize constexpr size = { 24, 24, 1 };
 	private:
 	std::vector< Entity * > mEntities;
-	world::Space< size.x, size.y, size.z > mValue;
+	WorldSpace< size.x, size.y, size.z > mValue;
 };
 
 }

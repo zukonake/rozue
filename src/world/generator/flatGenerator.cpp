@@ -12,7 +12,7 @@ FlatGenerator::FlatGenerator( Dataset const &dataset ) :
 
 }
 
-Chunk FlatGenerator::generate( chunk::Point const &position )
+Chunk FlatGenerator::generate( ChunkPoint const &position )
 {
 	( void )position;
 	Chunk chunk;

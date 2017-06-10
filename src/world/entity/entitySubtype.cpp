@@ -11,7 +11,7 @@ EntitySubtype::EntitySubtype( Dataset const &dataset, DataMap const &dataMap ) :
 
 }
 
-EntitySubtype::EntitySubtype( render::Tile const &renderTile, bool const &solid ) noexcept :
+EntitySubtype::EntitySubtype( RenderTile const &renderTile, bool const &solid ) noexcept :
 	mRenderTile( renderTile ),
 	mSolid( solid )
 {

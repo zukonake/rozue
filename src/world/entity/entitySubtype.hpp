@@ -1,7 +1,7 @@
 #pragma once
 
 #include <data/loadable.hpp>
-#include <render/tile.hpp>
+#include <render/renderTile.hpp>
 
 namespace coldline
 {
@@ -13,9 +13,9 @@ class EntitySubtype : public Loadable
 {
 	public:
 	EntitySubtype( Dataset const &dataset, DataMap const &dataMap );
-	EntitySubtype( render::Tile const &renderTile, bool const &solid ) noexcept;
+	EntitySubtype( RenderTile const &renderTile, bool const &solid ) noexcept;
 
-	render::Tile mRenderTile;
+	RenderTile mRenderTile;
 	bool mSolid;
 };
 

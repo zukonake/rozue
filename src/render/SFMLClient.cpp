@@ -29,7 +29,7 @@ void SFMLClient::draw( sf::Drawable const &drawable, sf::RenderStates states )
 	mWindow.draw( drawable, states );
 }
 
-void SFMLClient::openWindow( render::Size const &windowSize,
+void SFMLClient::openWindow( RenderSize const &windowSize,
 	std::string const &windowTitle,
 	unsigned short fpsLimit,
 	bool vsync,
@@ -75,9 +75,9 @@ sf::RenderWindow& SFMLClient::getWindow() noexcept
 	return mWindow;
 }
 
-render::Size SFMLClient::getWindowSize() const noexcept
+RenderSize SFMLClient::getWindowSize() const noexcept
 {
-	return static_cast< render::Size >( mWindow.getSize());
+	return static_cast< RenderSize >( mWindow.getSize());
 }
 
 }

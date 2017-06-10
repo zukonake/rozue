@@ -27,7 +27,7 @@ World::~World()
 
 
 
-Tile &World::operator[]( world::Point3 const &point )
+Tile &World::operator[]( WorldPoint3 const &point )
 {
 	if( !exists( point ))
 	{
@@ -38,9 +38,9 @@ Tile &World::operator[]( world::Point3 const &point )
 
 
 
-bool World::sees( world::Point3 const &from, world::Point3 const &to )
+bool World::sees( WorldPoint3 const &from, WorldPoint3 const &to )
 {
-	auto plot = world::Line3( from, to ).getPlot();
+	auto plot = WorldLine3( from, to ).getPlot();
 	if( plot.empty())
 	{
 		return false;
@@ -62,9 +62,9 @@ bool World::sees( world::Point3 const &from, world::Point3 const &to )
 	return true;
 }
 
-bool World::canMove( world::Point3 const &from, world::Point3 const &to )
+bool World::canMove( WorldPoint3 const &from, WorldPoint3 const &to )
 {
-	auto plot = world::Line3( from, to ).getPlot();
+	auto plot = WorldLine3( from, to ).getPlot();
 	if( plot.empty())
 	{
 		return false;
@@ -86,7 +86,7 @@ bool World::canMove( world::Point3 const &from, world::Point3 const &to )
 	return true;
 }
 
-bool World::entityOn( world::Point3 const &point )
+bool World::entityOn( WorldPoint3 const &point )
 {
 	Chunk const &chunk = getChunk( Chunk::toChunkPoint( point ));
 	for( auto &iEntity : chunk.mEntities )
@@ -101,7 +101,7 @@ bool World::entityOn( world::Point3 const &point )
 
 
 
-Entity &World::getEntityOn( world::Point3 const &point )
+Entity &World::getEntityOn( WorldPoint3 const &point )
 {
 	Chunk const &chunk = getChunk( Chunk::toChunkPoint( point ));
 	for( auto &iEntity : chunk.mEntities )
@@ -114,7 +114,7 @@ Entity &World::getEntityOn( world::Point3 const &point )
 	throw std::out_of_range( "World::getEntityOn: no such entity" );
 }
 
-Entity &World::createEntity( world::Point3 const &position, EntitySubtype const &subtype )
+Entity &World::createEntity( WorldPoint3 const &position, EntitySubtype const &subtype )
 {
 	if( !entityOn( position ))
 	{
@@ -132,7 +132,7 @@ Entity &World::createPlayer( EntitySubtype const &subtype )
 
 
 
-void World::moveEntity( world::Point3 const &from, world::Point3 const &to )
+void World::moveEntity( WorldPoint3 const &from, WorldPoint3 const &to )
 {
 	if( Chunk::toChunkPoint( from ) != Chunk::toChunkPoint( to ))
 	{
@@ -157,12 +157,12 @@ void World::simulate()
 
 
 
-bool World::exists( world::Point3 const &point )
+bool World::exists( WorldPoint3 const &point )
 {
 	return mChunks.count( Chunk::toChunkPoint( point )) > 0;
 }
 
-Chunk &World::loadChunk( chunk::Point const &point )
+Chunk &World::loadChunk( ChunkPoint const &point )
 {
 	globalLogger.log( Logger::DEBUG,
 		"Loaded chunk: " +
@@ -173,7 +173,7 @@ Chunk &World::loadChunk( chunk::Point const &point )
 	return mChunks[ point ];
 }
 
-Chunk &World::getChunk( chunk::Point const &point )
+Chunk &World::getChunk( ChunkPoint const &point )
 {
 	if( exists( point ))
 	{

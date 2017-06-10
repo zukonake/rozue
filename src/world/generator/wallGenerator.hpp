@@ -13,7 +13,7 @@ class WallGenerator : public Generator
 	public:
 	WallGenerator( Dataset const &dataset );
 
-	virtual Chunk generate( chunk::Point const &position ) override;
+	virtual Chunk generate( ChunkPoint const &position ) override;
 	private:
 	TileSubtype const &mWall;
 	TileSubtype const &mFloor;

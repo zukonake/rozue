@@ -3,7 +3,7 @@
 #include <data/inputData.hpp>
 #include <data/outputData.hpp>
 #include <data/config.hpp>
-#include <render/tile.hpp>
+#include <render/renderTile.hpp>
 #include <render/tileset.hpp>
 #include <data/dataset.hpp>
 #include <world/entity/entitySubtype.hpp>
@@ -17,7 +17,7 @@ namespace coldline
 Player::Player( Dataset const &dataset, World& world ) :
 	mDataset( dataset ),
 	mWorld( world ),
-	mCamera( mDataset.at< render::Tile >( "nothing" ),
+	mCamera( mDataset.at< RenderTile >( "nothing" ),
 		mWorld,
 		mWorld.createPlayer( mDataset.at< EntitySubtype >( "human" )),
 		mDataset.at< Config >( "config" ).screenSize,

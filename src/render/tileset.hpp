@@ -16,12 +16,12 @@ class Tileset : public Loadable
 {
 	public:
 	Tileset( DataMap const &dataMap );
-	Tileset( std::string const &path, render::Size const &tileSize );
+	Tileset( std::string const &path, RenderSize const &tileSize );
 
-	render::Size const &getTileSize() const noexcept;
+	RenderSize const &getTileSize() const noexcept;
 	sf::Texture const &getTexture() const noexcept;
 	private:
-	render::Size mTileSize;
+	RenderSize mTileSize;
 
 	sf::Texture mTexture;
 };

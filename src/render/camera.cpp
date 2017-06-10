@@ -3,7 +3,7 @@
 #include <utility/logger.hpp>
 #include <world/typedef.hpp>
 #include <render/typedef.hpp>
-#include <render/tile.hpp>
+#include <render/renderTile.hpp>
 #include <render/sprite.hpp>
 #include <world/world.hpp>
 #include <world/entity/entity.hpp>
@@ -13,11 +13,11 @@ namespace coldline
 {
 
 Camera::Camera(
-	render::Tile const &nothing,
+	RenderTile const &nothing,
 	World &world,
 	Entity &entity,
-	render::Size screenSize,
-	render::Size spriteSize ) :
+	RenderSize screenSize,
+	RenderSize spriteSize ) :
 		mLocked( true ),
 		mScale({ 1.f, 1.f }),
 		mScreenSize( screenSize ),
@@ -31,7 +31,7 @@ Camera::Camera(
 	lock();
 }
 
-bool Camera::move( world::Vector3 const &by )
+bool Camera::move( WorldVector3 const &by )
 {
 	if( mLocked )
 	{
@@ -53,7 +53,7 @@ bool Camera::move( world::Vector3 const &by )
 	return false;
 }
 
-bool Camera::teleport( world::Point3 const &to )
+bool Camera::teleport( WorldPoint3 const &to )
 {
 	if( mLocked )
 	{
@@ -86,13 +86,13 @@ void Camera::unlock()
 	mLocked = false;
 }
 
-void Camera::setScale( render::Scale const &scale )
+void Camera::setScale( RenderScale const &scale )
 {
 	mScale = scale;
 	updateFov();
 }
 
-void Camera::changeScale( render::Scale const &scale )
+void Camera::changeScale( RenderScale const &scale )
 {
 	if( scale.x > -mScale.x && scale.y > -mScale.y )
 	{
@@ -103,8 +103,8 @@ void Camera::changeScale( render::Scale const &scale )
 std::queue< Sprite > Camera::getRenderQueue()
 {
 	std::queue< Sprite > renderQueue; //TODO maybe change to vector? TODO typedef?
-	world::Point3 worldPosition;
-	render::Point spritePosition;
+	WorldPoint3 worldPosition;
+	RenderPoint spritePosition;
 	worldPosition.z = mPosition.z;
 	for( worldPosition.y = mPosition.y - mFov.y, spritePosition.y = 0;
 		worldPosition.y < mPosition.y + mFov.y;
@@ -114,7 +114,7 @@ std::queue< Sprite > Camera::getRenderQueue()
 			worldPosition.x < mPosition.x + mFov.x;
 			worldPosition.x++, spritePosition.x += mSpriteSize.x * mScale.x )
 		{
-			render::Surface surface( spritePosition, { mSpriteSize * mScale });
+			RenderSurface surface( spritePosition, { mSpriteSize * mScale });
 			if( !sees( worldPosition ))
 			{
 				renderQueue.emplace(
@@ -139,14 +139,14 @@ std::queue< Sprite > Camera::getRenderQueue()
 }
 
 //TODO candidate for deletion
-bool Camera::sees( world::Point3 const &what ) const
+bool Camera::sees( WorldPoint3 const &what ) const
 {
 	return mWorld.sees( mEntity->getPosition(), what );
 }
 
 void Camera::updateFov()
 {
-	mFov = (( mScreenSize / ( mSpriteSize * mScale ))) / render::Size( 2, 2 );
+	mFov = (( mScreenSize / ( mSpriteSize * mScale ))) / RenderSize( 2, 2 );
 }
 
 }

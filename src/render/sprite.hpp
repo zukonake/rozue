@@ -9,10 +9,7 @@
 namespace coldline
 {
 
-namespace render
-{
-	class Tile;
-}
+class RenderTile;
 
 class Tileset;
 
@@ -20,15 +17,15 @@ class Sprite : public sf::Drawable
 {
 	public:
 	Sprite(
-		render::Surface const &surface,
-		render::Tile const &tile,
+		RenderSurface const &surface,
+		RenderTile const &renderTile,
 		sf::Color const &color = sf::Color::White );
 
 	virtual void draw( sf::RenderTarget &target, sf::RenderStates states ) const override;
 
 	void setColor( sf::Color const &color );
-	void setSurface( render::Surface const &surface );
-	void setTile( render::Tile const &tile );
+	void setSurface( RenderSurface const &surface );
+	void setRenderTile( RenderTile const &renderTile );
 	private:
 	sf::Vertex mVertices[ 4 ];
 	Tileset const *mTileset;

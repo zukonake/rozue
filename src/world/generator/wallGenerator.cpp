@@ -14,7 +14,7 @@ WallGenerator::WallGenerator( Dataset const &dataset ) :
 
 }
 
-Chunk WallGenerator::generate( chunk::Point const &position )
+Chunk WallGenerator::generate( ChunkPoint const &position )
 {
 	( void )position;
 	Chunk chunk;

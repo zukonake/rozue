@@ -10,13 +10,7 @@
 namespace coldline
 {
 
-namespace render
-{
-
-class Tile;
-
-}
-
+class RenderTile;
 class Sprite;
 class Entity;
 class World;
@@ -26,35 +20,35 @@ class Camera
 	public:
 	Camera( Camera const &that ) = delete;
 	Camera(
-		render::Tile const &nothing,
+		RenderTile const &nothing,
 		World &world,
 		Entity &entity,
-		render::Size screenSize,
-		render::Size spriteSize );
+		RenderSize screenSize,
+		RenderSize spriteSize );
 	Camera &operator=( Camera const &that ) = delete;
 
-	bool move( world::Vector3 const &by );
-	bool teleport( world::Point3 const &to );
+	bool move( WorldVector3 const &by );
+	bool teleport( WorldPoint3 const &to );
 
 	void lock();
 	void unlock();
-	void setScale( render::Scale const &scale );
-	void changeScale( render::Scale const &scale );
+	void setScale( RenderScale const &scale );
+	void changeScale( RenderScale const &scale );
 	std::queue< Sprite > getRenderQueue();
 	private:
-	bool sees( world::Point3 const &what ) const;
+	bool sees( WorldPoint3 const &what ) const;
 	void updateFov();
 
 	bool mLocked;
-	render::Scale mScale;
-	render::Size mScreenSize;
-	render::Size mSpriteSize;
-	render::Tile const &mNothing;
+	RenderScale mScale;
+	RenderSize mScreenSize;
+	RenderSize mSpriteSize;
+	RenderTile const &mNothing;
 	World &mWorld;
 	Entity *mEntity;
-	world::Point3 mPosition;
+	WorldPoint3 mPosition;
 
-	render::Size mFov;
+	RenderSize mFov;
 };
 
 }

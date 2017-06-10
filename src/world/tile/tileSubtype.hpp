@@ -1,7 +1,7 @@
 #pragma once
 
 #include <data/loadable.hpp>
-#include <render/tile.hpp>
+#include <render/renderTile.hpp>
 
 namespace coldline
 {
@@ -13,9 +13,9 @@ class TileSubtype : public Loadable
 {
 	public:
 	TileSubtype( Dataset const &dataset, DataMap const &dataMap );
-	TileSubtype( render::Tile const &renderTile, bool const &solid ) noexcept;
+	TileSubtype( RenderTile const &renderTile, bool const &solid ) noexcept;
 
-	render::Tile mRenderTile;
+	RenderTile mRenderTile;
 	bool mSolid;
 };
 

@@ -4,7 +4,7 @@
 namespace coldline
 {
 
-chunk::Size constexpr Chunk::size;
+ChunkSize constexpr Chunk::size;
 
 Chunk::Chunk() noexcept
 {
@@ -13,19 +13,19 @@ Chunk::Chunk() noexcept
 	static_assert( size.z > 0, "Chunk size cannot be 0" );
 }
 
-Tile &Chunk::operator[]( chunk::InternalPoint const &point ) noexcept
+Tile &Chunk::operator[]( ChunkInternalPoint const &point ) noexcept
 {
 	return mValue[ point ];
 }
 
-Tile const &Chunk::operator[]( chunk::InternalPoint const &point ) const noexcept
+Tile const &Chunk::operator[]( ChunkInternalPoint const &point ) const noexcept
 {
 	return mValue[ point ];
 }
 
-chunk::Point Chunk::toChunkPoint( world::Point3 const &point ) noexcept
+ChunkPoint Chunk::toChunkPoint( WorldPoint3 const &point ) noexcept
 {
-	chunk::Point output = point;
+	ChunkPoint output = point;
 	if( output.x < 0 )
 	{
 		output.x -= size.x - 1;
@@ -41,9 +41,9 @@ chunk::Point Chunk::toChunkPoint( world::Point3 const &point ) noexcept
 	return output / size;
 }
 
-chunk::InternalPoint Chunk::toInternalPoint( world::Point3 const &point ) noexcept
+ChunkInternalPoint Chunk::toInternalPoint( WorldPoint3 const &point ) noexcept
 {
-	world::Point3 output = point;
+	WorldPoint3 output = point;
 	output.x %= size.x;
 	output.y %= size.y;
 	output.z %= size.z;

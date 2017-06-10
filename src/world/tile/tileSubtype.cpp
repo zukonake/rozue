@@ -11,7 +11,7 @@ TileSubtype::TileSubtype( Dataset const &dataset, DataMap const &dataMap ) :
 
 }
 
-TileSubtype::TileSubtype( render::Tile const &renderTile, bool const &solid ) noexcept :
+TileSubtype::TileSubtype( RenderTile const &renderTile, bool const &solid ) noexcept :
 	mRenderTile( renderTile ),
 	mSolid( solid )
 {

@@ -5,16 +5,11 @@
 namespace coldline
 {
 
-namespace chunk
-{
-
-typedef long long Coordinate;
-typedef unsigned InternalCoordinate;
-typedef unsigned Length;
-typedef ::coldline::geometry::Vector3< Coordinate > Point;
-typedef ::coldline::geometry::Vector3< InternalCoordinate > InternalPoint;
-typedef ::coldline::geometry::Vector3< Length > Size;
-
-}
+typedef long long ChunkCoordinate;
+typedef unsigned ChunkInternalCoordinate;
+typedef unsigned ChunkLength;
+typedef ::coldline::geometry::Vector3< ChunkCoordinate > ChunkPoint;
+typedef ::coldline::geometry::Vector3< ChunkInternalCoordinate > ChunkInternalPoint;
+typedef ::coldline::geometry::Vector3< ChunkLength > ChunkSize;
 
 }
