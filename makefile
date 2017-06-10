@@ -29,7 +29,8 @@ WARNING_FLAGS = \
 	-Woverloaded-virtual \
 	-Wnon-virtual-dtor \
 	-Wctor-dtor-privacy \
-	-Wno-long-long
+	-Wno-long-long \
+	-Weffc++
 STD = -std=c++14 -pedantic
 INCLUDES = -I $(SOURCE_DIR) -I $(INCLUDE_DIR)
 LDLIBS = -lsfml-graphics -lsfml-window -lsfml-system
