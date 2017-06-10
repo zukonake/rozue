@@ -85,6 +85,14 @@ void Player::handleKeys( sf::Event event )
 			mCamera.changeScale({ -0.15f, -0.15f });
 			break;
 
+		case sf::Keyboard::R:
+			mCamera.unlock();
+			break;
+
+		case sf::Keyboard::F:
+			mCamera.lock();
+			break;
+
 		default:
 			break;
 	}
