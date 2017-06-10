@@ -23,24 +23,6 @@ Tile const &Chunk::operator[]( chunk::InternalPoint const &point ) const noexcep
 	return mValue[ point ];
 }
 
-bool Chunk::entityOn( chunk::InternalPoint const &point ) const
-{
-	for( auto &iEntity : mEntities )
-	{
-		if( iEntity->getPosition() == point )
-		{
-			return true;
-		}
-	}
-	return false;
-}
-
-Entity &Chunk::getEntityOn( chunk::InternalPoint const &point )
-{
-	(void)point; //TODO
-	return *mEntities[ 0 ];
-}
-
 chunk::Point Chunk::toChunkPoint( world::Point3 const &point ) noexcept
 {
 	chunk::Point output = point;

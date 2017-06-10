@@ -1,3 +1,4 @@
+#include <stdexcept>
 #include <string>
 //
 #include <utility/logger.hpp>
@@ -63,19 +64,54 @@ bool World::sees( world::Point3 const &from, world::Point3 const &to )
 
 bool World::canMove( world::Point3 const &from, world::Point3 const &to )
 {
-	return sees( from, to ) && operator[]( to ).passable() && !entityOn( to );
+	auto plot = world::Line3( from, to ).getPlot();
+	if( plot.empty())
+	{
+		return false;
+	}
+	for( auto &iPoint : plot )
+	{
+		if( !operator[]( iPoint ).passable())
+		{
+			return false;
+		}
+		if( entityOn( iPoint ))
+		{
+			if( !getEntityOn( iPoint ).passable())
+			{
+				return false;
+			}
+		}
+	}
+	return true;
 }
 
-bool World::entityOn( world::Point3 const &point ) const
+bool World::entityOn( world::Point3 const &point )
 {
-	return mEntitiesMap.count( point );
+	Chunk const &chunk = getChunk( Chunk::toChunkPoint( point ));
+	for( auto &iEntity : chunk.mEntities )
+	{
+		if( iEntity->getPosition() == point )
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 
 
-Entity const &World::getEntityOn( world::Point3 const &point ) const
+Entity &World::getEntityOn( world::Point3 const &point )
 {
-	return *mEntitiesMap.at( point );
+	Chunk const &chunk = getChunk( Chunk::toChunkPoint( point ));
+	for( auto &iEntity : chunk.mEntities )
+	{
+		if( iEntity->getPosition() == point )
+		{
+			return *iEntity;
+		}
+	}
+	throw std::out_of_range( "World::getEntityOn: no such entity" );
 }
 
 Entity &World::createEntity( world::Point3 const &position, EntitySubtype const &subtype )
@@ -83,22 +119,35 @@ Entity &World::createEntity( world::Point3 const &position, EntitySubtype const 
 	if( !entityOn( position ))
 	{
 		mEntities.emplace_back( *this, position, subtype );
-		mEntitiesMap.emplace( position, &mEntities.back());
+		Chunk &chunk = getChunk( Chunk::toChunkPoint( position ));
+		chunk.mEntities.push_back( &mEntities.back());
 	}
-	return *mEntitiesMap.at( position );
+	return mEntities.back();
 }
 
 Entity &World::createPlayer( EntitySubtype const &subtype )
 {
-	return createEntity( { 0, 0, 0 }, subtype ); //TODO
+	return createEntity( { 0, 0, 0 }, subtype ); //TODO 0, 0, 0 ?
 }
 
 
 
 void World::moveEntity( world::Point3 const &from, world::Point3 const &to )
 {
-	mEntitiesMap[ to ] = mEntitiesMap[ from ];
-	mEntitiesMap.erase( from );
+	if( Chunk::toChunkPoint( from ) != Chunk::toChunkPoint( to ))
+	{
+		Chunk &fromChunk = getChunk( Chunk::toChunkPoint( from ));
+		Chunk &toChunk = getChunk( Chunk::toChunkPoint( to ));
+		for( unsigned i = 0; i < fromChunk.mEntities.size(); i++ )
+		{
+			if( fromChunk.mEntities[ i ]->getPosition() == from )
+			{
+				toChunk.mEntities.push_back( fromChunk.mEntities[ i ]);
+				fromChunk.mEntities.erase( fromChunk.mEntities.begin() + i );
+				return;
+			}
+		}
+	}
 }
 
 void World::simulate()
@@ -122,6 +171,18 @@ Chunk &World::loadChunk( chunk::Point const &point )
 		std::to_string( point.z ));
 	mChunks[ point ] = mGenerator->generate( point );
 	return mChunks[ point ];
+}
+
+Chunk &World::getChunk( chunk::Point const &point )
+{
+	if( exists( point ))
+	{
+		return mChunks.at( point );
+	}
+	else
+	{
+		return loadChunk( point );
+	}
 }
 
 }
