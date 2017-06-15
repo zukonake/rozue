@@ -31,7 +31,7 @@ Camera::Camera(
 	lock();
 }
 
-bool Camera::move( WorldVector3 const &by )
+bool Camera::move( WorldVector const &by )
 {
 	if( mLocked )
 	{
@@ -53,7 +53,7 @@ bool Camera::move( WorldVector3 const &by )
 	return false;
 }
 
-bool Camera::teleport( WorldPoint3 const &to )
+bool Camera::teleport( WorldPoint const &to )
 {
 	if( mLocked )
 	{
@@ -103,7 +103,7 @@ void Camera::changeScale( RenderScale const &scale )
 std::queue< Sprite > Camera::getRenderQueue()
 {
 	std::queue< Sprite > renderQueue; //TODO maybe change to vector? TODO typedef?
-	WorldPoint3 worldPosition;
+	WorldPoint worldPosition;
 	RenderPoint spritePosition;
 	worldPosition.z = mPosition.z;
 	for( worldPosition.y = mPosition.y - mFov.y, spritePosition.y = 0;
@@ -139,7 +139,7 @@ std::queue< Sprite > Camera::getRenderQueue()
 }
 
 //TODO candidate for deletion
-bool Camera::sees( WorldPoint3 const &what ) const
+bool Camera::sees( WorldPoint const &what ) const
 {
 	return mWorld.sees( mEntity->getPosition(), what );
 }

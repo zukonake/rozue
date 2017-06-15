@@ -23,26 +23,26 @@ class World
 
 	~World();
 
-	Tile &operator[]( WorldPoint3 const &point );
+	Tile &operator[]( WorldPoint const &point );
 	World &operator=( World const &that ) = delete;
 
-	bool sees( WorldPoint3 const &from, WorldPoint3 const &to );
-	bool canMove( WorldPoint3 const &from, WorldPoint3 const &to );
-	bool entityOn( WorldPoint3 const &point );
+	bool sees( WorldPoint const &from, WorldPoint const &to );
+	bool canMove( WorldPoint const &from, WorldPoint const &to );
+	bool entityOn( WorldPoint const &point );
 
-	Entity &getEntityOn( WorldPoint3 const &point );
-	Entity &createEntity( WorldPoint3 const &position, EntitySubtype const &subtype );
+	Entity &getEntityOn( WorldPoint const &point );
+	Entity &createEntity( WorldPoint const &position, EntitySubtype const &subtype );
 	Entity &createPlayer( EntitySubtype const &subtype );
 
-	void moveEntity( WorldPoint3 const &from, WorldPoint3 const &to );
+	void moveEntity( WorldPoint const &from, WorldPoint const &to );
 	void simulate();
 	private://TODO add isPathClear and Path typedef
-	bool exists( WorldPoint3 const &point );
+	bool exists( WorldPoint const &point );
 	Chunk &loadChunk( ChunkPoint const &point );
 	Chunk &getChunk( ChunkPoint const &point );
 
-	static ChunkPoint toChunkPoint( WorldPoint3 const &point );
-	static ChunkInternalPoint toInternalPoint( WorldPoint3 const &point );
+	static ChunkPoint toChunkPoint( WorldPoint const &point );
+	static ChunkInternalPoint toInternalPoint( WorldPoint const &point );
 	Generator *mGenerator;
 
 	std::list< Entity > mEntities;

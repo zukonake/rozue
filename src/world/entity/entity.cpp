@@ -6,7 +6,7 @@
 namespace coldline
 {
 
-Entity::Entity( World &world, WorldPoint3 const &position, EntitySubtype const &subtype ) noexcept :
+Entity::Entity( World &world, WorldPoint const &position, EntitySubtype const &subtype ) noexcept :
 	mWorld( world ),
 	mSubtype( subtype ),
 	mPosition( position )
@@ -14,9 +14,9 @@ Entity::Entity( World &world, WorldPoint3 const &position, EntitySubtype const &
 
 }
 
-bool Entity::move( WorldVector3 const &by )
+bool Entity::move( WorldVector const &by )
 {
-	WorldPoint3 newPosition = mPosition + by;
+	WorldPoint newPosition = mPosition + by;
 	if( canMove( newPosition )) //TODO move entites to chunk as a vector
 	{
 		mWorld.moveEntity( mPosition, newPosition );
@@ -29,7 +29,7 @@ bool Entity::move( WorldVector3 const &by )
 	}
 }
 
-bool Entity::teleport( WorldPoint3 const &to )
+bool Entity::teleport( WorldPoint const &to )
 {
 	if( canMove( to ))
 	{
@@ -48,7 +48,7 @@ RenderTile const &Entity::getRenderTile() const noexcept
 	return mSubtype.mRenderTile;
 }
 
-WorldPoint3 const &Entity::getPosition() const noexcept
+WorldPoint const &Entity::getPosition() const noexcept
 {
 	return mPosition;
 }
@@ -58,7 +58,7 @@ bool Entity::passable() const noexcept
 	return !mSubtype.mSolid;
 }
 
-bool Entity::canMove( WorldPoint3 const &to )
+bool Entity::canMove( WorldPoint const &to )
 {
 	return mWorld.canMove( mPosition, to );
 }

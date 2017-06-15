@@ -23,7 +23,7 @@ Tile const &Chunk::operator[]( ChunkInternalPoint const &point ) const noexcept
 	return mValue[ point ];
 }
 
-ChunkPoint Chunk::toChunkPoint( WorldPoint3 const &point ) noexcept
+ChunkPoint Chunk::toChunkPoint( WorldPoint const &point ) noexcept
 {
 	ChunkPoint output = point;
 	if( output.x < 0 )
@@ -41,9 +41,9 @@ ChunkPoint Chunk::toChunkPoint( WorldPoint3 const &point ) noexcept
 	return output / size;
 }
 
-ChunkInternalPoint Chunk::toInternalPoint( WorldPoint3 const &point ) noexcept
+ChunkInternalPoint Chunk::toInternalPoint( WorldPoint const &point ) noexcept
 {
-	WorldPoint3 output = point;
+	WorldPoint output = point;
 	output.x %= size.x;
 	output.y %= size.y;
 	output.z %= size.z;

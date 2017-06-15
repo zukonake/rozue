@@ -27,8 +27,8 @@ class Camera
 		RenderSize spriteSize );
 	Camera &operator=( Camera const &that ) = delete;
 
-	bool move( WorldVector3 const &by );
-	bool teleport( WorldPoint3 const &to );
+	bool move( WorldVector const &by );
+	bool teleport( WorldPoint const &to );
 
 	void lock();
 	void unlock();
@@ -36,7 +36,7 @@ class Camera
 	void changeScale( RenderScale const &scale );
 	std::queue< Sprite > getRenderQueue();
 	private:
-	bool sees( WorldPoint3 const &what ) const;
+	bool sees( WorldPoint const &what ) const;
 	void updateFov();
 
 	bool mLocked;
@@ -46,7 +46,7 @@ class Camera
 	RenderTile const &mNothing;
 	World &mWorld;
 	Entity *mEntity;
-	WorldPoint3 mPosition;
+	WorldPoint mPosition;
 
 	RenderSize mFov;
 };

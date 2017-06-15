@@ -28,7 +28,7 @@ class DataMap
 	template< typename T >
 	geometry::Vector2< T > toVector2() const;
 	template< typename T >
-	geometry::Vector3< T > toVector3() const;
+	geometry::Vector3< T > toVector() const;
 };
 
 template< typename T >
@@ -38,7 +38,7 @@ geometry::Vector2< T > DataMap::toVector2() const
 }
 
 template< typename T >
-geometry::Vector3< T > DataMap::toVector3() const
+geometry::Vector3< T > DataMap::toVector() const
 {
 	return geometry::Vector3< T >( getDouble( 0 ), getDouble( 1 ), getDouble( 2 ));
 }

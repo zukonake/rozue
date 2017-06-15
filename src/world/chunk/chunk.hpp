@@ -21,8 +21,8 @@ class Chunk
 	Tile &operator[]( ChunkInternalPoint const &point ) noexcept;
 	Tile const &operator[]( ChunkInternalPoint const &point ) const noexcept;
 
-	static ChunkPoint toChunkPoint( WorldPoint3 const &point ) noexcept;
-	static ChunkInternalPoint toInternalPoint( WorldPoint3 const &point ) noexcept;
+	static ChunkPoint toChunkPoint( WorldPoint const &point ) noexcept;
+	static ChunkInternalPoint toInternalPoint( WorldPoint const &point ) noexcept;
 	static ChunkSize constexpr size = { 24, 24, 1 };
 	private:
 	std::vector< Entity * > mEntities;
