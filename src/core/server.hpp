@@ -4,6 +4,8 @@
 //
 #include <core/typedef.hpp>
 #include <core/connection.hpp>
+#include <data/dataset.hpp>
+#include <world/world.hpp>
 
 class Client;
 
@@ -18,5 +20,7 @@ public:
 private:
 	void doTick();
 
+	Dataset mDataset;
+	World mWorld;
 	std::unordered_map< ClientID, Connection > mConnections;
 };
