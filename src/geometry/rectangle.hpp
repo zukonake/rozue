@@ -9,9 +9,6 @@
 #include <geometry/vector2.hpp>
 #include <geometry/line2.hpp>
 
-namespace coldline
-{
-
 namespace geometry
 {
 
@@ -150,8 +147,6 @@ constexpr bool Rectangle< TCoordinate, TLength >::intersects( Rectangle< TCoordi
 			 y < that.y + that.h &&
 			 x + w > that.x &&
 			 y + h > that.y );
-}
-
 }
 
 }

@@ -2,14 +2,18 @@ SOURCE_DIR = src
 OBJ_DIR = bin
 DEPEND_DIR = depend
 INCLUDE_DIR = include
+EXTERNAL_DIR = ..
+EXTERNAL_SOURCE_DIR = $(EXTERNAL_DIR)/src
+EXTERNAL_OBJ_DIR = $(EXTERNAL_DIR)/bin
+INCLUDE_DIR = $(EXTERNAL_DIR)/include
 LIB_DIR = lib
 
-TEST_DIR = test
-
-TARGET = rozue
+TARGET = test.out
 
 CPP_FILES = $(shell find $(SOURCE_DIR) -type f -name "*.cpp" -printf '%p ')
 OBJ_FILES = $(subst $(SOURCE_DIR),$(OBJ_DIR),$(patsubst %.cpp,%.o,$(CPP_FILES)))
+EXTERNAL_CPP_FILES = $(shell find $(EXTERNAL_SOURCE_DIR) -type f -name "*.cpp" -printf '%p ')
+EXTERNAL_OBJ_FILES = $(subst $(EXTERNAL_SOURCE_DIR),$(EXTERNAL_OBJ_DIR),$(patsubst %.cpp,%.o,$(EXTERNAL_CPP_FILES)))
 
 CXX = clang++
 DEBUG_FLAGS = -g -O0
@@ -35,14 +39,14 @@ WARNING_FLAGS = \
 	-Weffc++
 STD = -std=c++14 -pedantic
 INCLUDES = -I $(SOURCE_DIR) -I $(INCLUDE_DIR)
-LDLIBS = -lsfml-graphics -lsfml-window -lsfml-system
+LDLIBS = -lboost_unit_test_framework
 LDFLAGS = $(INCLUDES) $(STD) $(WARNING_FLAGS) $(DEBUG_FLAGS) -L $(LIB_DIR) $(LDLIBS)
 CXXFLAGS = $(INCLUDES) $(STD) $(WARNING_FLAGS) $(DEBUG_FLAGS)
 
-.PHONY : clean test
+.PHONY : clean
 
-$(TARGET) : $(OBJ_FILES)
-	$(CXX) $(LDFLAGS) $(OBJ_FILES) -o $@
+$(TARGET) : $(OBJ_FILES) $(EXTERNAL_OBJ_FILES)
+	$(CXX) $(LDFLAGS) $(OBJ_FILES) $(EXTERNAL_OBJ_FILES) -o $@
 
 $(OBJ_DIR)/%.o : $(SOURCE_DIR)/%.cpp $(DEPEND_DIR)/%.d
 	@mkdir -p $(dir $@)
@@ -55,10 +59,6 @@ $(DEPEND_DIR)/%.d : $(SOURCE_DIR)/%.cpp
 
 clean :
 	$(RM) -r $(OBJ_DIR) $(DEPEND_DIR) $(TARGET)
-	$(MAKE) -C ./$(TEST_DIR) clean
-
-test : $(OBJ_FILES)
-	$(MAKE) -C ./$(TEST_DIR)
 
 ifneq ($(MAKECMDGOALS),clean)
 -include $(subst $(OBJ_DIR),$(DEPEND_DIR),$(patsubst %.o,%.d,$(OBJ_FILES)))

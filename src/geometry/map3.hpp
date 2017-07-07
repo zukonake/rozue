@@ -11,9 +11,6 @@
 //
 #include <geometry/vector3.hpp>
 
-namespace coldline
-{
-
 namespace geometry
 {
 
@@ -75,8 +72,6 @@ template< typename T, unsigned long long width, unsigned long long height, unsig
 T const &Map3< T, width, height, depth >::at( Vector3ull const &index ) const
 {
 	return mValue.at( index.z ).at( index.y ).at( index.x );
-}
-
 }
 
 }

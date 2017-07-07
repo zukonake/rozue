@@ -11,9 +11,6 @@
 //
 #include <geometry/vector2.hpp>
 
-namespace coldline
-{
-
 namespace geometry
 {
 
@@ -72,8 +69,6 @@ template< typename T, unsigned long long width, unsigned long long height >
 T const &Map2< T, width, height >::at( Vector2ull const &index ) const
 {
 	return mValue[ index.y ][ index.x ];
-}
-
 }
 
 }

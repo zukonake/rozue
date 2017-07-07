@@ -1,27 +1,22 @@
 #pragma once
 
-#include <data/dataset.hpp>
-#include <world/world.hpp>
-#include <core/player.hpp>
-
-namespace coldline
-{
+#include <unordered_map>
+//
+#include <core/typedef.hpp>
+#include <core/connection.hpp>
 
 class Client;
-//TODO handles only one client now
+
 class Server
 {
-	public:
-	Server( Client *client );
+public:
+	void connect( Client &client );
+	void disconnect( ClientID clientID );
+	void kick( ClientID client );
 
-	void loop();
+	void run();
+private:
+	void doTick();
 
-	void disconnect();
-	private:
-	Dataset mDataset;
-	World mWorld;
-	Player mPlayer;
-	Client *mClient;
+	std::unordered_map< ClientID, Connection > mConnections;
 };
-
-}

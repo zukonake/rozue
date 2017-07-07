@@ -14,9 +14,6 @@
 //
 #include <geometry/vector2.hpp>
 
-namespace coldline
-{
-
 namespace geometry
 {
 
@@ -283,5 +280,3 @@ struct hash< Vector3< T > >
 			( hash< T >()( k.z ) << 1 ) ) >> 1;
 	}
 };
-
-}

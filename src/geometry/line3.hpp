@@ -11,9 +11,6 @@
 //
 #include <geometry/vector3.hpp>
 
-namespace coldline
-{
-
 namespace geometry
 {
 
@@ -229,7 +226,5 @@ typename Line3< TCoordinate >::Plot Line3< TCoordinate >::getBounds() const noex
 	Plot bounds;
 	return bounds;
 }*/
-
-}
 
 }

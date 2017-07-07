@@ -1,44 +1,14 @@
 #pragma once
 
-#include <string>
-//
-#include <render/SFMLClient.hpp>
-#include <data/dataset.hpp>
-
-namespace coldline
-{
+#include <core/typedef.hpp>
 
 class Server;
-struct OutputData;
-struct InputData;
 
-/*TODO
- *have autonomous thread which renders until next data is received
- *networking stuff( ip etc. )
- *render only differences from previous data
- */
-
-
-class Client : SFMLClient
+class Client
 {
 public:
-	Client( std::string const &name );
-	~Client();
-
-	InputData requestInputData() noexcept;
-	void receiveOutputData( OutputData outputData ) noexcept;
-
-	void connect( Server* server );
-	void disconnect();
-
-	bool isConnected() const noexcept;
-	std::string const &getName() const noexcept;
+	Client( ClientID const &clientID );
 private:
-	void render( OutputData const &outputData );
-
-	Server* mServer;
-	Dataset mDataset;
-	std::string mName;
+	ClientID mID;
+	Server *mServer;
 };
-
-}

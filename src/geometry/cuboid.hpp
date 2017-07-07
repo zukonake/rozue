@@ -9,9 +9,6 @@
 #include <geometry/vector3.hpp>
 #include <geometry/line3.hpp>
 
-namespace coldline
-{
-
 namespace geometry
 {
 
@@ -166,8 +163,6 @@ constexpr bool Cuboid< TCoordinate, TLength >::intersects( Cuboid< TCoordinate, 
 			 x + w > that.x &&
 			 y + h > that.y &&
 			 z + d > that.z );
-}
-
 }
 
 }

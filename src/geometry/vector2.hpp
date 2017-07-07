@@ -12,9 +12,6 @@
 #include <type_traits>
 #include <functional>
 
-namespace coldline
-{
-
 namespace geometry
 {
 
@@ -261,5 +258,3 @@ struct hash< Vector2< T > >
 			( hash< T >()( k.y ) << 1 ) ) >> 1 );
 	}
 };
-
-}
