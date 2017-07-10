@@ -5,8 +5,8 @@
 #include <data/dataset.hpp>
 
 class Server;
-struct ClientData;
-struct ServerData;
+class ClientData;
+class ServerData;
 
 /*TODO
  *have autonomous thread which renders until next data is received
@@ -14,6 +14,9 @@ struct ServerData;
  *render only differences from previous data
  */
 
+/**
+ * Client is responsible for preparing ClientData and parsing ServerData.
+ */
 class Client : SFMLClient
 {
 public:
@@ -22,7 +25,7 @@ public:
 	ClientData requestClientData();
 	void receiveServerData( ServerData const &serverData );
 
-	void connect( Server &server );
+	void connectTo( Server &server );
 	void disconnect();
 
 	bool const &isConnected() const noexcept;
