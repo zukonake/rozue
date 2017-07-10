@@ -3,8 +3,8 @@
 
 int main()
 {
-	Server server;
+	Server server( "localServer" );
 	Client client( "zukonake" );
-	server.connect( client );
+	client.connectTo( server );
 	return 0;
 }
