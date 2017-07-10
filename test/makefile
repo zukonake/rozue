@@ -1,24 +1,16 @@
-SOURCE_DIR = src
-OBJ_DIR = bin
-DEPEND_DIR = depend
-INCLUDE_DIR = include
-EXTERNAL_DIR = ..
-EXTERNAL_SOURCE_DIR = $(EXTERNAL_DIR)/src
-EXTERNAL_OBJ_DIR = $(EXTERNAL_DIR)/bin
-INCLUDE_DIR = $(EXTERNAL_DIR)/include
-LIB_DIR = lib
+TARGET ?= test.out
 
-TARGET = test.out
+BUILD_DIR := build
+SRC_DIR := src
 
-CPP_FILES = $(shell find $(SOURCE_DIR) -type f -name "*.cpp" -printf '%p ')
-OBJ_FILES = $(subst $(SOURCE_DIR),$(OBJ_DIR),$(patsubst %.cpp,%.o,$(CPP_FILES)))
-EXTERNAL_CPP_FILES = $(shell find $(EXTERNAL_SOURCE_DIR) -type f -name "*.cpp" -printf '%p ')
-EXTERNAL_OBJ_FILES = $(subst $(EXTERNAL_SOURCE_DIR),$(EXTERNAL_OBJ_DIR),$(patsubst %.cpp,%.o,$(EXTERNAL_CPP_FILES)))
+SRC_FILES := $(shell find $(SRC_DIR) -name "*.cpp")
+OBJ_FILES := $(SRC_FILES:%.cpp=$(BUILD_DIR)/%.o)
+EXT_OBJ_FILES := $(shell find .. -name "*.o")
+DEP_FILES := $(OBJ_FILES:.o=.d)
 
-CXX = clang++
-DEBUG_FLAGS = -g -O0
-WARNING_FLAGS = \
-	-ferror-limit=5 \
+CXX := clang++
+INCLUDE_FLAGS := -I $(SRC_DIR) -I ../src
+WARNING_FLAGS := \
 	-Werror \
 	-Wall \
 	-Wextra \
@@ -37,29 +29,27 @@ WARNING_FLAGS = \
 	-Wctor-dtor-privacy \
 	-Wno-long-long \
 	-Weffc++
-STD = -std=c++14 -pedantic
-INCLUDES = -I $(SOURCE_DIR) -I $(INCLUDE_DIR)
-LDLIBS = -lboost_unit_test_framework
-LDFLAGS = $(INCLUDES) $(STD) $(WARNING_FLAGS) $(DEBUG_FLAGS) -L $(LIB_DIR) $(LDLIBS)
-CXXFLAGS = $(INCLUDES) $(STD) $(WARNING_FLAGS) $(DEBUG_FLAGS)
 
-.PHONY : clean
+LDLIBS := -lsfml-graphics -lsfml-window -lsfml-system -lUnitTest++
+FLAGS := $(INCLUDE_FLAGS) $(WARNING_FLAGS) -MMD -MP -std=c++14 -pedantic -ferror-limit=5
 
-$(TARGET) : $(OBJ_FILES) $(EXTERNAL_OBJ_FILES)
-	$(CXX) $(LDFLAGS) $(OBJ_FILES) $(EXTERNAL_OBJ_FILES) -o $@
+.PHONY : clean run
 
-$(OBJ_DIR)/%.o : $(SOURCE_DIR)/%.cpp $(DEPEND_DIR)/%.d
+$(TARGET) : $(OBJ_FILES)
+	@echo "Linking..."
+	@$(CXX) $(OBJ_FILES) -o $@ $(LDFLAGS) $(LDLIBS)
+
+$(BUILD_DIR)/%.o : %.cpp
+	@echo "Building $@..."
 	@mkdir -p $(dir $@)
-	$(CXX) $(CXXFLAGS) -c $(SOURCE_DIR)/$*.cpp -o $@
-
-$(DEPEND_DIR)/%.d : $(SOURCE_DIR)/%.cpp
-	@mkdir -p $(dir $@)
-	$(CXX) $(CXXFLAGS) -MM $< > $@
-	@sed -i "1s~^~$(subst $(DEPEND_DIR),$(OBJ_DIR),$(dir $@))~" $@
+	@$(CXX)  $(FLAGS) $(CXXFLAGS) -c $< -o $@
 
 clean :
-	$(RM) -r $(OBJ_DIR) $(DEPEND_DIR) $(TARGET)
+	@echo "Cleaning up..."
+	@$(RM) -r $(TARGET) $(BUILD_DIR)
 
-ifneq ($(MAKECMDGOALS),clean)
--include $(subst $(OBJ_DIR),$(DEPEND_DIR),$(patsubst %.o,%.d,$(OBJ_FILES)))
-endif
+run : $(TARGET)
+	@echo "Running tests..."
+	@./$(TARGET)
+
+-include $(DEP_FILES)
