@@ -1,8 +1,5 @@
 #include "random.hpp"
 
-namespace coldline
-{
-
 NumberGenerator::NumberGenerator()
 {
 	std::random_device randomDevice;
@@ -26,5 +23,3 @@ void NumberGenerator::seed( std::mt19937::result_type const &seed )
 }
 
 NumberGenerator globalNumberGenerator;
-
-}

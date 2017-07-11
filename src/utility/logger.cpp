@@ -3,9 +3,6 @@
 //
 #include "logger.hpp"
 
-namespace coldline
-{
-
 Logger::Logger( Level const &level ) :
 	mLevel( level )
 {
@@ -58,5 +55,3 @@ void Logger::log( Level const &level, std::string const &message )
 }
 
 Logger globalLogger( Logger::ALL );
-
-}

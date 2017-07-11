@@ -2,9 +2,6 @@
 
 #include<random>
 
-namespace coldline
-{
-
 class NumberGenerator : std::mt19937
 {
 	public:
@@ -19,5 +16,3 @@ class NumberGenerator : std::mt19937
 };
 
 extern NumberGenerator globalNumberGenerator;
-
-}

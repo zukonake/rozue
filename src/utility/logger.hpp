@@ -2,10 +2,6 @@
 
 #include <string>
 
-namespace coldline
-{
-
-
 class Logger
 {
 	public:
@@ -30,5 +26,3 @@ class Logger
 };
 
 extern Logger globalLogger;
-
-}
