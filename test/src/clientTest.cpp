@@ -8,7 +8,7 @@
 SUITE( client )
 {
 
-TEST( connectTo )
+TEST( connectTo1 )
 {
 	Client client( "test" );
 	Server server( "server" );
@@ -49,7 +49,6 @@ TEST( getID )
 	Client client( ID );
 	CHECK_EQUAL( client.getID(), ID );
 	CHECK_EQUAL( client.isConnected(), false );
-	CHECK( client.getID() != "asdf" );
 }
 
 }

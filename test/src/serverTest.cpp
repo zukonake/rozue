@@ -23,6 +23,7 @@ TEST( kick1 )
 	auto clients = server.getClients();
 	CHECK_EQUAL( clients.size(), 2 );
 	CHECK_EQUAL( clients.count( client1.getID()), 1 );
+	CHECK_EQUAL( clients.count( client2.getID()), 0 );
 	CHECK_EQUAL( clients.count( client3.getID()), 1 );
 }
 
@@ -33,7 +34,7 @@ TEST( kick2 )
 	Server server( "server" );
 	client1.connectTo( server );
 	client2.connectTo( server );
-	CHECK_THROW( server.kick( "client3" ), Exception::InvalidClient );
+	CHECK_THROW( server.kick( "client3" ), Exception::InvalidClientID );
 	CHECK_EQUAL( client1.isConnected(), true );
 	CHECK_EQUAL( client2.isConnected(), true );
 	auto clients = server.getClients();
@@ -57,6 +58,7 @@ TEST( getClients )
 	clients = server.getClients();
 	CHECK_EQUAL( clients.size(), 1 );
 	CHECK_EQUAL( clients.count( client1.getID()), 1 );
+	CHECK_EQUAL( clients.count( client2.getID()), 0 );
 }
 
 TEST( getID )
@@ -64,7 +66,6 @@ TEST( getID )
 	ServerID ID = "localServer";
 	Server server( ID );
 	CHECK_EQUAL( server.getID(), ID );
-	CHECK( server.getID() != "asdf" );
 }
 
 }
