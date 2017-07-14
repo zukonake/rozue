@@ -76,6 +76,11 @@ Network::ID const &Server::getID() const noexcept
 	return mID;
 }
 
+bool const &Server::isRunning() const noexcept
+{
+	return mRunning;
+}
+
 void Server::startListener()
 {
 	globalLogger.log( "S", Logger::INFO, "starting TCP listener on port: " + std::to_string( mPort ));
