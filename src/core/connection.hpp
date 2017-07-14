@@ -1,8 +1,8 @@
 #pragma once
 
-#include <functional>
+#include <memory>
 //
-#include <core/typedef.hpp>
+#include <core/network.hpp>
 #include <core/player.hpp>
 
 class Client;
@@ -13,7 +13,7 @@ class Client;
 class Connection
 {
 public:
-	Connection( Client &client );
+	Connection( std::unique_ptr< Network::TCPSocket > socket, std::unique_ptr< Player > player );
 
 	/**
 	 * This funtion exchanges ClientData and ServerData between Client and Player.
@@ -21,6 +21,6 @@ public:
 	void exchangeData();
 	void disconnect();
 private:
-	Client &mClient;
-	Player mPlayer;
+	std::unique_ptr< Network::TCPSocket > mSocket;
+	std::unique_ptr< Player > mPlayer;
 };

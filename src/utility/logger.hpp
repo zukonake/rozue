@@ -8,7 +8,7 @@ class Logger
 	enum Level
 	{
 		OFF,
-		FATAL,
+		CRITICAL,
 		ERROR,
 		WARN,
 		INFO,
@@ -20,7 +20,7 @@ class Logger
 	Logger( Level const &level );
 	~Logger();
 
-	void log( Level const &level, std::string const &message );
+	void log( std::string const &mPrefix, Level const &level, std::string const &message );
 	private:
 	Level mLevel;
 };

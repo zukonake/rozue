@@ -8,7 +8,7 @@
  * Player through Connection. For example the data is:
  * what key was clicked, where the mouse is, etc.
  */
-class ClientData
+struct ClientData
 {
 
 };

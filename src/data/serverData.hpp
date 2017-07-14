@@ -1,6 +1,6 @@
 #pragma once
 
-#include <render/spriteQueue.hpp>
+#include <data/spriteQueue.hpp>
 
 /**
  * Represents data sent from the Server to the Client.
@@ -9,7 +9,7 @@
  * to parse, for example: what to render and where,
  * what sound to play and with what loudness.
  */
-class ServerData
+struct ServerData
 {
 	public:
 	SpriteQueue mSpriteQueue;

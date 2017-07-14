@@ -1,7 +1,9 @@
 #pragma once
 
-class ServerData;
-class ClientData;
+struct ServerData;
+struct ClientData;
+class Dataset;
+class World;
 
 /**
  * Player is the server-side representation of Client.
@@ -15,7 +17,10 @@ class ClientData;
 class Player
 {
 public:
+	Player( Dataset const &dataset, World &world );
 	ServerData requestServerData();
 	void receiveClientData( ClientData const &clientData );
 private:
+	Dataset const &mDataset;
+	World &mWorld;
 };

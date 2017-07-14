@@ -1,6 +1,6 @@
 #pragma once
 
-#include <exception>
+#include <stdexcept>
 
 /**
  * Namespace containing the exceptions.
@@ -13,7 +13,7 @@ namespace Exception
  */
 class Exception : public std::runtime_error
 {
-
+	using std::runtime_error::runtime_error;
 };
 
 /**
@@ -21,7 +21,7 @@ class Exception : public std::runtime_error
  */
 class InvalidClientID : public Exception
 {
-
+	using Exception::Exception;
 };
 
 /**
@@ -29,7 +29,31 @@ class InvalidClientID : public Exception
  */
 class NotConnected : public Exception
 {
+	using Exception::Exception;
+};
 
+/**
+ * Thrown when Server/Client is not running when the action requires it to be.
+ */
+class NotRunning : public Exception
+{
+	using Exception::Exception;
+};
+
+/**
+ * Thrown when Client can not connect to server.
+ */
+class CouldNotConnect : public Exception
+{
+	using Exception::Exception;
+};
+
+/**
+ * Thrown when Server can not start listener.
+ */
+class CouldNotStartListener : public Exception
+{
+	using Exception::Exception;
 };
 
 }

@@ -6,48 +6,48 @@
 Logger::Logger( Level const &level ) :
 	mLevel( level )
 {
-	log( TRACE, "Created Logger" );
+	log( "LOG", TRACE, "Created Logger" );
 }
 
 Logger::~Logger()
 {
-	log( TRACE, "Destroyed Logger" );
+	log( "LOG", TRACE, "Destroyed Logger" );
 }
 
-void Logger::log( Level const &level, std::string const &message )
+void Logger::log( std::string const &prefix, Level const &level, std::string const &message )
 {
 	if( level > mLevel )
 	{
 		return;
 	}
-	std::string output;
+	std::string output = "[" + prefix + "] ";
 	switch( level )
 	{
 	case OFF:
 		return;
 
-	case FATAL:
-		output = "FATAL: ";
+	case CRITICAL:
+		output += "CRT: ";
 		break;
 
 	case ERROR:
-		output = "ERROR: ";
+		output += "ERR: ";
 		break;
 
 	case WARN:
-		output = "WARN: ";
+		output += "WRN: ";
 		break;
 
 	case INFO:
-		output = "INFO: ";
+		output += "INF: ";
 		break;
 
 	case DEBUG:
-		output = "DEBUG: ";
+		output += "DBG: ";
 		break;
 
 	case TRACE:
-		output = "TRACE: ";
+		output += "TRC: ";
 		break;
 	}
 	output += message;

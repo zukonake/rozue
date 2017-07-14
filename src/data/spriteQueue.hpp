@@ -1,8 +1,8 @@
 #pragma once
 
 #include <queue>
-
-class Sprite;
+//
+#include <render/sprite.hpp>
 
 /**
  * SpriteQueue is the queue of sprites for the Client to parse and render.

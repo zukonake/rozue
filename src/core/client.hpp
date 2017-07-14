@@ -1,12 +1,12 @@
 #pragma once
 
-#include <core/typedef.hpp>
+#include <core/network.hpp>
 #include <core/SFMLClient.hpp>
 #include <data/dataset.hpp>
 
 class Server;
-class ClientData;
-class ServerData;
+struct ClientData;
+struct ServerData;
 
 /*TODO
  *have autonomous thread which renders until next data is received
@@ -20,21 +20,21 @@ class ServerData;
 class Client : SFMLClient
 {
 public:
-	Client( ClientID const &clientID );
+	Client( Network::ID const &ID );
 
 	ClientData requestClientData();
 	void receiveServerData( ServerData const &serverData );
 
-	void connectTo( Server &server );
+	void connectTo( Network::IP const &IPAddress, Network::Port const &port );
 	void disconnect();
 
-	bool const &isConnected() const noexcept;
-	ClientID const &getID() const noexcept;
+	bool isConnected() const noexcept;
+	Network::ID const &getID() const noexcept;
 private:
 	void parseServerData( ServerData const &serverData );
 
-	bool mConnected;
-	ClientID mID;
+	Network::ID mID;
+	Network::TCPSocket mSocket;
+
 	Dataset mDataset;
-	Server *mServer;
 };
