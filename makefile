@@ -6,7 +6,7 @@ SRC_DIR := src
 BIN_DIR := bin
 
 SRC_FILES := $(shell find $(SRC_DIR) -name "*.cpp")
-OBJ_FILES := $(SRC_FILES:%.cpp=$(BUILD_DIR)/%.o)
+OBJ_FILES := $(subst $(SRC_DIR)/,,$(SRC_FILES:%.cpp=$(BUILD_DIR)/%.o))
 DEP_FILES := $(OBJ_FILES:.o=.d)
 
 CXX := clang++
@@ -31,7 +31,7 @@ WARNING_FLAGS := \
 	-Wno-long-long \
 	-Weffc++
 
-LDLIBS := -lsfml-graphics -lsfml-window -lsfml-system
+LDLIBS := -lsfml-graphics -lsfml-window -lsfml-network -lsfml-system -pthread
 FLAGS := $(INCLUDE_FLAGS) $(WARNING_FLAGS) -MMD -MP -std=c++14 -pedantic -ferror-limit=5 -g -O0
 
 .PHONY : clean test
@@ -41,7 +41,7 @@ $(BIN_DIR)/$(TARGET) : $(OBJ_FILES)
 	@mkdir -p $(BIN_DIR)
 	@$(CXX) $(OBJ_FILES) -o $@ $(LDFLAGS) $(LDLIBS)
 
-$(BUILD_DIR)/%.o : %.cpp
+$(BUILD_DIR)/%.o : $(SRC_DIR)/%.cpp
 	@echo "Building $@..."
 	@mkdir -p $(dir $@)
 	@$(CXX)  $(FLAGS) $(CXXFLAGS) -c $< -o $@

@@ -4,8 +4,8 @@ BUILD_DIR := build
 SRC_DIR := src
 
 SRC_FILES := $(shell find $(SRC_DIR) -name "*.cpp")
-OBJ_FILES := $(SRC_FILES:%.cpp=$(BUILD_DIR)/%.o)
-EXT_OBJ_FILES := $(shell find .. -name "*.o")
+OBJ_FILES := $(subst $(SRC_DIR)/,,$(SRC_FILES:%.cpp=$(BUILD_DIR)/%.o))
+EXT_OBJ_FILES := $(shell find .. -name "*.o" -not -path "../test/*" | sed '/main.o/c\ ')
 DEP_FILES := $(OBJ_FILES:.o=.d)
 
 CXX := clang++
@@ -30,16 +30,16 @@ WARNING_FLAGS := \
 	-Wno-long-long \
 	-Weffc++
 
-LDLIBS := -lsfml-graphics -lsfml-window -lsfml-system -lUnitTest++
+LDLIBS := -lsfml-graphics -lsfml-window -lsfml-network -lsfml-system -lUnitTest++ -pthread
 FLAGS := $(INCLUDE_FLAGS) $(WARNING_FLAGS) -MMD -MP -std=c++14 -pedantic -ferror-limit=5
 
 .PHONY : clean run
 
-$(TARGET) : $(OBJ_FILES)
+$(TARGET) : $(OBJ_FILES) $(EXT_OBJ_FILES)
 	@echo "Linking..."
-	@$(CXX) $(OBJ_FILES) -o $@ $(LDFLAGS) $(LDLIBS)
+	@$(CXX) $(OBJ_FILES) $(EXT_OBJ_FILES) -o $@ $(LDFLAGS) $(LDLIBS)
 
-$(BUILD_DIR)/%.o : %.cpp
+$(BUILD_DIR)/%.o : $(SRC_DIR)/%.cpp
 	@echo "Building $@..."
 	@mkdir -p $(dir $@)
 	@$(CXX)  $(FLAGS) $(CXXFLAGS) -c $< -o $@
