@@ -31,7 +31,7 @@ WARNING_FLAGS := \
 	-Wno-long-long \
 	-Weffc++
 
-LDLIBS := -lsfml-graphics -lsfml-window -lsfml-network -lsfml-system -pthread
+LDLIBS := -lsfml-graphics -lsfml-window -lsfml-system -pthread
 FLAGS := $(INCLUDE_FLAGS) $(WARNING_FLAGS) -MMD -MP -std=c++14 -pedantic -ferror-limit=5 -g -O0
 
 .PHONY : clean test
