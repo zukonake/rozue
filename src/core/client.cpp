@@ -36,6 +36,8 @@ void Client::connectTo( Network::IP const &IPAddress, Network::Port const &port 
 			"Client::connectTo: could not connect to: " +
 			IPAddress.toString() + ":" + std::to_string( port ));
 	}
+	globalLogger.log( "C", Logger::INFO,
+		"connected to " + IPAddress.toString() + ":" + std::to_string( port ));
 }
 
 void Client::disconnect()
