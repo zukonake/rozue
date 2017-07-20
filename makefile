@@ -4,10 +4,12 @@ BUILD_DIR := build
 TEST_DIR := test
 SRC_DIR := src
 BIN_DIR := bin
+DOC_DIR := doc
 
 SRC_FILES := $(shell find $(SRC_DIR) -name "*.cpp")
 OBJ_FILES := $(subst $(SRC_DIR)/,,$(SRC_FILES:%.cpp=$(BUILD_DIR)/%.o))
 DEP_FILES := $(OBJ_FILES:.o=.d)
+DOXYFILE := Doxyfile
 
 CXX := clang++
 INCLUDE_FLAGS := -I $(SRC_DIR)
@@ -34,7 +36,7 @@ WARNING_FLAGS := \
 LDLIBS := -lsfml-graphics -lsfml-window -lsfml-system -pthread
 FLAGS := $(INCLUDE_FLAGS) $(WARNING_FLAGS) -MMD -MP -std=c++14 -pedantic -ferror-limit=5 -g -O0
 
-.PHONY : clean test
+.PHONY : clean test doc
 
 $(BIN_DIR)/$(TARGET) : $(OBJ_FILES)
 	@echo "Linking..."
@@ -48,11 +50,15 @@ $(BUILD_DIR)/%.o : $(SRC_DIR)/%.cpp
 
 clean :
 	@echo "Cleaning up..."
-	@$(RM) -r $(BIN_DIR) $(BUILD_DIR)
+	@$(RM) -r $(BIN_DIR) $(BUILD_DIR) $(DOC_DIR)
 	@$(MAKE) -C ./$(TEST_DIR) clean
 
 test : $(OBJ_FILES)
 	@echo "Making tests..."
 	@$(MAKE) -C ./$(TEST_DIR) run
+
+doc :
+	@mkdir -p $(DOC_DIR)
+	doxygen $(DOXYFILE)
 
 -include $(DEP_FILES)
