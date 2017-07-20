@@ -3,6 +3,9 @@
 //
 #include "logger.hpp"
 
+namespace utility
+{
+
 Logger::Logger( Level const &level ) :
 	mLevel( level )
 {
@@ -54,4 +57,6 @@ void Logger::log( std::string const &prefix, Level const &level, std::string con
 	std::cout << output << std::endl;
 }
 
-Logger globalLogger( Logger::ALL );
+Logger logger( Logger::ALL );
+
+}

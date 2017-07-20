@@ -2,6 +2,9 @@
 
 #include<random>
 
+namespace utility
+{
+
 class NumberGenerator : std::mt19937
 {
 	public:
@@ -15,4 +18,6 @@ class NumberGenerator : std::mt19937
 	private:
 };
 
-extern NumberGenerator globalNumberGenerator;
+extern NumberGenerator numberGenerator;
+
+}

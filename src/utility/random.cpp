@@ -1,25 +1,29 @@
 #include "random.hpp"
 
+namespace utility
+{
+
 NumberGenerator::NumberGenerator()
 {
-	std::random_device randomDevice;
-	std::mt19937::seed( randomDevice());
+	setSeed();
 }
 
 NumberGenerator::NumberGenerator( std::mt19937::result_type const &seed )
 {
-	std::mt19937::seed( seed );
+	setSeed( seed );
 }
 
-void NumberGenerator::seed()
+void NumberGenerator::setSeed()
 {
 	std::random_device randomDevice;
-	std::mt19937::seed( randomDevice());
+	std::mt19937::setSeed( randomDevice());
 }
 
-void NumberGenerator::seed( std::mt19937::result_type const &seed )
+void NumberGenerator::setSeed( std::mt19937::result_type const &seed )
 {
-	std::mt19937::seed( seed );
+	std::mt19937::setSeed( seed );
 }
 
-NumberGenerator globalNumberGenerator;
+NumberGenerator numberGenerator;
+
+}

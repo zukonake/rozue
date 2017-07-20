@@ -2,6 +2,9 @@
 
 #include <string>
 
+namespace utility
+{
+
 class Logger
 {
 	public:
@@ -25,4 +28,6 @@ class Logger
 	Level mLevel;
 };
 
-extern Logger globalLogger;
+extern Logger logger;
+
+}
