@@ -6,10 +6,12 @@
 #include <set>
 #include <thread>
 //
-#include <core/network.hpp>
-#include <core/connection.hpp>
-#include <data/dataset.hpp>
-#include <world/world.hpp>
+#include <network/common.hpp>
+#include <network/ColdSocket.hpp>
+#include <core/common.hpp>
+#include <core/Connection.hpp>
+#include <data/Dataset.hpp>
+#include <world/World.hpp>
 
 class Client;
 
@@ -19,17 +21,17 @@ class Client;
 class Server
 {
 public:
-	Server( Network::ID const &ID, Network::Port port );
+	Server( ID const &ID, network::Port port );
 
 	~Server();
 
-	void kick( Network::ID const &clientID, std::string const &reason = "unspecified" );
+	void kick( ID const &clientID, std::string const &reason = "unspecified" );
 
 	void start();
 	void stop();
 
-	std::set< Network::ID > getClients() const;
-	Network::ID const &getID() const noexcept;
+	std::set< ID > getClients() const;
+	ID const &getID() const noexcept;
 	bool const &isRunning() const noexcept;
 private:
 	void startListener();
@@ -43,12 +45,10 @@ private:
 	void listenForClients();
 	void connectToClient();
 
-	Network::ID mID;
-	Network::Port mPort;
-	Network::TCPListener mListener;
-	std::unique_ptr< Network::TCPSocket > mClientSocket;
+	ID mID;
+	network::Port mPort;
 	std::thread mLoopThread;
-	std::unordered_map< Network::ID, Connection > mConnections;
+	std::unordered_map< ID, Connection > mConnections;
 	bool mRunning;
 
 	Dataset mDataset;

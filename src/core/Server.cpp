@@ -4,17 +4,17 @@
 #include <string>
 #include <thread>
 //
-#include <utility/logger.hpp>
+#include <utility/Logger.hpp>
 #include <core/exception.hpp>
-#include "server.hpp"
+#include "Server.hpp"
 
-Server::Server( Network::ID const &ID, Network::Port port ) :
+Server::Server( ID const &ID, network::Port port ) :
 	mID( ID ),
 	mPort( port )
 {
-	globalLogger.log(
+	utility::logger.log(
 		"S",
-		Logger::INFO,
+		utility::Logger::INFO,
 		"starting server:\n\tID: " +
 		mID + "\n\tport: " +
 		std::to_string( mPort ));
@@ -22,7 +22,7 @@ Server::Server( Network::ID const &ID, Network::Port port ) :
 
 Server::~Server()
 {
-	globalLogger.log( "S", Logger::INFO, "closing server: " + mID );
+	utility::logger.log( "S", utility::Logger::INFO, "closing server: " + mID );
 	if( isRunning())
 	{
 		stop();
@@ -34,10 +34,10 @@ Server::~Server()
 	}
 }
 
-void Server::kick( Network::ID const &clientID, std::string const &reason )
+void Server::kick( ID const &clientID, std::string const &reason )
 {
 	(void) reason; //TODO
-	globalLogger.log( "S", Logger::INFO, "kicking client: " + mID );
+	utility::logger.log( "S", utility::Logger::INFO, "kicking client: " + mID );
 	if( mConnections.count( clientID ) == 0 )
 	{
 		throw Exception::InvalidClientID( "Server::kick: non-existant client: " + clientID );
@@ -47,7 +47,7 @@ void Server::kick( Network::ID const &clientID, std::string const &reason )
 
 void Server::start()
 {
-	globalLogger.log( "S", Logger::DEBUG, "starting server" );
+	utility::logger.log( "S", utility::Logger::DEBUG, "starting server" );
 	mRunning = true;
 	startListener();
 	startLoop();
@@ -55,15 +55,15 @@ void Server::start()
 
 void Server::stop()
 {
-	globalLogger.log( "S", Logger::DEBUG, "stopping server" );
+	utility::logger.log( "S", utility::Logger::DEBUG, "stopping server" );
 	mRunning = false;
 	stopListener();
 	stopLoop();
 }
 
-std::set< Network::ID > Server::getClients() const
+std::set< ID > Server::getClients() const
 {
-	std::set< Network::ID > clients;
+	std::set< ID > clients;
 	for( auto &iConnection : mConnections )
 	{
 		clients.insert( iConnection.first );
@@ -71,7 +71,7 @@ std::set< Network::ID > Server::getClients() const
 	return clients;
 }
 
-Network::ID const &Server::getID() const noexcept
+ID const &Server::getID() const noexcept
 {
 	return mID;
 }
@@ -83,31 +83,23 @@ bool const &Server::isRunning() const noexcept
 
 void Server::startListener()
 {
-	globalLogger.log( "S", Logger::INFO, "starting TCP listener on port: " + std::to_string( mPort ));
-	mListener.setBlocking( false );
-	if( mListener.listen( mPort ) != Network::Socket::Done )
-	{
-		throw Exception::CouldNotStartListener( "Server::startListener: could not start listener on port: " +
-			std::to_string( mPort ));
-	}
-	mClientSocket.reset( new Network::TCPSocket());
+	utility::logger.log( "S", utility::Logger::INFO, "starting TCP listener on port: " + std::to_string( mPort ));
 }
 
 void Server::startLoop()
 {
-	globalLogger.log( "S", Logger::DEBUG, "starting server loop" );
+	utility::logger.log( "S", utility::Logger::DEBUG, "starting server loop" );
 	mLoopThread = std::thread( &Server::loop, this );
 }
 
 void Server::stopListener()
 {
-	globalLogger.log( "S", Logger::DEBUG, "stopping listener" );
-	mListener.close();
+	utility::logger.log( "S", utility::Logger::DEBUG, "stopping listener" );
 }
 
 void Server::stopLoop()
 {
-	globalLogger.log( "S", Logger::DEBUG, "stopping server loop" );
+	utility::logger.log( "S", utility::Logger::DEBUG, "stopping server loop" );
 	mLoopThread.join();
 }
 
@@ -130,19 +122,16 @@ void Server::doTick()
 
 void Server::listenForClients()
 {
-	if( mListener.accept( *mClientSocket ) == Network::Socket::Done )
-	{
-		connectToClient();
-	}
 }
 
 void Server::connectToClient()
 {
-	globalLogger.log( "S", Logger::DEBUG, "connecting to: " + mClientSocket->getRemoteAddress().toString());
+	//utility::logger.log( "S", utility::Logger::DEBUG, "connecting to: " + mClientSocket->getRemoteAddress().toString());
 	std::unique_ptr< Player > player( new Player( mDataset, mWorld ));
+	/*
 	mConnections.emplace(
 		std::piecewise_construct,
 		std::forward_as_tuple( "test" ),
 		std::forward_as_tuple( std::move( mClientSocket ), std::move( player )));
-	mClientSocket.reset( new Network::TCPSocket());
+	mClientSocket.reset( new network::TCPSocket());*/
 }

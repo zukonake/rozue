@@ -1,13 +1,13 @@
 /**
- * @file geometry/cuboid.hpp
+ * @file geometry/Cuboid.hpp
  * @copyright Copyleft zukonake
  * @license Distributed under GNU General Public License Version 3
  */
 
 #pragma once
 
-#include <geometry/vector3.hpp>
-#include <geometry/line3.hpp>
+#include <geometry/Vector3D.hpp>
+#include <geometry/Line3D.hpp>
 
 namespace geometry
 {
@@ -15,10 +15,10 @@ namespace geometry
 template< typename TCoordinate, typename TLength >
 struct Cuboid
 {
-	typedef Vector3< TCoordinate > Point;
-	typedef Vector3< TLength > Size;
-	typedef Vector3d Origin;
-	typedef Line3< TLength > Diagonal;
+	typedef Vector3D< TCoordinate > Point;
+	typedef Vector3D< TLength > Size;
+	typedef Vector3Dd Origin;
+	typedef Line3D< TLength > Diagonal;
 	typedef TLength Volume;
 
 	constexpr Cuboid() noexcept = default;

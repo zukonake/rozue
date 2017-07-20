@@ -1,4 +1,4 @@
-#include "random.hpp"
+#include "NumberGenerator.hpp"
 
 namespace utility
 {

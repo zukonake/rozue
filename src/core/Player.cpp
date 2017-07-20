@@ -1,5 +1,5 @@
-#include <data/serverData.hpp>
-#include "player.hpp"
+#include <data/ServerData.hpp>
+#include "Player.hpp"
 
 Player::Player( Dataset const &dataset, World &world ) :
 	mDataset( dataset ),

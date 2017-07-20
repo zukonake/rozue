@@ -2,7 +2,7 @@
 
 #include <queue>
 //
-#include <render/sprite.hpp>
+#include <render/Sprite.hpp>
 
 /**
  * SpriteQueue is the queue of sprites for the Client to parse and render.

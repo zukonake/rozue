@@ -1,13 +1,13 @@
 /**
- * @file geometry/rectangle.hpp
+ * @file geometry/Rectangle.hpp
  * @copyright Copyleft zukonake
  * @license Distributed under GNU General Public License Version 3
  */
 
 #pragma once
 
-#include <geometry/vector2.hpp>
-#include <geometry/line2.hpp>
+#include <geometry/Vector2D.hpp>
+#include <geometry/Line2D.hpp>
 
 namespace geometry
 {
@@ -15,10 +15,10 @@ namespace geometry
 template< typename TCoordinate, typename TLength >
 struct Rectangle
 {
-	typedef Vector2< TCoordinate > Point;
-	typedef Vector2< TLength > Size;
-	typedef Vector2< double > Origin;
-	typedef Line2< TLength > Diagonal;
+	typedef Vector2D< TCoordinate > Point;
+	typedef Vector2D< TLength > Size;
+	typedef Vector2D< double > Origin;
+	typedef Line2D< TLength > Diagonal;
 	typedef TLength Area;
 
 	constexpr Rectangle() noexcept = default;

@@ -1,5 +1,5 @@
-#include <core/server.hpp>
-#include <core/client.hpp>
+#include <core/Server.hpp>
+#include <core/Client.hpp>
 
 int main()
 {

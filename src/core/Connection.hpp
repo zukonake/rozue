@@ -2,8 +2,8 @@
 
 #include <memory>
 //
-#include <core/network.hpp>
-#include <core/player.hpp>
+#include <network/ColdSocket.hpp>
+#include <core/Player.hpp>
 
 class Client;
 
@@ -13,7 +13,7 @@ class Client;
 class Connection
 {
 public:
-	Connection( std::unique_ptr< Network::TCPSocket > socket, std::unique_ptr< Player > player );
+	Connection( network::ColdSocket const &socket, std::unique_ptr< Player > player );
 
 	/**
 	 * This funtion exchanges ClientData and ServerData between Client and Player.
@@ -21,6 +21,5 @@ public:
 	void exchangeData();
 	void disconnect();
 private:
-	std::unique_ptr< Network::TCPSocket > mSocket;
 	std::unique_ptr< Player > mPlayer;
 };

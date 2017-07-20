@@ -1,8 +1,8 @@
 #pragma once
 
-#include <core/network.hpp>
+#include <core/common.hpp>
 #include <core/SFMLClient.hpp>
-#include <data/dataset.hpp>
+#include <data/Dataset.hpp>
 
 class Server;
 struct ClientData;
@@ -20,21 +20,19 @@ struct ServerData;
 class Client : SFMLClient
 {
 public:
-	Client( Network::ID const &ID );
+	Client( ID const &ID );
 
 	ClientData requestClientData();
 	void receiveServerData( ServerData const &serverData );
 
-	void connectTo( Network::IP const &IPAddress, Network::Port const &port );
+	void connectTo( network::IP const &IPAddress, network::Port const &port );
 	void disconnect();
 
 	bool isConnected() const noexcept;
-	Network::ID const &getID() const noexcept;
+	ID const &getID() const noexcept;
 private:
 	void parseServerData( ServerData const &serverData );
 
-	Network::ID mID;
-	Network::TCPSocket mSocket;
-
+	ID mID;
 	Dataset mDataset;
 };

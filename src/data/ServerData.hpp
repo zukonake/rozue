@@ -1,6 +1,6 @@
 #pragma once
 
-#include <data/spriteQueue.hpp>
+#include <data/SpriteQueue.hpp>
 
 /**
  * Represents data sent from the Server to the Client.

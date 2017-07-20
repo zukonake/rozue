@@ -1,5 +1,5 @@
 /*
- * @file geometry/map2.hpp
+ * @file geometry/Map2D.hpp
  * @copyright Copyleft zukonake
  * @license Distributed under GNT General Public License Version 3
  */
@@ -9,34 +9,34 @@
 #include <stdexcept>
 #include <array>
 //
-#include <geometry/vector2.hpp>
+#include <geometry/Vector2D.hpp>
 
 namespace geometry
 {
 
 template< typename T, unsigned long long width, unsigned long long height >
-class Map2
+class Map2D
 {
 public:
-	Map2() = default;
-	Map2( Map2< T, width, height > const &that ) = default;
-	Map2( Map2< T, width, height > &&that ) = default;
-	Map2( T const &fill );
+	Map2D() = default;
+	Map2D( Map2D< T, width, height > const &that ) = default;
+	Map2D( Map2D< T, width, height > &&that ) = default;
+	Map2D( T const &fill );
 
-	Map2 &operator=( Map2< T, width, height > const &that ) = default;
-	Map2 &operator=( Map2< T, width, height > &&that ) = default;
+	Map2D &operator=( Map2D< T, width, height > const &that ) = default;
+	Map2D &operator=( Map2D< T, width, height > &&that ) = default;
 
-	T &operator[]( Vector2ull const &index );
-	T const &operator[]( Vector2ull const &index ) const;
+	T &operator[]( Vector2Dull const &index );
+	T const &operator[]( Vector2Dull const &index ) const;
 
-	T &at( Vector2ull const &index );
-	T const &at( Vector2ull const &index ) const;
+	T &at( Vector2Dull const &index );
+	T const &at( Vector2Dull const &index ) const;
 private:
 	std::array< std::array< T, width >, height > mValue;
 };
 
 template< typename T, unsigned long long width, unsigned long long height >
-Map2< T, width, height >::Map2( T const &fill )
+Map2D< T, width, height >::Map2D( T const &fill )
 {
 	for( unsigned long long iY = 0; iY < height; iY++ )
 	{
@@ -48,25 +48,25 @@ Map2< T, width, height >::Map2( T const &fill )
 }
 
 template< typename T, unsigned long long width, unsigned long long height >
-T &Map2< T, width, height >::operator[]( Vector2ull const &index )
+T &Map2D< T, width, height >::operator[]( Vector2Dull const &index )
 {
 	return mValue[ index.y ][ index.x ];
 }
 
 template< typename T, unsigned long long width, unsigned long long height >
-T const &Map2< T, width, height >::operator[]( Vector2ull const &index ) const
+T const &Map2D< T, width, height >::operator[]( Vector2Dull const &index ) const
 {
 	return mValue[ index.y ][ index.x ];
 }
 
 template< typename T, unsigned long long width, unsigned long long height >
-T &Map2< T, width, height >::at( Vector2ull const &index )
+T &Map2D< T, width, height >::at( Vector2Dull const &index )
 {
 	return mValue[ index.y ][ index.x ];
 }
 
 template< typename T, unsigned long long width, unsigned long long height >
-T const &Map2< T, width, height >::at( Vector2ull const &index ) const
+T const &Map2D< T, width, height >::at( Vector2Dull const &index ) const
 {
 	return mValue[ index.y ][ index.x ];
 }
