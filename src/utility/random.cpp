@@ -16,12 +16,12 @@ NumberGenerator::NumberGenerator( std::mt19937::result_type const &seed )
 void NumberGenerator::setSeed()
 {
 	std::random_device randomDevice;
-	std::mt19937::setSeed( randomDevice());
+	std::mt19937::seed( randomDevice());
 }
 
 void NumberGenerator::setSeed( std::mt19937::result_type const &seed )
 {
-	std::mt19937::setSeed( seed );
+	std::mt19937::seed( seed );
 }
 
 NumberGenerator numberGenerator;

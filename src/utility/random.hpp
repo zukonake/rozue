@@ -13,8 +13,8 @@ class NumberGenerator : std::mt19937
 
 	using std::mt19937::operator();
 
-	void seed();
-	void seed( std::mt19937::result_type const &seed );
+	void setSeed();
+	void setSeed( std::mt19937::result_type const &seed );
 	private:
 };
 
