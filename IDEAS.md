@@ -26,8 +26,6 @@
         * dark entities will have a negative effect on light
 * occasional towns and caverns
 * some source of light exists but its mostly dark
-* entities move freely or on a smaller grid
-* entities can fall down
 ### Mechanics
 * food water and light are neccesary to survive
     * survival shouldnt be a hard to sustain
@@ -38,6 +36,9 @@
     * ofc no guns
         * okay maybe a little
 * game assets loadable with lua or other language
+* physics engine
+* entities move freely or on a smaller grid
+* entities can fall down
 ### Graphics
 * the view is top down
 * you can see levels below, darker or something
