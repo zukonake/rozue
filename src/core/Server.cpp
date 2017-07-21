@@ -40,7 +40,7 @@ void Server::kick( ID const &clientID, std::string const &reason )
 	utility::logger.log( "S", utility::Logger::INFO, "kicking client: " + mID );
 	if( mConnections.count( clientID ) == 0 )
 	{
-		throw Exception::InvalidClientID( "Server::kick: non-existant client: " + clientID );
+		throw Exception::InvalidClient( "Server::kick: non-existant client: " + clientID );
 	}
 	mConnections.erase( clientID );
 }

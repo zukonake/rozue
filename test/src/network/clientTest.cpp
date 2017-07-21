@@ -1,11 +1,12 @@
 #include <UnitTest++/UnitTest++.h>
 //
-#include <core/common.hpp>
-#include <core/exception.hpp>
-#include <core/Server.hpp>
-#include <core/Client.hpp>
+#include <network/exception.hpp>
+#include <network/Server.hpp>
+#include <network/Client.hpp>
 
-SUITE( Client )
+using namespace network;
+
+SUITE( network_Client )
 {
 
 TEST( connectTo1 )
@@ -20,7 +21,7 @@ TEST( connectTo1 )
 TEST( connectTo2 )
 {
 	Client client( "test" );
-	CHECK_THROW( client.connectTo( "invalid", 31337 ), Exception::CouldNotConnect );
+	CHECK_THROW( client.connectTo( "invalid", 31337 ), CouldNotConnect );
 	CHECK_EQUAL( client.isConnected(), false );
 }
 
@@ -37,7 +38,7 @@ TEST( disconnect1 )
 TEST( disconnect2 )
 {
 	Client client( "test" );
-	CHECK_THROW( client.disconnect(), Exception::NotConnected );
+	CHECK_THROW( client.disconnect(), InvalidState );
 	CHECK_EQUAL( client.isConnected(), false );
 }
 
@@ -50,14 +51,6 @@ TEST( isConnected )
 	client.connectTo( "localhost", 31337 );
 	CHECK_EQUAL( client.isConnected(), true );
 	client.disconnect();
-	CHECK_EQUAL( client.isConnected(), false );
-}
-
-TEST( getID )
-{
-	ID ID = "test";
-	Client client( ID );
-	CHECK_EQUAL( client.getID(), ID );
 	CHECK_EQUAL( client.isConnected(), false );
 }
 

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <network/common.hpp>
 #include <core/common.hpp>
 #include <core/SFMLClient.hpp>
 #include <data/Dataset.hpp>

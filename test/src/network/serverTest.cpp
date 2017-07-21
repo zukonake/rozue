@@ -1,11 +1,11 @@
 #include <UnitTest++/UnitTest++.h>
 //
-#include <core/common.hpp>
-#include <core/exception.hpp>
-#include <core/Client.hpp>
-#include <core/Server.hpp>
+#include <network/common.hpp>
+#include <network/exception.hpp>
+#include <network/Client.hpp>
+#include <network/Server.hpp>
 
-SUITE( Server )
+SUITE( network_Server )
 {
 
 TEST( kick1 )
