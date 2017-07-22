@@ -5,24 +5,19 @@
 #include <thread>
 //
 #include <utility/Logger.hpp>
+#include <network/common.hpp>
+#include <network/ColdSocket.hpp>
 #include <core/exception.hpp>
 #include "Server.hpp"
 
-Server::Server( ID const &ID, network::Port port ) :
-	mID( ID ),
-	mPort( port )
+Server::Server()
 {
-	utility::logger.log(
-		"S",
-		utility::Logger::INFO,
-		"starting server:\n\tID: " +
-		mID + "\n\tport: " +
-		std::to_string( mPort ));
+	utility::logger.log( "S", utility::Logger::DEBUG, "constructing server" );
 }
 
 Server::~Server()
 {
-	utility::logger.log( "S", utility::Logger::INFO, "closing server: " + mID );
+	utility::logger.log( "S", utility::Logger::DEBUG, "destructing server" );
 	if( isRunning())
 	{
 		stop();
@@ -34,22 +29,22 @@ Server::~Server()
 	}
 }
 
-void Server::kick( ID const &clientID, std::string const &reason )
+void Server::kick( network::IP const &IP, std::string const &reason )
 {
 	(void) reason; //TODO
-	utility::logger.log( "S", utility::Logger::INFO, "kicking client: " + mID );
-	if( mConnections.count( clientID ) == 0 )
+	utility::logger.log( "S", utility::Logger::INFO, "kicking client: " + IP );
+	if( mConnections.count( IP ) == 0 )
 	{
-		throw Exception::InvalidClient( "Server::kick: non-existant client: " + clientID );
+		throw Exception::InvalidClient( "Server::kick: non-existant client: " + IP );
 	}
-	mConnections.erase( clientID );
+	mConnections.erase( IP );
 }
 
-void Server::start()
+void Server::start( network::Port const &port )
 {
-	utility::logger.log( "S", utility::Logger::DEBUG, "starting server" );
+	utility::logger.log( "S", utility::Logger::INFO, "starting server" );
 	mRunning = true;
-	startListener();
+	startListener( port );
 	startLoop();
 }
 
@@ -61,9 +56,9 @@ void Server::stop()
 	stopLoop();
 }
 
-std::set< ID > Server::getClients() const
+std::set< network::IP > Server::getClients() const
 {
-	std::set< ID > clients;
+	std::set< network::IP > clients;
 	for( auto &iConnection : mConnections )
 	{
 		clients.insert( iConnection.first );
@@ -71,19 +66,14 @@ std::set< ID > Server::getClients() const
 	return clients;
 }
 
-ID const &Server::getID() const noexcept
-{
-	return mID;
-}
-
 bool const &Server::isRunning() const noexcept
 {
 	return mRunning;
 }
 
-void Server::startListener()
+void Server::startListener( network::Port const &port )
 {
-	utility::logger.log( "S", utility::Logger::INFO, "starting TCP listener on port: " + std::to_string( mPort ));
+	utility::logger.log( "S", utility::Logger::INFO, "starting listener on port: " + std::to_string( port ));
 }
 
 void Server::startLoop()
@@ -94,7 +84,7 @@ void Server::startLoop()
 
 void Server::stopListener()
 {
-	utility::logger.log( "S", utility::Logger::DEBUG, "stopping listener" );
+	utility::logger.log( "S", utility::Logger::INFO, "stopping listener" );
 }
 
 void Server::stopLoop()
@@ -124,9 +114,9 @@ void Server::listenForClients()
 {
 }
 
-void Server::connectToClient()
+void Server::connectToClient( std::unique_ptr< network::ColdSocket > clientSocket )
 {
-	//utility::logger.log( "S", utility::Logger::DEBUG, "connecting to: " + mClientSocket->getRemoteAddress().toString());
+	utility::logger.log( "S", utility::Logger::INFO, "connecting to: " + clientSocket->getRemoteIP());
 	std::unique_ptr< Player > player( new Player( mDataset, mWorld ));
 	/*
 	mConnections.emplace(

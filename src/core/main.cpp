@@ -3,9 +3,9 @@
 
 int main()
 {
-	Server server( "localServer", 31337 );
-	server.start();
-	Client client( "localClient" );
+	Server server;
+	server.start( 31337 );
+	Client client;
 	client.connectTo( "localhost", 31337 );
 	return 0;
 }

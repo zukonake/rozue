@@ -2,7 +2,7 @@
 
 #include <memory>
 //
-#include <network/ColdSocket.hpp>
+#include <network/UDPSocket.hpp>
 #include <core/Player.hpp>
 
 class Client;
@@ -13,7 +13,7 @@ class Client;
 class Connection
 {
 public:
-	Connection( network::ColdSocket const &socket, std::unique_ptr< Player > player );
+	Connection( network::UDPSocket const &socket, std::unique_ptr< Player > player );
 
 	/**
 	 * This funtion exchanges ClientData and ServerData between Client and Player.
