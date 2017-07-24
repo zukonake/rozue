@@ -1,9 +1,9 @@
+#include <stdexcept>
 #include <future>
 #include <mutex>
 //
 #include <UnitTest++/UnitTest++.h>
 //
-#include <network/exception.hpp>
 #include <network/ColdSocket.hpp>
 #include <network/ColdListener.hpp>
 
@@ -44,7 +44,7 @@ TEST( connectTo1_disconnect1_isConnected1_getRemoteIP1_getRemotePort1 )
 TEST( connectTo2 )
 {
 	ColdSocket socket;
-	CHECK_THROW( socket.connectTo( "invalid", 31337 ), exception::CouldNotConnect );
+	CHECK_THROW( socket.connectTo( "invalid", 31337 ), std::runtime_error );
 	CHECK_EQUAL( socket.isConnected(), false );
 }
 
@@ -66,6 +66,7 @@ TEST( disconnect2 )
 	listenerThread.join();
 	auto remoteSocket = future.get();
 	remoteSocket->disconnect();
+	socket.receive();
 	CHECK_EQUAL( socket.isConnected(), false );
 	CHECK_EQUAL( remoteSocket->isConnected(), false );
 }
@@ -73,20 +74,20 @@ TEST( disconnect2 )
 TEST( disconnect3 )
 {
 	ColdSocket socket;
-	CHECK_THROW( socket.disconnect(), exception::InvalidState );
+	CHECK_THROW( socket.disconnect(), std::runtime_error );
 	CHECK_EQUAL( socket.isConnected(), false );
 }
 
 TEST( getRemoteIP2 )
 {
 	ColdSocket socket;
-	CHECK_THROW( socket.getRemoteIP(), exception::InvalidState );
+	CHECK_THROW( socket.getRemoteIP(), std::runtime_error );
 }
 
 TEST( getRemotePort2 )
 {
 	ColdSocket socket;
-	CHECK_THROW( socket.getRemotePort(), exception::InvalidState );
+	CHECK_THROW( socket.getRemotePort(), std::runtime_error );
 }
 
 }

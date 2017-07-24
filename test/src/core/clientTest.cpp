@@ -1,6 +1,5 @@
 #include <UnitTest++/UnitTest++.h>
 //
-#include <core/exception.hpp>
 #include <core/common.hpp>
 #include <core/Server.hpp>
 #include <core/Client.hpp>
@@ -8,6 +7,7 @@
 SUITE( Client )
 {
 
+	//TODO
 TEST( getNickname1 )
 {
 	Nickname nickname = "test";

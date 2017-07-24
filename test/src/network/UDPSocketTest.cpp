@@ -1,3 +1,4 @@
+#include <stdexcept>
 #include <thread>
 #include <mutex>
 #include <future>
@@ -17,6 +18,15 @@ TEST( bind1 )
 	UDPSocket socket;
 	socket.bind( 31337 );
 	CHECK_EQUAL( socket.getPort(), 31337 );
+}
+
+TEST( bind2 )
+{
+	UDPSocket socket1;
+	UDPSocket socket2;
+	socket1.bind( 31337 );
+	CHECK_THROW( socket2.bind( 31337 ), std::runtime_error );
+	CHECK_THROW( socket2.getPort(), std::runtime_error );
 }
 
 TEST( send1 )

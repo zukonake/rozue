@@ -1,13 +1,12 @@
 #include <utility>
 #include <memory>
-#include <exception>
+#include <stdexcept>
 #include <string>
 #include <thread>
 //
 #include <utility/Logger.hpp>
 #include <network/common.hpp>
 #include <network/ColdSocket.hpp>
-#include <core/exception.hpp>
 #include "Server.hpp"
 
 Server::Server()
@@ -35,7 +34,7 @@ void Server::kick( network::IP const &IP, std::string const &reason )
 	utility::logger.log( "S", utility::Logger::INFO, "kicking client: " + IP );
 	if( mConnections.count( IP ) == 0 )
 	{
-		throw exception::InvalidClient( "Server::kick: non-existant client: " + IP );
+		throw std::runtime_error( "Server::kick: non-existant client: " + IP );
 	}
 	mConnections.erase( IP );
 }

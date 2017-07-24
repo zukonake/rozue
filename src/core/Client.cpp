@@ -13,17 +13,17 @@ Client::Client( Nickname const &nickname ) :
 
 }
 
-/*ClientData Client::requestClientData()
+void Client::send( network::Data const &datagram )
 {
-	//TODO
-}*/
+	(void)datagram;
+}
 
-/*void Client::receiveServerData( ServerData const &serverData )
+network::Data Client::receive()
 {
-	//TODO
-}*/
+	return network::Data();
+}
 
-/*void Client::parseServerData( ServerData const &serverData )
+Nickname Client::getNickname()
 {
-	//TODO
-}*/
+	return mNickname;
+}
