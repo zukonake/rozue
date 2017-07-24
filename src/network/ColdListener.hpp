@@ -15,6 +15,7 @@ class ColdListener : UDPSocket
 public:
 	void listen( Port const &port );
 	std::unique_ptr< ColdSocket > accept();
+	Port getPort();
 };
 
 }
