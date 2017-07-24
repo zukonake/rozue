@@ -29,4 +29,12 @@ class CouldNotConnect : public Exception
 	using Exception::Exception;
 };
 
+/**
+ * Thrown when the connection times out.
+ */
+class TimedOut : public Exception
+{
+	using Exception::Exception;
+};
+
 }
