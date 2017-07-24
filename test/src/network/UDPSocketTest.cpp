@@ -22,24 +22,20 @@ TEST( bind1 )
 TEST( send1 )
 {
 	UDPSocket socket;
-
+	UDPSocket receiver;
 	Data datagram{ 1, 3, 3, 7 };
 	std::promise< Data > promise;
-	std::mutex mutex;
 	auto future = promise.get_future();
-	mutex.lock();
-	std::thread receiver( [ &mutex ]( std::promise< Data > && promise )
+
+	socket.bind( 31337 );
+	std::thread receiverThread(
+		[ &receiver ]( std::promise< Data > && promise )
 		{
-			UDPSocket socket;
-			socket.bind( 31337 );
-			mutex.unlock();
-			promise.set_value( socket.receive( "localhost", 31337 ));
+			promise.set_value( receiver.receive( "localhost", 31337 ));
 		},
 		std::move( promise ));
-	mutex.lock();
 	socket.send( datagram, "localhost", 31337 );
-	mutex.unlock();
-	receiver.join();
+	receiverThread.join();
 	Data result = future.get();
 
 	CHECK( result[ 0 ] == 1 );

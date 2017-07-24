@@ -16,8 +16,6 @@ public:
 	void send( Data const &datagram, IP const &address, Port const &port );
 	Data receive( IP const &address, Port const &port );
 
-	bool isConnected();
-
 	Port const &getPort(); //TODO throw if port not bound
 private:
 	SocketHandle mSocketHandle;

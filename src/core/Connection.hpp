@@ -13,7 +13,7 @@ class Client;
 class Connection
 {
 public:
-	Connection( network::UDPSocket const &socket, std::unique_ptr< Player > player );
+	Connection( std::unique_ptr< network::UDPSocket > socket, std::unique_ptr< Player > player );
 
 	/**
 	 * This funtion exchanges ClientData and ServerData between Client and Player.

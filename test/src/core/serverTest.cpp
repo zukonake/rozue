@@ -10,94 +10,86 @@ SUITE( Server )
 
 TEST( kick1 )
 {
-	Server server( "server", 31337 );
-	server.start();
+	Server server;
+	server.start( 31337 );
 	Client client1( "client1" );
 	Client client2( "client2" );
 	Client client3( "client3" );
 	client1.connectTo( "localhost", 31337 );
 	client2.connectTo( "localhost", 31337 );
 	client3.connectTo( "localhost", 31337 );
-	server.kick( client2.getID());
+	server.kick( "client2" );
 	CHECK_EQUAL( client1.isConnected(), true );
 	CHECK_EQUAL( client2.isConnected(), false );
 	CHECK_EQUAL( client3.isConnected(), true );
 	auto clients = server.getClients();
 	CHECK_EQUAL( clients.size(), 2 );
-	CHECK_EQUAL( clients.count( client1.getID()), 1 );
-	CHECK_EQUAL( clients.count( client2.getID()), 0 );
-	CHECK_EQUAL( clients.count( client3.getID()), 1 );
+	CHECK_EQUAL( clients.count( client1.getNickname()), 1 );
+	CHECK_EQUAL( clients.count( client2.getNickname()), 0 );
+	CHECK_EQUAL( clients.count( client3.getNickname()), 1 );
 }
 
 TEST( kick2 )
 {
-	Server server( "server", 31337 );
-	server.start();
+	Server server;
+	server.start( 31337 );
 	Client client1( "client1" );
 	Client client2( "client1" );
 	client1.connectTo( "localhost", 31337 );
 	client2.connectTo( "localhost", 31337 );
-	CHECK_THROW( server.kick( "client3" ), Exception::InvalidClient );
+	CHECK_THROW( server.kick( "client3" ), exception::InvalidClient );
 	CHECK_EQUAL( client1.isConnected(), true );
 	CHECK_EQUAL( client2.isConnected(), true );
 	auto clients = server.getClients();
 	CHECK_EQUAL( clients.size(), 2 );
-	CHECK_EQUAL( clients.count( client1.getID()), 1 );
-	CHECK_EQUAL( clients.count( client2.getID()), 1 );
+	CHECK_EQUAL( clients.count( client1.getNickname()), 1 );
+	CHECK_EQUAL( clients.count( client2.getNickname()), 1 );
 }
 
-TEST( start_stop_isRunning1 )
+TEST( start1_stop1_isRunning1 )
 {
-	Server server( "server", 31337 );
+	Server server;
 	CHECK_EQUAL( server.isRunning(), false );
-	server.start();
+	server.start( 31337 );
 	CHECK_EQUAL( server.isRunning(), true );
 	server.stop();
 	CHECK_EQUAL( server.isRunning(), false );
 }
 
-TEST( start1 )
+TEST( start2 )
 {
-	Server server( "server", 31337 );
-	server.start();
+	Server server;
+	server.start( 31337 );
 	CHECK_EQUAL( server.isRunning(), true );
-	CHECK_THROW( server.start(), Exception::InvalidState );
+	CHECK_THROW( server.start( 31337 ), exception::InvalidState );
 	CHECK_EQUAL( server.isRunning(), true );
 }
 
-TEST( stop1 )
+TEST( stop2 )
 {
-	Server server( "server", 31337 );
+	Server server;
 	CHECK_EQUAL( server.isRunning(), false );
-	CHECK_THROW( server.stop(), Exception::InvalidState );
+	CHECK_THROW( server.stop(), exception::InvalidState );
 	CHECK_EQUAL( server.isRunning(), false );
 }
 
 TEST( getClients1 )
 {
-	Server server( "server", 31337 );
-	server.start();
+	Server server;
+	server.start( 31337 );
 	Client client1( "client1" );
 	Client client2( "client1" );
 	client1.connectTo( "localhost", 31337 );
 	client2.connectTo( "localhost", 31337 );
 	auto clients = server.getClients();
 	CHECK_EQUAL( clients.size(), 2 );
-	CHECK_EQUAL( clients.count( client1.getID()), 1 );
-	CHECK_EQUAL( clients.count( client2.getID()), 1 );
+	CHECK_EQUAL( clients.count( client1.getNickname()), 1 );
+	CHECK_EQUAL( clients.count( client2.getNickname()), 1 );
 	client2.disconnect();
 	clients = server.getClients();
 	CHECK_EQUAL( clients.size(), 1 );
-	CHECK_EQUAL( clients.count( client1.getID()), 1 );
-	CHECK_EQUAL( clients.count( client2.getID()), 0 );
-}
-
-TEST( getID1 )
-{
-	ID ID = "localServer";
-	Server server( ID, 31337 );
-	server.start();
-	CHECK_EQUAL( server.getID(), ID );
+	CHECK_EQUAL( clients.count( client1.getNickname()), 1 );
+	CHECK_EQUAL( clients.count( client2.getNickname()), 0 );
 }
 
 }

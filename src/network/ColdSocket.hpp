@@ -6,24 +6,22 @@
 namespace network
 {
 
-class ColdSocket
+class ColdSocket : UDPSocket
 {
 public:
 	ColdSocket();
 
-	~ColdSocket();
+	virtual ~ColdSocket();
 
 	void connectTo( IP const &address, Port const &port );
 	void disconnect();
 
-	void send( Data const &datagram );
-	Data receive();
+	virtual void send( Data const &datagram );
+	virtual Data receive();
 
 	bool isConnected();
 	IP getRemoteIP();
 	Port getRemotePort();
-private:
-	UDPSocket socket;
 };
 
 }

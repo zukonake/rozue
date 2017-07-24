@@ -7,6 +7,12 @@
 #include <data/ServerData.hpp>
 #include "Client.hpp"
 
+Client::Client( Nickname const &nickname ) :
+	mNickname( nickname )
+{
+
+}
+
 /*ClientData Client::requestClientData()
 {
 	//TODO

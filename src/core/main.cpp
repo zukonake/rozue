@@ -5,7 +5,7 @@ int main()
 {
 	Server server;
 	server.start( 31337 );
-	Client client;
+	Client client( "localClient" );
 	client.connectTo( "localhost", 31337 );
 	return 0;
 }

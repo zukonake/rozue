@@ -8,6 +8,7 @@
 //
 #include <network/common.hpp>
 #include <network/ColdSocket.hpp>
+#include <core/common.hpp>
 #include <core/Connection.hpp>
 #include <data/Dataset.hpp>
 #include <world/World.hpp>
@@ -24,12 +25,12 @@ public:
 
 	~Server();
 
-	void kick( network::IP const &IP, std::string const &reason = "unspecified" );
+	void kick( Nickname const &nickname, std::string const &reason = "unspecified" );
 
 	void start( network::Port const &port );
 	void stop();
 
-	std::set< network::IP > getClients() const;
+	std::set< Nickname > getClients() const;
 	bool const &isRunning() const noexcept;
 private:
 	void startListener( network::Port const &port );
@@ -44,7 +45,7 @@ private:
 	void connectToClient( std::unique_ptr< network::ColdSocket > clientSocket );
 
 	std::thread mLoopThread;
-	std::unordered_map< network::IP, Connection > mConnections;
+	std::unordered_map< Nickname, Connection > mConnections;
 	bool mRunning;
 
 	Dataset mDataset;

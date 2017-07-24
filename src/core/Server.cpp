@@ -35,7 +35,7 @@ void Server::kick( network::IP const &IP, std::string const &reason )
 	utility::logger.log( "S", utility::Logger::INFO, "kicking client: " + IP );
 	if( mConnections.count( IP ) == 0 )
 	{
-		throw Exception::InvalidClient( "Server::kick: non-existant client: " + IP );
+		throw exception::InvalidClient( "Server::kick: non-existant client: " + IP );
 	}
 	mConnections.erase( IP );
 }

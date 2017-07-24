@@ -14,7 +14,7 @@ class Exception : public std::runtime_error
 };
 
 /**
- * Thrown when Server/Client is in invalid state for the action.
+ * Thrown when Socket is in invalid state for the action.
  */
 class InvalidState : public Exception
 {
@@ -22,9 +22,9 @@ class InvalidState : public Exception
 };
 
 /**
- * Thrown when the given Client is invalid.
+ * Thrown when ColdSocket can not connect to server.
  */
-class InvalidClient : public Exception
+class CouldNotConnect : public Exception
 {
 	using Exception::Exception;
 };

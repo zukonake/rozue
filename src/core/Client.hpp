@@ -2,6 +2,7 @@
 
 #include <network/common.hpp>
 #include <network/ColdSocket.hpp>
+#include <core/common.hpp>
 #include <core/SFMLClient.hpp>
 #include <data/Dataset.hpp>
 
@@ -21,10 +22,16 @@ struct ServerData;
 class Client : SFMLClient, public network::ColdSocket
 {
 public:
-	ClientData requestClientData();
-	void receiveServerData( ServerData const &serverData );
+	Client( Nickname const &nickname );
+
+	virtual void send( network::Data const &datagram ) override;
+	virtual network::Data receive() override;
+
+	Nickname getNickname();
 private:
 	void parseServerData( ServerData const &serverData );
 
+	Nickname mNickname;
+	network::ColdSocket mSocket;
 	Dataset mDataset;
 };
