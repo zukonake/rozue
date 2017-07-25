@@ -10,7 +10,7 @@ extern "C"
 }
 
 #include <cstdint>
-#include <vector>
+#include <array>
 #include <string>
 
 namespace network
@@ -23,6 +23,7 @@ typedef int SocketHandle;
 typedef sockaddr_in InternetAddress;
 typedef sockaddr SocketAddress;
 typedef std::string IP; //TODO more restraining version?
-typedef std::vector< Byte > Data;
+template< DatagramSize size >
+using Data = std::array< Byte, size >;
 
 }

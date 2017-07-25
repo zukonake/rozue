@@ -1,8 +1,6 @@
 extern "C"
 {
 
-#include <strings.h>
-#include <netdb.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 
@@ -38,49 +36,6 @@ void UDPSocket::bind( Port const &port )
 	{
 		throw std::runtime_error( "network::UDPSocket::bind: failed to bind port: " + std::to_string( port ));
 	}
-}
-
-void UDPSocket::send( Data const &datagram, IP const &address, Port const &port )
-{
-	InternetAddress to;
-	to.sin_family = AF_INET;
-	auto hostAddress = gethostbyname( address.c_str());
-	bcopy(
-		reinterpret_cast< char * >( hostAddress->h_addr ),
-		reinterpret_cast< char * >( &to.sin_addr ),
-		hostAddress->h_length
-		);
-	to.sin_port = htons( port );
-
-	SocketAddress const *socketAddress = reinterpret_cast< SocketAddress const * >( &to );
-	if( sendto( mSocketHandle, &datagram[ 0 ], datagram.size(), 0, socketAddress , sizeof( InternetAddress )) < 0 )
-	{
-		throw std::runtime_error( "network::UDPSocket::receive: failed to receive" );
-	}
-}
-
-Data UDPSocket::receive( IP const &address, Port const &port, DatagramSize const &size)
-{
-	Data datagram;
-	datagram.resize( size );
-
-	InternetAddress from;
-	from.sin_family = AF_INET;
-	auto hostAddress = gethostbyname( address.c_str());
-	bcopy(
-		reinterpret_cast< char * >( hostAddress->h_addr ),
-		reinterpret_cast< char * >( &from.sin_addr ),
-		hostAddress->h_length
-		);
-	from.sin_port = htons( port );
-	SocketAddress *socketAddress = reinterpret_cast< SocketAddress * >( &from );
-	unsigned addressSize = sizeof( InternetAddress );
-
-	if( recvfrom( mSocketHandle, &datagram[ 0 ], size, 0, socketAddress, &addressSize ) < 0 )
-	{
-		throw std::runtime_error( "network::UDPSocket::receive: failed to receive" );
-	}
-	return datagram;
 }
 
 Port UDPSocket::getPort()
