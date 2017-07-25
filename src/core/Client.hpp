@@ -24,8 +24,8 @@ class Client : SFMLClient, public network::ColdSocket
 public:
 	Client( Nickname const &nickname );
 
-	virtual void send( network::Data const &datagram ) override;
-	virtual network::Data receive() override;
+	void send();
+	ServerData receive();
 
 	Nickname getNickname();
 private:
