@@ -41,7 +41,7 @@ TEST( send1 )
 	std::thread receiverThread(
 		[ &receiver ]( std::promise< Data > && promise )
 		{
-			promise.set_value( receiver.receive( "localhost", 31337 ));
+			promise.set_value( receiver.receive( "localhost", 31337, 4 ));
 		},
 		std::move( promise ));
 	socket.send( datagram, "localhost", 31337 );
