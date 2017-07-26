@@ -1,6 +1,7 @@
 extern "C"
 {
 
+#include <errno.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 
@@ -16,12 +17,18 @@ namespace network
 {
 
 UDPSocket::UDPSocket() :
-	mSocketHandle( socket( AF_INET, SOCK_DGRAM, 0 ))
+	mPort( 0 )
 {
+	mSocketHandle = socket( AF_INET, SOCK_DGRAM, 0 );
+	if( mSocketHandle < 0 )
+	{
+		throw std::runtime_error( "network::UDPSocket::UDPSocket: failed to create socket errno: " +
+			std::to_string( errno ));
+	}
 	mAddress.sin_family = AF_INET;
 	mAddress.sin_port = 0;
 	mAddress.sin_addr.s_addr = INADDR_ANY;
-	std::fill_n( mAddress.sin_zero, 8, 0 );
+	std::fill_n( mAddress.sin_zero, 8, 0x00 );
 }
 UDPSocket::~UDPSocket()
 {
@@ -32,19 +39,22 @@ void UDPSocket::bind( Port const &port )
 {
 	mAddress.sin_port = htons( port );
 	SocketAddress *socketAddress = reinterpret_cast< SocketAddress * >( &mAddress );
-	if( ::bind( mSocketHandle, socketAddress, sizeof( mAddress ) < 0 ))
+	if( ::bind( mSocketHandle, socketAddress, sizeof( InternetAddress )) < 0 )
 	{
-		throw std::runtime_error( "network::UDPSocket::bind: failed to bind port: " + std::to_string( port ));
+		throw std::runtime_error( "network::UDPSocket::bind: failed to bind port: " +
+			std::to_string( port ) +
+			" errno: " + std::to_string( errno ));
 	}
+	mPort = port;
 }
 
 Port UDPSocket::getPort()
 {
-	if( mAddress.sin_port == 0 )
+	if( mPort == 0 )
 	{
 		throw std::runtime_error( "network::UDPSocket::getPort: port has not been bound" );
 	}
-	return mAddress.sin_port;
+	return mPort;
 }
 
 }

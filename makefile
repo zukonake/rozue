@@ -14,7 +14,6 @@ DOXYFILE := Doxyfile
 CXX := clang++
 INCLUDE_FLAGS := -I $(SRC_DIR)
 WARNING_FLAGS := \
-	-Werror \
 	-Wall \
 	-Wextra \
 	-Wwrite-strings \

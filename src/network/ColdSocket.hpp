@@ -12,9 +12,12 @@ namespace network
 class ColdSocket : virtual utility::NonCopyable, UDPSocket
 {
 public:
+	ColdSocket() = default;
+	ColdSocket( IP const &address, Port const &port );
+
 	virtual ~ColdSocket();
 
-	void connectTo( IP const &address, Port const &port );
+	void connectTo( IP address, Port port );
 	void disconnect();
 
 	template< DatagramSize size >
@@ -40,7 +43,7 @@ void ColdSocket::send( ColdPacket< size > const &packet )
 template< DatagramSize size >
 ColdPacket< size > ColdSocket::receive()
 {
-
+	return ColdPacket< size >( UDPSocket::receive< size + 1 >( mConnectedIP, mConnectedPort ));
 }
 
 }

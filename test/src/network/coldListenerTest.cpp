@@ -9,7 +9,7 @@
 
 using namespace network;
 
-SUITE( Client )
+SUITE( ColdListener )
 {
 
 TEST( listen1_accept1_getPort1 )

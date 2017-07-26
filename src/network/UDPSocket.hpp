@@ -5,6 +5,8 @@ extern "C"
 
 #include <strings.h>
 #include <netdb.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 
 }
 
@@ -28,9 +30,12 @@ public:
 	void send( Data< size > const &datagram, IP const &address, Port const &port );
 	template< DatagramSize size >
 	Data< size > receive( IP const &address, Port const &port );
+	template< DatagramSize size >
+	Data< size > receive( IP &address, Port &port );
 
 	Port getPort(); //TODO throw if port not bound
 private:
+	Port mPort;
 	SocketHandle mSocketHandle;
 	InternetAddress mAddress;
 };
@@ -58,6 +63,14 @@ void UDPSocket::send( Data< size > const &datagram, IP const &address, Port cons
 template< DatagramSize size >
 Data< size > UDPSocket::receive( IP const &address, Port const &port )
 {
+	IP tempAddress = address;
+	Port tempPort = port;
+	return receive< size >( tempAddress, tempPort );
+}
+
+template< DatagramSize size >
+Data< size > UDPSocket::receive( IP &address, Port &port )
+{
 	Data< size > datagram;
 
 	InternetAddress from;
@@ -69,13 +82,22 @@ Data< size > UDPSocket::receive( IP const &address, Port const &port )
 		hostAddress->h_length
 		);
 	from.sin_port = htons( port );
-	SocketAddress *socketAddress = reinterpret_cast< SocketAddress * >( &from );
-	unsigned addressSize = sizeof( InternetAddress );
+	SocketAddress *socketAddress = nullptr;
+	unsigned addressSize = 0;
+	if( address != "" ) //empty means we receive from all addresses
+	{
+		socketAddress = reinterpret_cast< SocketAddress * >( &from );
+		addressSize = sizeof( InternetAddress );
+	}
 
 	if( recvfrom( mSocketHandle, datagram.data(), size, 0, socketAddress, &addressSize ) < 0 )
 	{
 		throw std::runtime_error( "network::UDPSocket::receive: failed to receive" );
 	}
+	port = ntohs( from.sin_port );
+	char const *addr;
+	inet_aton( addr, &from.sin_addr );
+	address = addr;
 	return datagram;
 }
 

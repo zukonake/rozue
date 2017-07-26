@@ -7,6 +7,13 @@
 namespace network
 {
 
+ColdSocket::ColdSocket( IP const &address, Port const &port ) :
+	mConnectedIP( address ),
+	mConnectedPort( port )
+{
+	bind( port );
+}
+
 ColdSocket::~ColdSocket()
 {
 	if( isConnected())
@@ -15,7 +22,7 @@ ColdSocket::~ColdSocket()
 	}
 }
 
-void ColdSocket::connectTo( IP const &address, Port const &port )
+void ColdSocket::connectTo( IP address, Port port )
 {
 	UDPSocket::send< 0x1 >( ColdPacket<>( ColdHeader::CONNECT ), address, port ); 
 	UDPSocket::bind( port );
@@ -29,7 +36,9 @@ void ColdSocket::connectTo( IP const &address, Port const &port )
 
 void ColdSocket::disconnect()
 {
-
+	UDPSocket::send< 0x1 >( ColdPacket<>( ColdHeader::CONNECT ), mConnectedIP, mConnectedPort ); 
+	mConnectedIP = "";
+	mConnectedPort = 0;
 }
 
 bool ColdSocket::isConnected()

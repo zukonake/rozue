@@ -4,20 +4,23 @@ namespace network
 {
 
 template< DatagramSize size >
-ColdPacket< size >::ColdPacket( Data< size > const &data, ColdHeader const &header )
+ColdPacket< size >::ColdPacket( Data< size > const &data, ColdHeader const &header ) :
+	mIndex( 0 )
 {
 	*this << static_cast< Byte >( header );
 	mData = data;
 }
 
 template< DatagramSize size >
-ColdPacket< size >::ColdPacket( ColdHeader const &header )
+ColdPacket< size >::ColdPacket( ColdHeader const &header ) :
+	mIndex( 0 )
 {
 	*this << static_cast< Byte >( header );
 }
 
 template< DatagramSize size >
-ColdPacket< size >::ColdPacket( Data< size + 1 > const &data )
+ColdPacket< size >::ColdPacket( Data< size + 1 > const &data ) :
+	mIndex( 0 )
 {
 	*this << static_cast< Byte >( 0x00 );
 	mData = data;

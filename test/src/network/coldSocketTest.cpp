@@ -66,7 +66,7 @@ TEST( disconnect2 )
 	listenerThread.join();
 	auto remoteSocket = future.get();
 	remoteSocket->disconnect();
-	socket.receive();
+	socket.receive< 0 >();
 	CHECK_EQUAL( socket.isConnected(), false );
 	CHECK_EQUAL( remoteSocket->isConnected(), false );
 }
