@@ -42,6 +42,10 @@ void Server::kick( network::IP const &IP, std::string const &reason )
 void Server::start( network::Port const &port )
 {
 	utility::logger.log( "S", utility::Logger::INFO, "starting server" );
+	if( mRunning )
+	{
+		throw std::runtime_error( "Server::start: server is already running" );
+	}
 	mRunning = true;
 	startListener( port );
 	startLoop();
@@ -50,6 +54,10 @@ void Server::start( network::Port const &port )
 void Server::stop()
 {
 	utility::logger.log( "S", utility::Logger::DEBUG, "stopping server" );
+	if( !mRunning )
+	{
+		throw std::runtime_error( "Server::start: server is already stopped" );
+	}
 	mRunning = false;
 	stopListener();
 	stopLoop();

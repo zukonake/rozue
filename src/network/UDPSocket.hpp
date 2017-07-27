@@ -37,13 +37,13 @@ public:
 private:
 	Port mPort;
 	SocketHandle mSocketHandle;
-	InternetAddress mAddress;
+	sockaddr_in mAddress;
 };
 
 template< DatagramSize size >
 void UDPSocket::send( Data< size > const &datagram, IP const &address, Port const &port )
 {
-	InternetAddress to;
+	sockaddr_in to;
 	to.sin_family = AF_INET;
 	auto hostAddress = gethostbyname( address.c_str());
 	bcopy(
@@ -53,8 +53,8 @@ void UDPSocket::send( Data< size > const &datagram, IP const &address, Port cons
 		);
 	to.sin_port = htons( port );
 
-	SocketAddress const *socketAddress = reinterpret_cast< SocketAddress const * >( &to );
-	if( sendto( mSocketHandle, datagram.data(), size, 0, socketAddress , sizeof( InternetAddress )) < 0 )
+	sockaddr const *socketAddress = reinterpret_cast< sockaddr const * >( &to );
+	if( sendto( mSocketHandle, datagram.data(), size, 0, socketAddress , sizeof( sockaddr_in )) < 0 )
 	{
 		throw std::runtime_error( "network::UDPSocket::receive: failed to receive" );
 	}
@@ -73,7 +73,7 @@ Data< size > UDPSocket::receive( IP &address, Port &port )
 {
 	Data< size > datagram;
 
-	InternetAddress from;
+	sockaddr_in from;
 	from.sin_family = AF_INET;
 	auto hostAddress = gethostbyname( address.c_str());
 	bcopy(
@@ -82,12 +82,12 @@ Data< size > UDPSocket::receive( IP &address, Port &port )
 		hostAddress->h_length
 		);
 	from.sin_port = htons( port );
-	SocketAddress *socketAddress = nullptr;
+	sockaddr *socketAddress = nullptr;
 	unsigned addressSize = 0;
 	if( address != "" ) //empty means we receive from all addresses
 	{
-		socketAddress = reinterpret_cast< SocketAddress * >( &from );
-		addressSize = sizeof( InternetAddress );
+		socketAddress = reinterpret_cast< sockaddr * >( &from );
+		addressSize = sizeof( sockaddr_in );
 	}
 
 	if( recvfrom( mSocketHandle, datagram.data(), size, 0, socketAddress, &addressSize ) < 0 )

@@ -43,7 +43,7 @@ void ColdSocket::disconnect()
 
 bool ColdSocket::isConnected()
 {
-	return mConnectedIP != "0.0.0.0";
+	return mConnectedIP != "";
 }
 
 IP ColdSocket::getRemoteIP()

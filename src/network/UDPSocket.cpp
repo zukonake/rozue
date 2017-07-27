@@ -38,8 +38,7 @@ UDPSocket::~UDPSocket()
 void UDPSocket::bind( Port const &port )
 {
 	mAddress.sin_port = htons( port );
-	SocketAddress *socketAddress = reinterpret_cast< SocketAddress * >( &mAddress );
-	if( ::bind( mSocketHandle, socketAddress, sizeof( InternetAddress )) < 0 )
+	if( ::bind( mSocketHandle, reinterpret_cast< sockaddr * >( &mAddress ), sizeof( mAddress )) < 0 )
 	{
 		throw std::runtime_error( "network::UDPSocket::bind: failed to bind port: " +
 			std::to_string( port ) +

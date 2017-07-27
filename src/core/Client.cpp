@@ -8,7 +8,7 @@
 Client::Client( Nickname const &nickname ) :
 	mNickname( nickname )
 {
-
+	utility::logger.log( "C", utility::Logger::INFO, "creating client: " + nickname );
 }
 
 void Client::send()
