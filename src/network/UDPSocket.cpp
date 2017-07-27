@@ -19,7 +19,7 @@ namespace network
 UDPSocket::UDPSocket() :
 	mPort( 0 )
 {
-	mSocketHandle = socket( AF_INET, SOCK_DGRAM, 0 );
+	mSocketHandle = socket( PF_INET, SOCK_DGRAM, 0 );
 	if( mSocketHandle < 0 )
 	{
 		throw std::runtime_error( "network::UDPSocket::UDPSocket: failed to create socket errno: " +
