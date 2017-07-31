@@ -6,10 +6,11 @@
 //
 #include <utility/Logger.hpp>
 #include <network/common.hpp>
-#include <network/ColdSocket.hpp>
+#include <network/cold/Socket.hpp>
 #include "Server.hpp"
 
-Server::Server()
+Server::Server() :
+	mRunning( false )
 {
 	utility::logger.log( "S", utility::Logger::DEBUG, "constructing server" );
 }
@@ -81,6 +82,8 @@ bool const &Server::isRunning() const noexcept
 void Server::startListener( network::Port const &port )
 {
 	utility::logger.log( "S", utility::Logger::INFO, "starting listener on port: " + std::to_string( port ));
+	mListener.listen( port );
+	mListenerThread = std::thread( &Server::listen, this );
 }
 
 void Server::startLoop()
@@ -92,6 +95,7 @@ void Server::startLoop()
 void Server::stopListener()
 {
 	utility::logger.log( "S", utility::Logger::INFO, "stopping listener" );
+	mListenerThread.join();
 }
 
 void Server::stopLoop()
@@ -117,11 +121,12 @@ void Server::doTick()
 	}
 }
 
-void Server::listenForClients()
+void Server::listen()
 {
+
 }
 
-void Server::connectToClient( std::unique_ptr< network::ColdSocket > clientSocket )
+void Server::connectToClient( std::unique_ptr< network::cold::Socket > clientSocket )
 {
 	utility::logger.log( "S", utility::Logger::INFO, "connecting to: " + clientSocket->getRemoteIP());
 	std::unique_ptr< Player > player( new Player( mDataset, mWorld ));

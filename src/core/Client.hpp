@@ -1,7 +1,7 @@
 #pragma once
 
 #include <network/common.hpp>
-#include <network/ColdSocket.hpp>
+#include <network/cold/Socket.hpp>
 #include <core/common.hpp>
 #include <core/SFMLClient.hpp>
 #include <data/Dataset.hpp>
@@ -19,7 +19,7 @@ struct ServerData;
 /**
  * Client is responsible for preparing ClientData and parsing ServerData.
  */
-class Client : SFMLClient, public network::ColdSocket
+class Client : SFMLClient, public network::cold::Socket
 {
 public:
 	Client( Nickname const &nickname );
@@ -32,6 +32,6 @@ private:
 	void parseServerData( ServerData const &serverData );
 
 	Nickname mNickname;
-	network::ColdSocket mSocket;
+	network::cold::Socket mSocket;
 	Dataset mDataset;
 };

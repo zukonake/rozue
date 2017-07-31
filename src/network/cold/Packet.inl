@@ -3,8 +3,11 @@
 namespace network
 {
 
+namespace cold
+{
+
 template< DatagramSize size >
-ColdPacket< size >::ColdPacket( Data< size > const &data, ColdHeader const &header ) :
+Packet< size >::Packet( Data< size > const &data, Header const &header ) :
 	mIndex( 0 )
 {
 	*this << static_cast< Byte >( header );
@@ -12,14 +15,14 @@ ColdPacket< size >::ColdPacket( Data< size > const &data, ColdHeader const &head
 }
 
 template< DatagramSize size >
-ColdPacket< size >::ColdPacket( ColdHeader const &header ) :
+Packet< size >::Packet( Header const &header ) :
 	mIndex( 0 )
 {
 	*this << static_cast< Byte >( header );
 }
 
 template< DatagramSize size >
-ColdPacket< size >::ColdPacket( Data< size + 1 > const &data ) :
+Packet< size >::Packet( Data< size + 1 > const &data ) :
 	mIndex( 0 )
 {
 	*this << static_cast< Byte >( 0x00 );
@@ -27,20 +30,20 @@ ColdPacket< size >::ColdPacket( Data< size + 1 > const &data ) :
 }
 
 template< DatagramSize size >
-ColdPacket< size >::operator Data< size + 1 > const &() const noexcept
+Packet< size >::operator Data< size + 1 > const &() const noexcept
 {
 	return getData();
 }
 
 template< DatagramSize size >
-ColdPacket< size > &ColdPacket< size >::operator<<( bool const &value )
+Packet< size > &Packet< size >::operator<<( bool const &value )
 {
 	*this << static_cast< uint8_t >( value );
 	return *this;
 }
 
 template< DatagramSize size >
-ColdPacket< size > &ColdPacket< size >::operator<<( uint8_t const &value )
+Packet< size > &Packet< size >::operator<<( uint8_t const &value )
 {
 	mData.at( mIndex ) = value;
 	mIndex++;
@@ -48,14 +51,14 @@ ColdPacket< size > &ColdPacket< size >::operator<<( uint8_t const &value )
 }
 
 template< DatagramSize size >
-ColdPacket< size > &ColdPacket< size >::operator<<( int8_t const &value )
+Packet< size > &Packet< size >::operator<<( int8_t const &value )
 {
 	*this << static_cast< uint8_t >( value );
 	return *this;
 }
 
 template< DatagramSize size >
-ColdPacket< size > &ColdPacket< size >::operator<<( uint16_t const &value )
+Packet< size > &Packet< size >::operator<<( uint16_t const &value )
 {
 	*this <<   value & 0xFF00;
 	*this << ( value & 0x00FF ) >> 0x8;
@@ -63,14 +66,14 @@ ColdPacket< size > &ColdPacket< size >::operator<<( uint16_t const &value )
 }
 
 template< DatagramSize size >
-ColdPacket< size > &ColdPacket< size >::operator<<( int16_t const &value )
+Packet< size > &Packet< size >::operator<<( int16_t const &value )
 {
 	*this << static_cast< uint16_t >( value );
 	return *this;
 }
 
 template< DatagramSize size >
-ColdPacket< size > &ColdPacket< size >::operator<<( uint32_t const &value )
+Packet< size > &Packet< size >::operator<<( uint32_t const &value )
 {
 	*this <<   value & 0x000000FF;
 	*this << ( value & 0x0000FF00 ) >> 0x08;
@@ -80,14 +83,14 @@ ColdPacket< size > &ColdPacket< size >::operator<<( uint32_t const &value )
 }
 
 template< DatagramSize size >
-ColdPacket< size > &ColdPacket< size >::operator<<( int32_t const &value )
+Packet< size > &Packet< size >::operator<<( int32_t const &value )
 {
 	*this << static_cast< uint32_t >( value );
 	return *this;
 }
 
 template< DatagramSize size >
-ColdPacket< size > &ColdPacket< size >::operator<<( uint64_t const &value )
+Packet< size > &Packet< size >::operator<<( uint64_t const &value )
 {
 	*this <<   value & 0x00000000000000FF;
 	*this << ( value & 0x000000000000FF00 ) >> 0x08;
@@ -101,28 +104,28 @@ ColdPacket< size > &ColdPacket< size >::operator<<( uint64_t const &value )
 }
 
 template< DatagramSize size >
-ColdPacket< size > &ColdPacket< size >::operator<<( int64_t const &value )
+Packet< size > &Packet< size >::operator<<( int64_t const &value )
 {
 	*this << static_cast< uint64_t >( value );
 	return *this;
 }
 
 template< DatagramSize size >
-ColdPacket< size > &ColdPacket< size >::operator<<( float const &value )
+Packet< size > &Packet< size >::operator<<( float const &value )
 {
 	*this << static_cast< uint32_t >( value );
 	return *this;
 }
 
 template< DatagramSize size >
-ColdPacket< size > &ColdPacket< size >::operator<<( double const &value )
+Packet< size > &Packet< size >::operator<<( double const &value )
 {
 	*this << static_cast< uint64_t >( value );
 	return *this; //TODO fucks up if size is different
 }
 
 template< DatagramSize size >
-ColdPacket< size > &ColdPacket< size >::operator<<( std::string const &value )
+Packet< size > &Packet< size >::operator<<( std::string const &value )
 {
 	for( auto const &character : value )
 	{
@@ -133,14 +136,14 @@ ColdPacket< size > &ColdPacket< size >::operator<<( std::string const &value )
 }
 
 template< DatagramSize size >
-ColdPacket< size > const &ColdPacket< size >::operator>>( bool &value )
+Packet< size > const &Packet< size >::operator>>( bool &value )
 {
 	*this >> static_cast< uint8_t >( value );
 	return *this;
 }
 
 template< DatagramSize size >
-ColdPacket< size > const &ColdPacket< size >::operator>>( uint8_t &value )
+Packet< size > const &Packet< size >::operator>>( uint8_t &value )
 {
 	value = mData[ mIndex ];
 	mIndex++;
@@ -148,14 +151,14 @@ ColdPacket< size > const &ColdPacket< size >::operator>>( uint8_t &value )
 }
 
 template< DatagramSize size >
-ColdPacket< size > const &ColdPacket< size >::operator>>( int8_t &value )
+Packet< size > const &Packet< size >::operator>>( int8_t &value )
 {
 	*this >> static_cast< uint8_t >( value );
 	return *this;
 }
 
 template< DatagramSize size >
-ColdPacket< size > const &ColdPacket< size >::operator>>( uint16_t &value )
+Packet< size > const &Packet< size >::operator>>( uint16_t &value )
 {
 	value |= mData[ mIndex ] ;
 	mIndex++;
@@ -167,14 +170,14 @@ ColdPacket< size > const &ColdPacket< size >::operator>>( uint16_t &value )
 }
 
 template< DatagramSize size >
-ColdPacket< size > const &ColdPacket< size >::operator>>( int16_t &value )
+Packet< size > const &Packet< size >::operator>>( int16_t &value )
 {
 	*this >> static_cast< uint16_t >( value );
 	return *this;
 }
 
 template< DatagramSize size >
-ColdPacket< size > const &ColdPacket< size >::operator>>( uint32_t &value )
+Packet< size > const &Packet< size >::operator>>( uint32_t &value )
 {
 	value = 0;
 	value |= ( mData.at( mIndex ) & 0xFF000000 ) >> 0x18;
@@ -189,14 +192,14 @@ ColdPacket< size > const &ColdPacket< size >::operator>>( uint32_t &value )
 }
 
 template< DatagramSize size >
-ColdPacket< size > const &ColdPacket< size >::operator>>( int32_t &value )
+Packet< size > const &Packet< size >::operator>>( int32_t &value )
 {
 	*this >> static_cast< uint32_t >( value );
 	return *this;
 }
 
 template< DatagramSize size >
-ColdPacket< size > const &ColdPacket< size >::operator>>( uint64_t &value )
+Packet< size > const &Packet< size >::operator>>( uint64_t &value )
 {
 	value = 0;
 	value |= ( mData.at( mIndex ) & 0xFF00000000000000 ) >> 0x38;
@@ -219,28 +222,28 @@ ColdPacket< size > const &ColdPacket< size >::operator>>( uint64_t &value )
 }
 
 template< DatagramSize size >
-ColdPacket< size > const &ColdPacket< size >::operator>>( int64_t &value )
+Packet< size > const &Packet< size >::operator>>( int64_t &value )
 {
 	*this >> static_cast< uint16_t >( value );
 	return *this;
 }
 
 template< DatagramSize size >
-ColdPacket< size > const &ColdPacket< size >::operator>>( float &value )
+Packet< size > const &Packet< size >::operator>>( float &value )
 {
 	*this >> static_cast< uint32_t >( value );
 	return *this;
 }
 
 template< DatagramSize size >
-ColdPacket< size > const &ColdPacket< size >::operator>>( double &value )
+Packet< size > const &Packet< size >::operator>>( double &value )
 {
 	*this >> static_cast< uint64_t >( value );
 	return *this;
 }
 
 template< DatagramSize size >
-ColdPacket< size > const &ColdPacket< size >::operator>>( std::string &value )
+Packet< size > const &Packet< size >::operator>>( std::string &value )
 {
 	while( mData[ mIndex ] != 0 )
 	{
@@ -252,21 +255,23 @@ ColdPacket< size > const &ColdPacket< size >::operator>>( std::string &value )
 }
 
 template< DatagramSize size >
-ColdHeader const &ColdPacket< size >::getHeader() const
+Header const &Packet< size >::getHeader() const
 {
-	return reinterpret_cast< ColdHeader const & >( mData.at( 0 ));
+	return reinterpret_cast< Header const & >( mData.at( 0 ));
 }
 
 template< DatagramSize size >
-void ColdPacket< size >::setHeader( ColdHeader const &header )
+void Packet< size >::setHeader( Header const &header )
 {
 	mData.at( 0 ) = header;
 }
 
 template< DatagramSize size >
-Data< size + 1 > const &ColdPacket< size >::getData() const noexcept
+Data< size + 1 > const &Packet< size >::getData() const noexcept
 {
 	return mData;
+}
+
 }
 
 }

@@ -17,12 +17,15 @@ extern "C"
 namespace network
 {
 
-class UDPSocket : virtual utility::NonCopyable
+namespace udp
+{
+
+class Socket : virtual utility::NonCopyable
 {
 public:
 	DatagramSize static const maxDatagramSize = -1;
-	UDPSocket();
-	~UDPSocket();
+	Socket();
+	~Socket();
 
 	void bind( Port const &port );
 
@@ -41,7 +44,7 @@ private:
 };
 
 template< DatagramSize size >
-void UDPSocket::send( Data< size > const &datagram, IP const &address, Port const &port )
+void Socket::send( Data< size > const &datagram, IP const &address, Port const &port )
 {
 	sockaddr_in to;
 	to.sin_family = AF_INET;
@@ -61,7 +64,7 @@ void UDPSocket::send( Data< size > const &datagram, IP const &address, Port cons
 }
 
 template< DatagramSize size >
-Data< size > UDPSocket::receive( IP const &address, Port const &port )
+Data< size > Socket::receive( IP const &address, Port const &port )
 {
 	IP tempAddress = address;
 	Port tempPort = port;
@@ -69,7 +72,7 @@ Data< size > UDPSocket::receive( IP const &address, Port const &port )
 }
 
 template< DatagramSize size >
-Data< size > UDPSocket::receive( IP &address, Port &port )
+Data< size > Socket::receive( IP &address, Port &port )
 {
 	Data< size > datagram;
 
@@ -95,10 +98,10 @@ Data< size > UDPSocket::receive( IP &address, Port &port )
 		throw std::runtime_error( "network::UDPSocket::receive: failed to receive" );
 	}
 	port = ntohs( from.sin_port );
-	char const *addr;
-	inet_aton( addr, &from.sin_addr );
-	address = addr;
+	address = inet_ntoa( from.sin_addr );
 	return datagram;
+}
+
 }
 
 }

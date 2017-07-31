@@ -11,15 +11,19 @@ extern "C"
 #include <algorithm>
 #include <string>
 //
-#include "UDPSocket.hpp"
+#include <network/common.hpp>
+#include "Socket.hpp"
 
 namespace network
 {
 
-UDPSocket::UDPSocket() :
+namespace udp
+{
+
+Socket::Socket() :
 	mPort( 0 )
 {
-	mSocketHandle = socket( PF_INET, SOCK_DGRAM, 0 );
+	mSocketHandle = socket( AF_INET, SOCK_DGRAM, 0 );
 	if( mSocketHandle < 0 )
 	{
 		throw std::runtime_error( "network::UDPSocket::UDPSocket: failed to create socket errno: " +
@@ -30,12 +34,13 @@ UDPSocket::UDPSocket() :
 	mAddress.sin_addr.s_addr = INADDR_ANY;
 	std::fill_n( mAddress.sin_zero, 8, 0x00 );
 }
-UDPSocket::~UDPSocket()
+
+Socket::~Socket()
 {
 	shutdown( mSocketHandle, 2 );
 }
 
-void UDPSocket::bind( Port const &port )
+void Socket::bind( Port const &port )
 {
 	mAddress.sin_port = htons( port );
 	if( ::bind( mSocketHandle, reinterpret_cast< sockaddr * >( &mAddress ), sizeof( mAddress )) < 0 )
@@ -47,13 +52,15 @@ void UDPSocket::bind( Port const &port )
 	mPort = port;
 }
 
-Port UDPSocket::getPort()
+Port Socket::getPort()
 {
 	if( mPort == 0 )
 	{
 		throw std::runtime_error( "network::UDPSocket::getPort: port has not been bound" );
 	}
 	return mPort;
+}
+
 }
 
 }
