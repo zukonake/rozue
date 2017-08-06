@@ -7,7 +7,8 @@
 #include <thread>
 //
 #include <network/common.hpp>
-#include <network/ColdSocket.hpp>
+#include <network/cold/Socket.hpp>
+#include <network/cold/Listener.hpp>
 #include <core/common.hpp>
 #include <core/Connection.hpp>
 #include <data/Dataset.hpp>
@@ -41,12 +42,14 @@ private:
 
 	void loop();
 	void doTick();
-	void listenForClients();
-	void connectToClient( std::unique_ptr< network::ColdSocket > clientSocket );
+	void listen();
+	void connectToClient( std::unique_ptr< network::cold::Socket > clientSocket );
 
 	std::thread mLoopThread;
+	std::thread mListenerThread;
 	std::unordered_map< Nickname, Connection > mConnections;
 	bool mRunning;
+	network::cold::Listener mListener;
 
 	Dataset mDataset;
 	World mWorld;

@@ -1,7 +1,8 @@
+#include <stdexcept>
+//
 #include <UnitTest++/UnitTest++.h>
 //
 #include <core/common.hpp>
-#include <core/exception.hpp>
 #include <core/Client.hpp>
 #include <core/Server.hpp>
 
@@ -37,7 +38,7 @@ TEST( kick2 )
 	Client client2( "client1" );
 	client1.connectTo( "localhost", 31337 );
 	client2.connectTo( "localhost", 31337 );
-	CHECK_THROW( server.kick( "client3" ), exception::InvalidClient );
+	CHECK_THROW( server.kick( "client3" ), std::runtime_error );
 	CHECK_EQUAL( client1.isConnected(), true );
 	CHECK_EQUAL( client2.isConnected(), true );
 	auto clients = server.getClients();
@@ -61,7 +62,7 @@ TEST( start2 )
 	Server server;
 	server.start( 31337 );
 	CHECK_EQUAL( server.isRunning(), true );
-	CHECK_THROW( server.start( 31337 ), exception::InvalidState );
+	CHECK_THROW( server.start( 31337 ), std::runtime_error );
 	CHECK_EQUAL( server.isRunning(), true );
 }
 
@@ -69,7 +70,7 @@ TEST( stop2 )
 {
 	Server server;
 	CHECK_EQUAL( server.isRunning(), false );
-	CHECK_THROW( server.stop(), exception::InvalidState );
+	CHECK_THROW( server.stop(), std::runtime_error );
 	CHECK_EQUAL( server.isRunning(), false );
 }
 

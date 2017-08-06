@@ -1,16 +1,16 @@
 #include <utility>
 #include <memory>
-#include <exception>
+#include <stdexcept>
 #include <string>
 #include <thread>
 //
 #include <utility/Logger.hpp>
 #include <network/common.hpp>
-#include <network/ColdSocket.hpp>
-#include <core/exception.hpp>
+#include <network/cold/Socket.hpp>
 #include "Server.hpp"
 
-Server::Server()
+Server::Server() :
+	mRunning( false )
 {
 	utility::logger.log( "S", utility::Logger::DEBUG, "constructing server" );
 }
@@ -35,7 +35,7 @@ void Server::kick( network::IP const &IP, std::string const &reason )
 	utility::logger.log( "S", utility::Logger::INFO, "kicking client: " + IP );
 	if( mConnections.count( IP ) == 0 )
 	{
-		throw exception::InvalidClient( "Server::kick: non-existant client: " + IP );
+		throw std::runtime_error( "Server::kick: non-existant client: " + IP );
 	}
 	mConnections.erase( IP );
 }
@@ -43,6 +43,10 @@ void Server::kick( network::IP const &IP, std::string const &reason )
 void Server::start( network::Port const &port )
 {
 	utility::logger.log( "S", utility::Logger::INFO, "starting server" );
+	if( mRunning )
+	{
+		throw std::runtime_error( "Server::start: server is already running" );
+	}
 	mRunning = true;
 	startListener( port );
 	startLoop();
@@ -51,6 +55,10 @@ void Server::start( network::Port const &port )
 void Server::stop()
 {
 	utility::logger.log( "S", utility::Logger::DEBUG, "stopping server" );
+	if( !mRunning )
+	{
+		throw std::runtime_error( "Server::start: server is already stopped" );
+	}
 	mRunning = false;
 	stopListener();
 	stopLoop();
@@ -74,6 +82,8 @@ bool const &Server::isRunning() const noexcept
 void Server::startListener( network::Port const &port )
 {
 	utility::logger.log( "S", utility::Logger::INFO, "starting listener on port: " + std::to_string( port ));
+	mListener.listen( port );
+	mListenerThread = std::thread( &Server::listen, this );
 }
 
 void Server::startLoop()
@@ -85,6 +95,7 @@ void Server::startLoop()
 void Server::stopListener()
 {
 	utility::logger.log( "S", utility::Logger::INFO, "stopping listener" );
+	mListenerThread.join();
 }
 
 void Server::stopLoop()
@@ -97,7 +108,6 @@ void Server::loop()
 {
 	while( isRunning())
 	{
-		listenForClients();
 		doTick();
 	}
 }
@@ -110,11 +120,12 @@ void Server::doTick()
 	}
 }
 
-void Server::listenForClients()
+void Server::listen()
 {
+
 }
 
-void Server::connectToClient( std::unique_ptr< network::ColdSocket > clientSocket )
+void Server::connectToClient( std::unique_ptr< network::cold::Socket > clientSocket )
 {
 	utility::logger.log( "S", utility::Logger::INFO, "connecting to: " + clientSocket->getRemoteIP());
 	std::unique_ptr< Player > player( new Player( mDataset, mWorld ));

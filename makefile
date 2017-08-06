@@ -14,7 +14,6 @@ DOXYFILE := Doxyfile
 CXX := clang++
 INCLUDE_FLAGS := -I $(SRC_DIR)
 WARNING_FLAGS := \
-	-Werror \
 	-Wall \
 	-Wextra \
 	-Wwrite-strings \
@@ -34,7 +33,8 @@ WARNING_FLAGS := \
 	-Weffc++
 
 LDLIBS := -lsfml-graphics -lsfml-window -lsfml-system -pthread
-FLAGS := $(INCLUDE_FLAGS) $(WARNING_FLAGS) -MMD -MP -std=c++14 -pedantic -ferror-limit=5 -g -O0
+DEBUG_FLAGS := -ferror-limit=5 -g -O0 -ftrapv
+FLAGS := $(INCLUDE_FLAGS) $(WARNING_FLAGS) -MMD -MP -std=c++14 -pedantic $(DEBUG_FLAGS)
 
 .PHONY : clean test doc
 

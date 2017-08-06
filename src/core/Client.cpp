@@ -1,8 +1,6 @@
 #include <string>
 //
 #include <utility/Logger.hpp>
-#include <network/common.hpp>
-#include <network/UDPSocket.hpp>
 #include <data/ClientData.hpp>
 #include <data/ServerData.hpp>
 #include "Client.hpp"
@@ -10,20 +8,20 @@
 Client::Client( Nickname const &nickname ) :
 	mNickname( nickname )
 {
+	utility::logger.log( "C", utility::Logger::INFO, "creating client: " + nickname );
+}
+
+void Client::send()
+{
 
 }
 
-/*ClientData Client::requestClientData()
+ServerData Client::receive()
 {
-	//TODO
-}*/
+	return ServerData();
+}
 
-/*void Client::receiveServerData( ServerData const &serverData )
+Nickname Client::getNickname()
 {
-	//TODO
-}*/
-
-/*void Client::parseServerData( ServerData const &serverData )
-{
-	//TODO
-}*/
+	return mNickname;
+}

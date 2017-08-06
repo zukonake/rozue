@@ -2,7 +2,7 @@
 
 #include <memory>
 //
-#include <network/UDPSocket.hpp>
+#include <network/udp/Socket.hpp>
 #include <core/Player.hpp>
 
 class Client;
@@ -13,7 +13,7 @@ class Client;
 class Connection
 {
 public:
-	Connection( std::unique_ptr< network::UDPSocket > socket, std::unique_ptr< Player > player );
+	Connection( std::unique_ptr< network::udp::Socket > socket, std::unique_ptr< Player > player );
 
 	/**
 	 * This funtion exchanges ClientData and ServerData between Client and Player.
