@@ -108,7 +108,6 @@ void Server::loop()
 {
 	while( isRunning())
 	{
-		listenForClients();
 		doTick();
 	}
 }
