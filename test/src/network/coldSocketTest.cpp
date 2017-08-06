@@ -4,25 +4,25 @@
 //
 #include <UnitTest++/UnitTest++.h>
 //
-#include <network/ColdSocket.hpp>
-#include <network/ColdListener.hpp>
+#include <network/cold/Socket.hpp>
+#include <network/cold/Listener.hpp>
 
 using namespace network;
 
-SUITE( Client )
+SUITE( network_cold_Socket )
 {
 
 TEST( connectTo1_disconnect1_isConnected1_getRemoteIP1_getRemotePort1 )
 {
-	ColdListener listener;
-	ColdSocket socket;
-	std::promise< std::unique_ptr< ColdSocket > > promise;
+	cold::Listener listener;
+	cold::Socket socket;
+	std::promise< std::unique_ptr< cold::Socket > > promise;
 	auto future = promise.get_future();
 
 	CHECK_EQUAL( socket.isConnected(), false );
 	listener.listen( 31337 );
 	std::thread listenerThread(
-		[ &listener ]( std::promise< std::unique_ptr< ColdSocket > > && promise )
+		[ &listener ]( std::promise< std::unique_ptr< cold::Socket > > && promise )
 		{
 			promise.set_value( listener.accept());
 		},
@@ -43,21 +43,21 @@ TEST( connectTo1_disconnect1_isConnected1_getRemoteIP1_getRemotePort1 )
 
 TEST( connectTo2 )
 {
-	ColdSocket socket;
+	cold::Socket socket;
 	CHECK_THROW( socket.connectTo( "invalid", 31337 ), std::runtime_error );
 	CHECK_EQUAL( socket.isConnected(), false );
 }
 
 TEST( disconnect2 )
 {
-	ColdListener listener;
-	ColdSocket socket;
-	std::promise< std::unique_ptr< ColdSocket > > promise;
+	cold::Listener listener;
+	cold::Socket socket;
+	std::promise< std::unique_ptr< cold::Socket > > promise;
 	auto future = promise.get_future();
 
 	listener.listen( 31337 );
 	std::thread listenerThread(
-		[ &listener ]( std::promise< std::unique_ptr< ColdSocket > > && promise )
+		[ &listener ]( std::promise< std::unique_ptr< cold::Socket > > && promise )
 		{
 			promise.set_value( listener.accept());
 		},
@@ -73,20 +73,20 @@ TEST( disconnect2 )
 
 TEST( disconnect3 )
 {
-	ColdSocket socket;
+	cold::Socket socket;
 	CHECK_THROW( socket.disconnect(), std::runtime_error );
 	CHECK_EQUAL( socket.isConnected(), false );
 }
 
 TEST( getRemoteIP2 )
 {
-	ColdSocket socket;
+	cold::Socket socket;
 	CHECK_THROW( socket.getRemoteIP(), std::runtime_error );
 }
 
 TEST( getRemotePort2 )
 {
-	ColdSocket socket;
+	cold::Socket socket;
 	CHECK_THROW( socket.getRemotePort(), std::runtime_error );
 }
 
