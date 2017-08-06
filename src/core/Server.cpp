@@ -122,7 +122,7 @@ void Server::doTick()
 
 void Server::listen()
 {
-
+	connectToClient( mListener.accept());
 }
 
 void Server::connectToClient( std::unique_ptr< network::cold::Socket > clientSocket )
