@@ -33,6 +33,8 @@ Socket::Socket() :
 	mAddress.sin_port = 0;
 	mAddress.sin_addr.s_addr = INADDR_ANY;
 	std::fill_n( mAddress.sin_zero, 8, 0x00 );
+	int option = 1;
+	setsockopt( mSocketHandle, SOL_SOCKET, SO_REUSEADDR, reinterpret_cast< char * >( &option ), sizeof( option ));
 }
 
 Socket::~Socket()
