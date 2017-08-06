@@ -24,6 +24,8 @@ class Client : SFMLClient, public network::cold::Socket
 public:
 	Client( Nickname const &nickname );
 
+	void connectTo( network::IP address, network::Port port );
+
 	void send();
 	ServerData receive();
 
